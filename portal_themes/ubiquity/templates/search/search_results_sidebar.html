@@ -1,0 +1,162 @@
+{% load i18n %}
+{% load getstring %}
+{% load switch %}
+{% load datetimeformatting %}
+{% qstring as current_qstring %}
+<div id="srfilterside" {% if not qdr %}class="ubiquityHidden"{% endif %}>
+  {% if not searchcollections %}
+    <h4>{% trans "Filter by type" %}</h4>
+    <ul class="search_filter search_ajax">
+        {% if savedsearch %}
+            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}">{% trans "All" %}</a></li>
+            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;additional_metadata=mediaType:video">{% trans "Video" %}</a></li>
+            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;additional_metadata=mediaType:audio">{% trans "Audio" %}</a></li>
+            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;additional_metadata=mediaType:image">{% trans "Image" %}</a></li>
+            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;additional_metadata=mediaType:data">{% trans "Data" %}</a></li>
+            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;additional_metadata=mediaType:none">{% trans "Placeholder" %}</a></li>
+        {% else %}
+	        <li><a href="{{ request.path }}{{ current_qstring|qstring_del:"additional_metadata&page" }}">{% trans "All" %}</a></li>
+	        <li{% ifequal request.GET.additional_metadata "mediaType:video" %} class="filter-active">&rsaquo; {% else %}> {% endifequal %}
+	            <a href="{{ request.path }}{{ current_qstring|qstring_del:"additional_metadata&page" }}&amp;additional_metadata=mediaType:video">{% trans "Video" %}</a></li>
+	        <li{% ifequal request.GET.additional_metadata "mediaType:audio" %} class="filter-active">&rsaquo; {% else %}> {% endifequal %}
+	            <a href="{{ request.path }}{{ current_qstring|qstring_del:"additional_metadata&page" }}&amp;additional_metadata=mediaType:audio">{% trans "Audio" %}</a></li>
+	        <li{% ifequal request.GET.additional_metadata "mediaType:image" %} class="filter-active">&rsaquo; {% else %}> {% endifequal %}
+	            <a href="{{ request.path }}{{ current_qstring|qstring_del:"additional_metadata&page" }}&amp;additional_metadata=mediaType:image">{% trans "Image" %}</a></li>
+	        <li{% ifequal request.GET.additional_metadata "mediaType:data" %} class="filter-active">&rsaquo; {% else %}> {% endifequal %}
+	            <a href="{{ request.path }}{{ current_qstring|qstring_del:"additional_metadata&page" }}&amp;additional_metadata=mediaType:data">{% trans "Data" %}</a></li>
+	        <li{% ifequal request.GET.additional_metadata "mediaType:none" %} class="filter-active">&rsaquo; {% else %}> {% endifequal %}
+	            <a href="{{ request.path }}{{ current_qstring|qstring_del:"additional_metadata&page" }}&amp;additional_metadata=mediaType:none">{% trans "Placeholder" %}</a></li>
+        {% endif %}
+    </ul>
+	 {% pluginblock "SearchSidebar" core %}
+    {% if not searchitemsincollection %}
+
+    <h4>{% trans "Search History" %}</h4>
+    <ul class="search_filter">
+	        {% for s in history %}
+	        	<li><a href="{{ request.path }}?{{ s.querystring }}">
+                            {{ s }}
+            </a></li>
+	        {% endfor %}
+    </ul>
+    {% comment %}
+    <h4>{% trans "Related Searches" %}</h4>
+    <ul style=" list-style-type: none; margin-left:1em;margin-top:0;">
+        <li><a href="#">BBC</a></li>
+        <li><a href="#">Nature</a></li>
+        <li><a href="#">Documentary</a></li>
+        <li>&nbsp;</li>
+    </ul>
+	{% endcomment %}
+    {% endif %}
+    {% endif %}{% comment searchcollections %}{% endcomment %}
+
+    <h4>{% trans "Sort By" %}</h4>
+    <div class="sortselector {{ sortdirection }}" title="{{ sortdirection|title}}">&nbsp;</div>
+    <ul class="search_filter search_ajax">
+        <li><select class="airdate" name="sort">
+        {% if sortlist %}
+        {% for sl in sortlist %}
+        <option value="{{ sl.name|escape }}"{% if sortfield == sl.name  %} selected="selected"{% endif %}>{{ sl.label }}</option>
+        {% endfor %}
+        {% else %}
+        <option value="">----------</option>
+        {% endif %}
+    </select>
+
+
+        </li>
+    </ul>
+
+    <h4>{% trans "Filter" %}</h4>
+    <ul class="search_filter search_ajax">	
+        {% if not savedsearch %}
+	    	{% if not qdr %}
+		  <li class="filter-active">&rsaquo; All</li>
+                {% else %}
+		  <li><a href="{{ request.path }}{{ current_qstring|qstring_del:"from&to&qdr&page" }}">All</a></li>
+		{% endif %}
+		{% ifequal qdr "24" %}
+		  <li class="filter-active">&rsaquo; {% trans "Past 24 hours" %}</li>
+		{% else %}
+		  <li><a href="{{ request.path }}{{ current_qstring|qstring_del:"from&to&qdr&page" }}&amp;qdr=24">{% trans "Past 24 hours" %}</a></li>
+		{% endifequal %}
+		{% ifequal qdr "168" %}
+		  <li class="filter-active">&rsaquo; {% trans "Past 7 days" %}</li>
+		{% else %}
+		  <li><a href="{{ request.path }}{{ current_qstring|qstring_del:"from&to&qdr&page" }}&amp;qdr=168">{% trans "Past 7 days" %}</a></li>
+		{% endifequal %}
+		{% ifequal qdr "720" %}
+		  <li class="filter-active">&rsaquo; {% trans "Past Month" %}</li>
+		{% else %}
+		  <li><a href="{{ request.path }}{{ current_qstring|qstring_del:"from&to&qdr&page" }}&amp;qdr=720">{% trans "Past Month" %}</a></li>
+		{% endifequal %}
+		{% ifequal qdr "6360" %}
+		  <li class="filter-active">&rsaquo; {% trans "Past Year" %}</li>
+		{% else %}
+		  <li><a href="{{ request.path }}{{ current_qstring|qstring_del:"from&to&qdr&page" }}&amp;qdr=6360">{% trans "Past Year" %}</a></li>
+		{% endifequal %}
+	{% else %}
+	        {% if not qdr %}
+	            <li class="filter-active">&rsaquo; All</li>
+	        {% else %}
+	            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}">All</a></li>
+	        {% endif %}
+	        {% ifequal qdr "24" %}
+	            <li class="filter-active">&rsaquo; {% trans "Past 24 hours" %}</li>
+	        {% else %}
+	            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;qdr=24">{% trans "Past 24 hours" %}</a></li>
+	        {% endifequal %}
+	        {% ifequal qdr "168" %}
+	            <li class="filter-active">&rsaquo; {% trans "Past 7 days" %}</li>
+	        {% else %}
+	            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;qdr=168">{% trans "Past 7 days" %}</a></li>
+	        {% endifequal %}
+	        {% ifequal qdr "720" %}
+	            <li class="filter-active">&rsaquo; {% trans "Past Month" %}</li>
+	        {% else %}
+	            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;qdr=720">{% trans "Past Month" %}</a></li>
+	        {% endifequal %}
+	        {% ifequal qdr "6360" %}
+	            <li class="filter-active">&rsaquo; {% trans "Past Year" %}</li>
+	        {% else %}
+	            <li><a href="{% url vs_search %}?searchquery=&amp;searchwithinresults={{librarysettings.getId}}&amp;qdr=6360">{% trans "Past Year" %}</a></li>
+	        {% endifequal %}		
+		{% endif %}
+	</ul>
+</div><!-- #srfilterside -->
+
+{% block footer %}
+
+<script type="text/javascript" charset="utf-8">    
+$(document).ready(function() {
+    if ($.cookie("searchSidebarToggle") == "open") {
+        $('#srfilterside').show();
+        $('#searchresultswrapper').css('padding-left','180px');
+        $('#togglebutton').text($('#togglebutton').text() == '+ {% trans "Show filters" %}' ? '- {% trans "Hide filters" %}' : '+ {% trans "Show filters" %}');
+    } 
+
+	$("#togglebutton").off('click').on('click', function() {
+		$("#srfilterside").animate({width: "toggle"}, 100);
+		if ($.cookie("searchSidebarToggle") == "open") {
+		    $('#searchresultswrapper').css('padding-left','0');
+		    $.cookie("searchSidebarToggle", "close", {path: "/"});
+		} else {
+		    $.cookie("searchSidebarToggle", "open", {path: "/"});
+		    $('#searchresultswrapper').css('padding-left','180px');
+		}
+		$(this).text($(this).text() == '+ {% trans "Show filters" %}' ? '- {% trans "Hide filters" %}' : '+ {% trans "Show filters" %}');
+	});
+});
+</script>
+{% endblock footer %}
+{% docstring search_results_sidebar.html %}
+    search_results_sidebar.html is the filter container for the search pages.
+    
+Plugins
+-------
+
+pluginblock
+    SearchSidebar core - Used for adding custom filters to the search sidebar.
+
+{% enddocstring %}

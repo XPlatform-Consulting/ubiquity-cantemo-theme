@@ -1,0 +1,150 @@
+{% themeextends "base.html" %}
+{% load i18n messages  %}
+{% block body %}
+{% url admin_index as admin_index %}
+{% url vs_users_all as vs_users_all %}
+{% url vs_groups_all as vs_groups_all %}
+{% url vs_profile_templates as vs_profile_templates %}
+{% url vs_metadata_management as vs_metadata_management %}
+{% url themes as themes %}
+{% url vs_export_locations as vs_export_locations %}
+{% url vs_shape_tags as vs_shape_tags %}
+{% url vs_storages as vs_storages %}
+{% url vs_jobs as vs_jobs %}
+{% url vs_indexes as vs_indexes %}
+{% url admin_logreport as admin_logreport %}
+{% url system_index as system_index %}
+<div class="headerwrapper">
+    <div id="header" class="page-header">
+         <h1><a href="{% url admin_index %}">{% trans "Admin" %}</a>: {% block heading %}{% endblock heading %}</h1>
+    </div>
+</div>
+<div id="content" class="content">
+    <div class="leftcontent" id="mv_menu">
+        <ol>
+            <li>
+                <a href="{{ admin_index }}"
+                {% ifequal request.path  admin_index %}
+                  class="selected"
+                {% endifequal %}
+                >
+                
+                <span class="iicon" 
+                 style="background-position:-126px -266px"></span>{% trans "System Overview" %}
+                </a>
+            </li>
+            <li>
+                <a href="{{ system_index }}"
+                {% ifequal request.path system_index %}
+                  class="selected"
+                {% endifequal %}
+                >
+                <span class="iicon" style="background-position:-4px -470px"></span>{% trans "System Settings" %}
+                </a>
+            </li>
+        </ol>
+        {% if user|has_role:"_group_write" %}
+        <ol>
+            <li><a href="{{ vs_users_all }}"
+                {% ifequal request.path  vs_users_all %}
+                    class="selected"
+                {% endifequal %}><span class="iicon" style="background-position:-4px -334px"></span>{% trans 'Users' %}</a></li>
+            <li><a href="{{ vs_groups_all }}"
+                {% ifequal request.path vs_groups_all %}
+                    class="selected"
+                {% endifequal %}><span class="iicon" style="background-position:-28px -334px"></span>{% trans 'Groups' %}</a></li>
+            <li><a href="{{ vs_profile_templates }}"
+                {% ifequal request.path vs_profile_templates %}
+                    class="selected"
+                {% endifequal %}><span class="iicon" style="background-position:-54px -334px"></span>{% trans 'Profile Templates' %}</a></li>
+        </ol>
+        {% endif %}
+        <ol>
+            {% if user|has_role:"_metadata_field_group_write" and user|has_role:"_metadata_field_write" %}
+                <li><a href="{{ vs_metadata_management }}" target="_blank"
+                    {% ifequal request.path vs_metadata_management %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-78px -333px"></span>{% trans 'Metadata Management' %}</a>
+                </li>
+            {% endif %}
+            <li><a href="{{ themes }}"
+                {% ifequal request.path themes %}
+                    class="selected"
+                {% endifequal %}><span class="iicon" style="background-position:-102px -333px"></span>{% trans 'Themes' %}</a></li>
+            <li><a href="{{ vs_export_locations }}"
+                {% ifequal request.path vs_export_locations %}
+                    class="selected"
+                {% endifequal %}><span class="iicon" style="background-position:-126px -334px"></span>{% trans 'Export Locations' %}</a></li>
+            {% if user|has_role:"_shape_tag_write" %}
+                <li><a href="{{ vs_shape_tags }}"
+                    {% ifequal request.path vs_shape_tags %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-152px -334px"></span>{% trans 'Transcode Profiles' %}</a>
+                </li>
+            {% endif %}
+            {% if user|has_role:"_storage_write" and user|has_role:"_storage_group_write" %}
+                <li><a href="{{ vs_storages }}"
+                    {% ifequal request.path vs_storages %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-172px -334px"></span>{% trans 'Storages' %}</a>
+                </li>
+            {% endif %}
+            {% if user|has_role:"_job_read" %}
+                <li><a href="{{ vs_jobs }}"
+                    {% ifequal request.path vs_jobs %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-197px -334px"></span>{% trans 'Jobs' %}</a>
+                </li>
+            {% endif %}
+            {% if user|has_role:"_administrator" %}
+                <li><a href="{{ vs_indexes }}"
+                    {% ifequal request.path vs_indexes %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-220px -334px"></span>{% trans 'Indexes' %}</a>
+                </li>
+            {% endif %}
+            {% if user|has_role:"_administrator" %}
+                <li><a href="{{ admin_logreport }}"
+                    {% ifequal request.path admin_logreport %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-220px -358px"></span>{% trans 'Report Error' %}</a>
+                </li>
+            {% endif %}
+            {% if user|has_role:"_administrator" %}
+               <li><a href="{% url admin:comments_comment_changelist %}"
+                    {% if '/admin/comments/' in request.path %}
+                        class="selected"
+                    {% endif %}><span class="iicon" style="background-position:-173px -24px"></span>{% trans 'Comments' %}</a>
+                </li>
+            {% endif %}
+            {% pluginblock "admin_left_panel_insidemenu" core %}
+        </ol>
+        {% pluginblock "AdminLeftPanelBottomPanePlugin" core %}
+    </div><!-- .leftcontent -->
+    {% block javascriptvalidator %}
+    <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+            // Metadata form
+            $(".formmain").validate();
+        });
+    </script>
+    {% endblock %}
+    <div class="itemcontentholder">
+    {% block content %}
+
+    {% endblock content %}
+    </div><!-- .itemcontentholder -->
+</div><!-- #content -->
+{% endblock body %}
+{% docstring %}
+This is the base template for the admin pages, showing the menu on the lefthand side.
+    
+Plugins
+-------
+
+pluginblock
+    AdminLeftPanelBottomPanePlugin core - Use for creating a new menu after the existing menu.
+    
+pluginblock
+    admin_left_panel_insidemenu core - Use for putting another menu item into the existing menu
+{% enddocstring %}

@@ -1,0 +1,49 @@
+{% load i18n getstring %}
+{% qstring as current_qstring %}
+{% if hits %}
+    {% for item in items  %}
+    <div class="mediaitem mediaitemgridmini" id="{{ item.getId }}">
+        <div class="mediaitemtitle">
+        {{ item.getTitle }}
+        </div>
+        <div class="centerwrapper">
+        {% if item.getThumbnails %}
+            <img src="{{ item.getThumbnails.0 }}" />
+        {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+        <h2>{% trans "No media found." %}</h2>
+        <p style="font-size:1.3em;">
+        {% if searchquery == "" %}
+            {% blocktrans %}We couldn't find any media matching your search query, {% endblocktrans %}
+        {% else %}
+            {% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", {% endblocktrans %}
+        {% endif %}
+        {% if suggestions and searchquery != "" %}
+            {% trans "did you mean" %}
+            {% for suggestion in suggestions %}
+         <a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion }}">{{ suggestion }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} {% trans "or" %} {% else %},{% endif %} {% endif %}{% endfor %}?
+        {% else %}
+            {% trans "please try again." %}
+        {% endif %}</p>
+    {% endif %}
+{% docstring %}
+search_results_ajax_grid.html is shown for ajax search results. Has a list of items.
+
+Context:
+ * items - list of search result items.
+ * hits - Amount of search results in total.
+ * searchquery - search query in the system.
+ * history - Search history
+ * first_on_page - number from 0 of the first item on page
+ * has_next - has a next page
+ * has_other_pages - has other pages
+ * last_on_page - last on page
+ * library - Vidispine library ID
+ * next - Next page number
+ * page - Current page
+ * pages - Total number of pages
+ * results_per_page - Results to show on page.
+{% enddocstring %}

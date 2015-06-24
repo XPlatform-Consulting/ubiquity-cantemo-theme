@@ -1,0 +1,24 @@
+{% load compress %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    {% themeinclude "includes/header.html" %}
+    {% block extra_script %}{% endblock %}
+    <title>Portal: {% block title %}{% endblock title %}</title>
+    {% block head %}{% endblock head %}
+</head>
+<body id="frontpage">
+<div>
+    {% block body %}
+       {% block content %}
+
+
+
+
+       {% endblock content %}
+    {% endblock body %}
+</div>
+</body>
+</html>
+{% compress js inline %}
+
+{% endcompress %}

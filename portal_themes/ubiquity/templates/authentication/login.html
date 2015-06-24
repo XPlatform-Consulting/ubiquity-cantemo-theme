@@ -1,0 +1,148 @@
+{% themeextends "base-frontpage.html" %}
+{% load i18n %}
+{% block title %}
+	    {% trans 'Login' %}
+{% endblock %}
+{% block content %}
+
+
+<div class="login-wrapper">
+    <div class="login-container">
+        
+    {% if error or form.non_field_errors %}
+        <div class="alert alert-danger">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <ul>
+            <li>{{ error }}</li>
+            {% for ferror in form.non_field_errors %}
+            <li>{{ ferror }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if notice %}
+     <div class="alert alert-warning">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <ul>
+            <li>{{ notice }}</li>
+        </ul>
+     </div>
+     {% endif %}
+           
+    <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="logo">
+                    {% if themeobject.logoimageretina and themeobject.logo_width and themeobject.logo_height %}
+                <a href="/"><img src="{{ MEDIA_URL }}{{ themeobject.logoimage }}" data-src2x="{{ MEDIA_URL }}{{ themeobject.logoimageretina }}"
+                    width="{{ themeobject.logo_width }}px" height="{{ themeobject.logo_height }}px"
+                    border="0"  /></a>
+                {% elif themeobject.logoimage %}
+                    <a href="/"><img src="{{ MEDIA_URL }}{{ themeobject.logoimage }}" border="0" alt="{% trans 'Portal' %}" /></a>
+                {% endif %}
+                </div>
+            </div>
+        
+            {% if not license_expired %}
+            <form action="" method="post" id="loginform">
+                    <div class="panel-body">
+                    {% csrf_token %}
+                   <div class="form-group">
+                       <input class="form-control input-lg" id="id_username" placeholder="{% trans "Username" %}" type="text" class="inputText" name="username" maxlength="30"
+                       {% if form.username.value %} value="{{ form.username.value }}"{% else %} autofocus{% endif %} >
+                   </div>
+                   <div class="form-group">
+                       <input class="form-control input-lg" id="id_password" placeholder="{% trans "Password" %}" type="password" class="inputText" name="password" maxlength="2048" {% if form.username.value %}autofocus{% endif %}>
+                   </div>
+                    
+      
+                
+            </div>
+            <div class="panel-footer">
+                    {% pluginblock "login_form" core %}
+                        <input type="submit" value="{% trans 'Login' %}" class="btn btn-primary btn-block"/>
+                    {% pluginblock "login_notice" core %}
+            </div>
+            </form>
+            {% else %}
+            <div class="panel-body">
+              <div class="alert alert-danger">
+                <p>License invalid. Please contact supplier.</p>
+                <p>{{notice}}</p>
+              </div>
+            </div>
+            {% endif %}
+            
+            
+        </div>
+        
+    </div>
+</div>
+<div id="tandcholder" style="overflow: auto;">
+    
+</div>
+
+
+<div class="login-copyright" style="width:95%;">
+    <form action="/i18n/setlang/" method="post">
+    {% csrf_token %}
+
+    {% if SITE_I18N and LANGUAGES|length > 1 %}
+    <select name="language" class="changelanguage">
+    {% for lang in LANGUAGES %}
+    <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="{% trans "Change" %}" class="changelanguage" />
+    {% endif %}
+    <p id="poweredby" style="float:right;line-height:2.5em;opacity:0;">Powered by Cantemo Portal&trade; including Vidispine media backbone. </p>
+    </form>
+</div>
+<script type="text/javascript" charset="utf-8">
+$(function () {
+    $('#poweredby').css({
+        'background':'url(/sitemedia/img/CantemoPortalLogo-poweredBy.png) no-repeat',
+        'height':'80',
+        'text-indent':'-9999px',
+        'width':'260',
+        'margin-top':'-40px',
+        'cursor':'pointer'}).animate({opacity: 1}, 1200);
+    {% if not is_enterprice %}
+    $('#poweredby').click(function(){
+      jQuery('#tandcholder').load('/termsandconditions/').dialog({
+        modal: true,
+        title: 'Cantemo Portal™ End User License Agreement',
+        resizable: false,
+        dialogClass: 'tandc',
+        minWidth: 600,
+        minHeight: 400,
+        maxHeight: 400,
+        show: { effect: "fade", duration: 500 },
+        hide: { effect: "fade",  duration: 500 },
+        buttons: [
+            { text: "Close", click: function(){
+            $(this).dialog('close')
+            }}]
+        }).css('max-height', '400px');
+    });
+    {% endif %}
+});
+</script>
+{% endblock content %}
+
+{% docstring %}
+This template is the main login screen for the system. This will be presented if Portal core theme is the main theme.
+
+You should not remove the Copyright and Powered by notices unless specifically have permission to do so.
+
+Context
+-------
+
+
+Plugins
+-------
+
+pluginblock
+    login_error core
+    login_notice core
+    login_form core
+{% enddocstring %}

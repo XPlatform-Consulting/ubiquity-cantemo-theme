@@ -1,0 +1,55 @@
+{% load vidispinetags %}
+{% for element in fieldsetelements  %}
+    {% if element.type == "field" %} 
+        {% if editing %}
+            {% if element.is_hidden %}
+                {{ element.field_rendered|safe }}
+            {% else %}        
+                <ul>    
+                    <li>
+                        <input type="checkbox" name="{{ element.field_id }}_checkbox" id="{{ element.field_id }}_checkbox" class="metadatafieldcheckbox"/>
+                        <label for="{{ element.field.label }}_0">{{ element.field.label }}</label> 
+                        {{ element.field_rendered|safe }}
+                        {% if element.field.help_text %}
+                        <div class="fld_help_txt">{{ element.field.help_text }}</div>
+                        {% endif %}
+                    </li>
+               </ul>
+           {% endif %}
+        {% else %}
+            {% if element.vs_field|getMetadataFieldHideIfNotSet:element.belonging_to_group and not element.field.initial %}
+            {% else %}
+                {% if element.is_hidden %}
+                    {{ element.field_rendered|safe }}
+                {% else %}                    
+                    <ul>
+                        <li>
+                            <input type="checkbox" name="{{ element.field_id }}_checkbox" id="{{ element.field_id }}_checkbox" class="metadatafieldcheckbox" {% if element.field.initial %}checked{%endif%}/>
+                            <input type="hidden" name="{{ element.field_id }}_value" value="{{ element.field.initial }}"> 
+                            <label>{{ element.field.label }}</label> <span class="field_holder">{{ element.field.initial }}</span>
+                            {% if element.field.help_text %}
+                                <div class="fld_help_txt">{{ element.field.help_text }}</div>
+                            {% endif %}
+                        </li>
+                    </ul>
+                {% endif %}
+            {% endif %}
+        {% endif %}        
+    {% else %}
+        {% with element.fieldset as fieldsetelements %}
+        <fieldset class="{{ element.fieldsetclass }}" id="{{ element.fieldsetid }}"
+         isref="{{ element.templateelement.getSchema.isReference }}" min_amount="{{ element.templateelement.getSchema.getMin }}" max_amount="{{ element.templateelement.getSchema.getMax }}" name="{{ element.element.getName }}">
+            {{ weakreference|safe }}
+            <legend class="{{ element.fieldsetclass }}"><strong>{{ element.element.getName }}</strong></legend>
+            {% if element.element.getUUID and element.element.getUUID != element.refuuid %}
+                <input type="hidden" name="{{ element.fieldsetid }}||_uuid" value="{{ element.element.getUUID }}">
+            {% endif %}
+            {% if element.refuuid %}
+                <input type="hidden" name="{{ element.fieldsetid }}||_ref_uuid" value="{{ element.refuuid }}">
+            {% endif %}
+            
+            {% themeinclude "media/fieldset_render_batch_update.html" %}
+        </fieldset>
+        {% endwith %}
+    {% endif %}
+{% endfor %}

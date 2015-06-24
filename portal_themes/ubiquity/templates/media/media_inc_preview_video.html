@@ -1,0 +1,33 @@
+{% spaceless %}
+<div class="mediaitemtitle">
+{% pluginblock "MediaPreviewIcon" core %}
+{% if item.getItemType == 'SubClip' %}
+<svg class="media_type media_type_icon" viewBox="0 0 310 310">
+    <use xlink:href="#Icon-MediaType-SubClip" >
+</svg>
+<a href="{% url item_subclip item.parent_id '0' item.getId %}" class="ellipsis">{{ item.getTitle }}</a></div>
+    {% else %}
+<svg class="media_type media_type_icon" viewBox="0 0 310 310">
+    <use xlink:href="#Icon-MediaType-Video" >
+</svg>
+<a href="{% url vs_item item.getId %}" class="ellipsis">{{ item.getTitle }}</a></div>
+{% endif %}
+{% load thumbnailer datetimeformatting i18n general vidispinetags %}
+{% create_thumbnails item item_URL %}
+{% if item.getDurationSeconds %}
+<div class="mediaitemduration">{{ ""|formatToTime:item.getDurationSeconds }}</div>
+{% else %}
+<div class="mediaitemdurationblank">{{ ""|formatToTime:item.getDurationSeconds }}</div>
+{% endif %}
+{% comment %}
+<div class="infoholder">
+	<span class="info">
+	   <div>{{ ""|filterOriginalFormat:item.getMetadata.1.originalFormat|upper }} {{ item.getMetadata.1.originalVideoCodec|upper }}</div>
+	   <input type="checkbox" name="mediaitem" value="{{ item.getId }}" id="item_{{ item.getId }}" class="infocheckbox">
+	   <div class="mediacreatedate">{% trans "Created" %}: {{ item.getMetadata.1.created|datetimeobject|date:"DATETIME_FORMAT" }}</div>
+	</span>
+</div>
+{% endcomment %}
+{% endspaceless %}
+
+

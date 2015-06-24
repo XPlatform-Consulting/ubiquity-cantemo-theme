@@ -1,0 +1,125 @@
+{% load thumbnailer i18n datetimeformatting vidispinetags %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/collection/collections.js"></script>
+<div class="relatedpanelcontent">
+    {% if collections %}
+        {% spaceless %}
+        <h3><span class="relatedcount">{{ collections|length }}</span>{% blocktrans count counter=collections|length %}
+            Collection<span class="description">This item is in the following collection.</span></h3>
+        {% plural %}
+            Collections<span class="description">This item is in the following collections.</span></h3>
+        {% endblocktrans %}
+        {% endspaceless %}
+        <div class="box">
+            {% for c in collections  %}
+            <div class="smallgriditem" id="{{ c.getId }}">
+                <div class="info">
+                    <a href="{% url vs_collection c.getId %}">
+                        {% if c.getThumbnails %}
+                            <div class="collectionthumb" style="height:100px;width:140px;">
+                            {% for collecthumbs in c.getThumbnails|slice:":4" %}
+                                {% if collecthumbs %}
+                                    <img src="{{ PREVIEW_URL }}{{ collecthumbs }}" alt="" width="64px" style="margin:0 0 2px 4px;" class="collectionthumbimg">
+                                {% endif %}
+                            {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="nothumbnail">
+                                <img src="{{ STATIC_URL }}img/collection_group.png" width="141" height="90" class="collectionicon">
+                            </div>
+                        {% endif %}
+                        </a>
+                    <div class="mediaitemtitle">
+                        {% pluginblock "CollectionPodBeforeTitle" core %}
+                        <strong><a href="{% url vs_collection c.getId %}">{{ c.getName }}</a></strong>
+                    </div>
+                </div>
+                <input type="checkbox" name="collection_checklist" value="{{ c.getId }}" class="infocheckbox" />
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if sources_used %}
+        {% spaceless %}
+        <h3><span class="relatedcount">{{ sources_used|length }}</span>{% blocktrans count counter=sources_used|length %}
+            Source<span class="description">This item was used as a source to create the above item.</span></h3>
+        {% plural %}
+            Sources<span class="description">These items were used in the creation of the above item.</span></h3>
+        {% endblocktrans %}
+        {% endspaceless %}
+        <div class="box">
+            {% for item in sources_used %}
+              {% url vs_item item.getId as item_URL  %}
+              {% themeinclude 'media/media_inc_preview.html' %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if used_as_source %}
+        {% spaceless %}
+        <h3><span class="relatedcount">{{ used_as_source|length }}</span>{% blocktrans count counter=used_as_source|length %}
+            Product<span class="description">This item was used as source material in this render</span></h3>
+        {% plural %}
+            Products<span class="description">This item was used as source material in these renders</span></h3>
+        {% endblocktrans %}
+        {% endspaceless %}
+        <div class="box">
+            {% for item in used_as_source %}
+              {% url vs_item item.getId as item_URL  %}
+              {% themeinclude 'media/media_inc_preview.html' %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if rce_sources_used %}
+        {% spaceless %}
+        <h3><span class="relatedcount">{{ rce_sources_used|length }}</span>{% blocktrans count counter=rce_sources_used|length %}
+            Rough Cut Editor Source<span class="description">This item is used in this Rough Cut Editor Sequence</span></h3>
+        {% plural %}
+            Rough Cut Editor Sources<span class="description">These items are used in this Rough Cut Editor Sequence</span></h3>
+        {% endblocktrans %}
+        {% endspaceless %}
+        <div class="box">
+            {% for item in rce_sources_used %}
+              {% url vs_item item.getId as item_URL  %}
+              {% themeinclude 'media/media_inc_preview.html' %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% if rce_used_as_source %}
+        {% spaceless %}
+        <h3><span class="relatedcount">{{ rce_used_as_source|length }}</span>{% blocktrans count counter=rce_used_as_source|length %}
+            Rough Cut Editor Sequence<span class="description">This item is used as source material in this Rough Cut Editor Sequence</span></h3>
+        {% plural %}
+            Rough Cut Editor Sequences<span class="description">These items are used as source material in these Rough Cut Editor Sequences</span></h3>
+        {% endblocktrans %}
+        {% endspaceless %}
+        <div class="box">
+            {% for item in rce_used_as_source %}
+              {% url vs_item item.getId as item_URL  %}
+              {% themeinclude 'media/media_inc_preview.html' %}
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% pluginblock "MediaViewRelated" core %}
+</div>
+
+
+{% docstring %}
+media_view_related.html
+============
+
+This template shows the related media. It is displayed in the Related pane on the item page.
+
+Context
+-------
+
+item_id - The item id being displayed
+sources_used - A list of VidiRest.objects.item.VSItem objects for the items used as source to create this render
+used_as_source - A list of VidiRest.objects.item.VSItem objects where this item is used as source
+
+Plugins
+-------
+
+pluginblock
+    MediaViewRelated - Use to add additional sections to the related media pane
+
+{% enddocstring %}
+

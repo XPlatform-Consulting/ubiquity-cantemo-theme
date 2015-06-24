@@ -1,0 +1,10 @@
+{% load vidispinetags i18n %}
+{% if previews|getURIByMimeType:"application/ogg" %}
+<div id="player" class="player">
+    <audio controls>
+        <source src="{{ previews|getURIByMimeType:"application/ogg" }}"/>
+    </audio>
+</div>
+{% else %}
+    {% themeinclude 'media/previews/audiofallback.html' %}
+{% endif %}

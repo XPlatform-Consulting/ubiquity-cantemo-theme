@@ -1,0 +1,36 @@
+{% load i18n formatting vidispinetags datetimeformatting %}
+{% if metadataelements %}
+	{% if editing %}
+        {% themeinclude "media/metadata_render.html" %}
+        <ul>
+            <li class="mono"><input before="{% trans "Submit" %}" type="submit" name="submit" value="{% trans "Submit" %}" loading="{% trans "Please wait" %}..." class="button submit_metadataform"></li>
+        </ul>
+	{% else %}
+
+        {% themeinclude "media/metadata_render.html" %}
+
+    {% endif %}
+{% else %}
+     {% trans "There is no metadata for this item." %}
+{% endif %}
+{% docstring %}
+
+media_view_metadataform.html:
+    This form is used for rendering and showing the metadata for a mediaitem. It is also used by the annotation tool.
+    
+Context
+-------
+
+**metadata**
+    The name/label of the types of object being deleted
+
+**nojavascript**
+    Optionally doesn't print the Javascript so that an external script can take care of that.
+    
+    
+Plugins
+-------
+
+
+
+{% enddocstring %}

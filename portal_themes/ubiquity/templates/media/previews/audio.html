@@ -1,0 +1,8 @@
+{% load vidispinetags %}
+<div id="player" class="player">
+    <div class="audioplayer">
+        <audio controls id="cantemoaudioplayer">
+            <source src="{{ previews|getURIByMimeType:"audio/mpeg" }}"/>
+        </audio>
+    </div>
+</div>

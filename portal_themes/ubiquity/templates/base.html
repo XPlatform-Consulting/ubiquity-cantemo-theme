@@ -1,0 +1,194 @@
+{% load i18n cache messages compress %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    {% themeinclude "includes/header.html" %}
+    {% block extra_script %}{% endblock %}
+    <title>{% block title %}{% endblock title %} {% if SITE_NAME %}- {{ SITE_NAME }}{% endif %}</title>
+    {% block head %}{% endblock head %}
+</head>
+<body class="{% block bodyclass %}base{% endblock %}" id="body">
+   
+<div id="global">
+    
+    <!-- Theme  ubiquity / base.html -->
+    {% block theme %}
+    
+    <!-- Navigation -->
+    {% block navigation %}{% themeinclude 'includes/navigation.html' %}{% endblock %}
+    <!-- end Navigation -->
+    <!-- MAiN (block Body) -->
+    <div id="main" class="container-fluid mainbody" >
+    {% block body %}
+        {% block heading %}{% endblock heading %}
+        <div id="content">
+            {% block content %}{% endblock content %}
+        </div> 
+    {% endblock body %}
+    </div>    
+    <!-- END MAIN -->
+    
+    <!-- Footer -->
+    {% block footer %}{% endblock footer %}
+    <!-- end Footer -->
+    
+    {% endblock theme %}
+    <!-- end Theme --> 
+    
+    <div id="loading-icon" class="loading-icon" style="display:none;">
+        <img src="{{ STATIC_URL }}img/core/loading.gif">
+        <h2>{% trans "Loading" %}...</h2>
+    </div>
+
+    <button id="mediabin-tab-show" class="mediabin-tab btn btn-fab btn-raised btn-primary">
+        <i class=" mdi-content-archive"></i>
+        {% if user.mediabin_set.count > 0 %}
+        <span class="badge ntfcnttxt">{{ user.mediabin_set.count }}</span>
+        {% endif %}
+    </button>
+    {% comment %}
+    <div class="mediabin-tab" id="mediabin-tab-show">
+        <div class="ntfwrap">
+            <label></label>
+            <div id="ntfcnttxt" class="ntfcnttxt">{{ user.mediabin_set.count }}</div>
+        </div>  
+    </div>
+    {% endcomment %}
+    <div id="mediabin" class="mediabin mediabin-collapsed">
+        <nav>
+            <ul class="sortMenu">
+                <li>{% trans "Sort by" %}</li>
+                <li class="sortMenuItem"><a href="" id="cntmo_prtl_mediabin_srt_date">{% trans "Date added" %}</a></li>
+                <li class="sortMenuItem"><a href="" id="cntmo_prtl_mediabin_srt_name">{% trans "Name" %}</a></li>
+            </ul>
+            <div id="mediabin_cntx_menu" class="mediabin_cntx_menu">
+                <ul class="plevel-one">
+                    <li><a href="#"><span id="mediabincount"></span></a>
+                        <ul class="plevel-two">
+                            <li>
+                                <a href="{% url vs_collection_add_form %}" id="cntmo_prtl_mediabin_clct_lnk">
+                                    {% trans "Add to Collection" %}</a>
+                            </li>
+                            <li><a href="" id="cntmo_prtl_mediabin_rmv_lnk">{% trans "Remove from Bin" %}</a></li>
+                            <li><a href="" id="cntmo_prtl_mediabin_unselect_lnk">{% trans "Unselect" %}</a></li>
+                            {% permissionrequired _item_shape_write %}
+                            <li><a href="" id="cntmo_prtl_mediabin_dlt_lnk">{% trans "Delete" %}</a></li>
+                            {% endpermissionrequired %}
+                            {% pluginblock "MediaBinDropdown" collection core %}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="mediabin-tab" id="mediabin-tab-hide"></div>
+        </nav>
+        <div id="mediabinholder">
+            <div class="viewport">
+                <div class="mediabinitems overview"></div>
+            </div>
+            <div class="scrollbar">
+                <div class="track">
+                    <div class="thumb">
+                        <div class="end"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    {% if REALTIME_ENABLED %}
+    cn = hookbox.connect('{{ REALTIME_SERVER }}');
+    var ntfcnt = 0;
+    cn.onOpen = function() { }
+    cn.onError = function(err) { }
+    var notifications = [];
+    cn.onSubscribed = function(channelName, _sub) {
+        _sub.onPublish  = function(args) {
+            if (args.channel_name=="/users/{{user}}") {
+                $("#ntfcnt").removeClass("inboxempty").addClass("inboxpop");
+                $("#ntfcnttxt").html(ntfcnt+1);
+                if (notifications.length > 8) { a = notifications.shift(); }
+                notifications.push(args.payload);
+                ntfcnt += 1;
+            }
+        }
+    }
+    $("#ntfcnt").click(function(){
+        if (ntfcnt > 0) {
+            $(this).addClass('ntfcnt-active');
+             $(this).after('<div id="ntfdd" style"position: absolute;float:left;"><h5>{% trans "Notifications" %}: '+notifications.length+' {% trans "of" %} '+ ntfcnt +'</h5></div>');
+             //$("#ntfdd").css( { "left": (pos.left + width) + "px", "top":pos.top + "px" } );
+             $.each(notifications, function(index, value){
+                 if (value.currentStepStatus == 'FINISHED') {
+                    jbState='Finished';
+                 } else if (value.currentStepStatus == 'FAILED_TOTAL'){
+                    jbState='Failed';
+                 } else {
+                    jbState = value.currentStepStatus;
+                 }
+                 $('#ntfdd').append('<a href="/vs/job/'+ value.jobId +'/"><div class="ntfel ntfel-'+ value.currentStepStatus +'">'+value.type+' '+ value.jobId +' '+ jbState +'</div></a>')
+             })
+             if (ntfcnt > notifications.length){
+                $('#ntfdd').append('<div class="ntfel">{% trans "View more" %}</div>');
+             }
+             $(document).click(function(e) {
+             	if ($(e.target).is('#ntfdd,#ntfdd, #ntfcnt, #ntfcnt *')){
+             	    return false;
+             	} else {
+             	    $('#ntfdd').fadeOut();
+             	    $(document).unbind("click");
+             	    $("#ntfcnt").removeClass('ntfcnt-active');
+             	    $("#ntfcnttxt").html("");
+             	}
+             });
+        }
+    });
+    {% endif %}
+
+    $(document).ready(function() {
+        $('#searchtext').autocomplete({
+            source: '{% url search:suggest %}'
+        });
+    });
+
+{% render_growl_messages messages %}
+</script>
+<script type="text/template" id="cntmo_prtl_mediabin_cnt_tmpl">
+    <span class="count">
+      <span class="number"><%= selected_count %></span>
+     <%= selected_count == 1 ? '{% trans "item" %}' : '{% trans "items" %}' %>
+    </span>
+</script>
+<script type="text/template" id="cntmo_prtl_mediabin-pod-tmpl">
+    <a href="<%= absolute_url %>">
+        <% if(thumbnail_uri) { %>
+        <div class="thumbnail" style="background-image:url(<%= thumbnail_uri %>);"></div>
+        <% } else { %>
+        <div class="nothumbnail"><img src="{{ STATIC_URL }}img/collection_group.png" width="90" class="collectionicon"/>
+        </div>
+        <% } %>
+    </a>
+    <div class="podmenu_holder">
+        <ul class="plevel-one">
+            <li><a href="#"></a>
+                <ul class="plevel-two">
+                    <li><a href="" class="cntmo_prtl_mediabin-pod-rmv">{% trans "Remove from Bin" %}</a></li>
+                    <li><a href="<%= absolute_url %>" class="cntmo_prtl_mediabin-pod-view">{% trans "View" %}</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="mediaitemtitle">
+        <strong><a href="<%= absolute_url %>" title="<%= resource_name %>"><%= resource_name %></a></strong>
+    </div>
+</script>
+<!-- BLOCK Inline JS -->
+{% block inlinejs %}
+{% endblock inlinejs %}
+<!-- endBLOCK Inline JS -->
+<!-- pluginblock "BaseJS" -->
+{% pluginblock "BaseJS" core %}
+<!-- endpluginblock "BaseJS" -->
+</body>
+</html>

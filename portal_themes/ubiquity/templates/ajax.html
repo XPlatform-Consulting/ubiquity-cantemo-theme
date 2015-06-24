@@ -1,0 +1,18 @@
+{% if request.is_ajax == None  %}
+{% block title %} 
+{% endblock %}   
+{% endif %}
+{% block body %}
+{% if request.is_ajax == None %}        
+ {% block heading %}
+ {% endblock heading %}     
+{% endif %} 
+     {% block content %}         
+     {% endblock content %}     
+{% endblock body %} 
+{% if request.is_ajax == None %}        
+ {% block footer %}
+ {% endblock footer %}     
+{% endif %}
+{% block inlinejs %}
+{% endblock inlinejs %}    

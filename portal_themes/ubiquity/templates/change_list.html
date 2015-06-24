@@ -1,0 +1,108 @@
+{% themeextends "admin/base_admin.html" %}
+{% load adminmedia admin_list i18n %}
+{% load url from future %}
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/changelists.css" />
+  {% if cl.formset %}
+    <link rel="stylesheet" type="text/css" href="{% admin_media_prefix %}css/forms.css" />
+  {% endif %}
+  {% if cl.formset or action_form %}
+    {% url 'admin:jsi18n' as jsi18nurl %}
+    <script type="text/javascript" src="{{ jsi18nurl|default:'../../jsi18n/' }}"></script>
+  {% endif %}
+  {{ media.css }}
+  {% if not actions_on_top and not actions_on_bottom %}
+    <style>
+      #changelist table thead th:first-child {width: inherit}
+    </style>
+  {% endif %}
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+{{ media.js }}
+{% if action_form %}{% if actions_on_top or actions_on_bottom %}
+<script type="text/javascript">
+(function($) {
+    $(document).ready(function($) {
+        $("tr input.action-select").actions();
+    });
+})(django.jQuery);
+</script>
+{% endif %}{% endif %}
+{% endblock %}
+
+{% block bodyclass %}change-list{% endblock %}
+{% if not is_popup %}
+{% block heading %}
+  {% block breadcrumbs %}
+  ICI
+       <a href="../">
+         {{ app_label|capfirst }}
+      </a>:
+      {{ cl.opts.verbose_name_plural|capfirst }}
+ 
+  {% endblock %}
+{% endblock heading %}
+{% endif %}
+
+{% block coltype %}flex{% endblock %}
+
+{% block content %}
+<div class="itemcontent" id="content-main">
+    <div class="adminTables_wrapper">
+        
+    {% block object-tools %}
+      {% if has_add_permission %}
+      <div class="table-menu">
+          
+          {% block object-tools-items %}
+          <a href="add/{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+              <button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans 'Add' %}
+              </button>
+              </a>
+          {% endblock %}
+        </div>
+      {% endif %}
+    {% endblock %}
+    {% if cl.formset.errors %}
+        <p class="errornote">
+        {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+        </p>
+        {{ cl.formset.non_form_errors }}
+    {% endif %}
+    <div class="module{% if cl.has_filters %} filtered{% endif %}" id="changelist">
+      {% block filters %}
+        {% if cl.has_filters %}
+          <div id="changelist-filter">
+            <h3>{% trans 'Filter' %}</h3>
+            {% for spec in cl.filter_specs %}
+            <div class="admin-filter-section">
+                {% admin_list_filter cl spec %}
+            </div>
+            {% endfor %}
+            <div class="admin-filter-section">
+                {% block date_hierarchy %}{% date_hierarchy cl %}{% endblock %}
+           </div>
+         </div>
+        {% endif %}
+      {% endblock %}
+      <div class="top">
+        {% block search %}{% search_form cl %}{% endblock %}
+        {% block pagination %}{% pagination cl %}{% endblock %}
+      </div>
+      <form id="changelist-form" action="" method="post"{% if cl.formset.is_multipart %} enctype="multipart/form-data"{% endif %}>{% csrf_token %}
+      {% if cl.formset %}
+        <div>{{ cl.formset.management_form }}</div>
+      {% endif %}
+
+      {% block result_list %}
+          {% result_list cl %}
+          {% if action_form and cl.full_result_count %}{% admin_actions %}{% endif %}
+      {% endblock %}
+      </form>
+    </div>
+</div><!-- .adminTables_wrapper -->
+</div><!-- .itemcontent -->
+{% endblock %}

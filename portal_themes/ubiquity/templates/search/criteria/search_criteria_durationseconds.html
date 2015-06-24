@@ -1,0 +1,33 @@
+{% load i18n %}
+<div class="form-group" id="crit_{{name}}_dd">
+    <img src="/sitemedia/img/icon-minus-circle-frame.png" id="remove{{name}}critrow"  class="removeCriteria"/>
+    <label for="crit_duration" class="control-label col-sm-3" >
+        {% trans 'Duration is' %}
+    </label>
+
+    <div class="col-sm-8 form-inline">
+        
+                    <select id="crit_duration"  name="crit_duration" class="form-control">
+                    {% if searchcriteria.crit_duration %}
+                        <option value="exactly" {% if searchcriteria.crit_duration == "exactly" %}selected="selected"{%endif%}>{% trans 'exactly' %}</option>
+                        <option value="longerthan" {% if searchcriteria.crit_duration == "longerthan" %}selected="selected"{%endif%}>{% trans 'longer than' %}</option>
+                        <option value="shorterthan" {% if searchcriteria.crit_duration == "shorterthan" %}selected="selected"{%endif%}>{% trans 'shorter than' %}</option>
+                    {% else %}
+                        <option value="exactly">{% trans 'exactly' %}</option>
+                        <option value="longerthan">{% trans 'longer than' %}</option>
+                        <option value="shorterthan">{% trans 'shorter than' %}</option>
+                    {% endif %}
+                    </select>
+                <input type="number" min="0" name="crit_durationseconds" value="{% if searchcriteria.crit_durationseconds%}{{ searchcriteria.crit_durationseconds }}{%endif%}" id="crit_durationseconds" class="form-control" style="width:8em;" />
+                {% trans 'seconds' %}</li>
+            
+    <!-- End Duration -->
+       </div>
+
+</div>
+<script type="text/javascript">
+    $('#removedurationSecondscritrow').click(function() {
+        $("#crit_durationSeconds_dd").remove();
+        $("#crit_mainchooser").append("<option value='durationSeconds'>{% trans 'Duration' %}</option>");
+    });
+</script>

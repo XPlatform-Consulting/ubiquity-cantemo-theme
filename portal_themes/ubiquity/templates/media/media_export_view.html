@@ -1,0 +1,93 @@
+{% load i18n %}
+<div id="vsmediaexport">
+{% if exportareas %}
+<form action="{% url vs_items_export %}" method="post" accept-charset="utf-8" id="export_ajax_form">{% csrf_token %}
+	<ul>
+	    <li>
+			<label for="ftpuri">{% trans "Export location" %}</label>
+			<select name="ftpuri" id="ftpuri" class="ftpuri">
+			{% for ea in exportareas %}
+				<option value="{{ea.name}}" filename_override="{{ ea.filename_override|lower}}">{{ea.name}}</option>
+			{% endfor %}
+                        {% pluginblock "ExportViewExportAreaOptions" %}
+			</select>
+		</li>
+		<li>
+			<label for="shapetag">{% trans "Format" %}</label>
+			<select name="shapetag">
+			{% for st in shapetags %}
+				<option value="{{ st }}">{{ st }}</option>
+			{% endfor %}
+                        {% pluginblock "ExportViewShapeTagOptions" %}
+			</select></li>
+		<li>
+			<label for="includemetadatatag">{% trans "Include metadata" %}</label>
+			<select name="metadataprojection">
+				<option value="#">{% trans "Do not include" %}</option>
+				{% for p in projections %}
+					<option value="{{ p }}">{{ p }}</option>
+				{% endfor %}
+                                {% pluginblock "ExportViewMetadataProjectionOptions" %}
+			</select>
+		</li>
+                {% if selected_objects|length == 1 %}
+                <div class="exportfilenamediv" {% if not exportareas.0.filename_override %} style="display: none"{%endif %}>
+                  <li>
+                    <label for="exportfilename">{% trans "Filename" %}</label>
+                    <input name="exportfilename" id="exportfilename" placeholder="{{ originalFilename }}" />
+                  </li>
+                </div>
+                {% endif %}
+
+        {% for selected_object in selected_objects %}
+            <input type="hidden" name="selected_objects" value="{{ selected_object }}" />
+        {% endfor %}
+		{% pluginblock "media_export_form" core %}
+	</ul>
+</form>
+{% else %}
+	<p>{% trans "We are sorry, there are no export locations set up for you. Please ask an Administrator to setup an export location for you if you require one" %}</p>
+{% endif %}
+</div>
+<script type="text/javascript"> 
+$(function() {
+    $('#export_ajax_form').ajaxForm({dataType:'json',
+    	beforeSubmit: function(arr, $form, options) {
+    		$("#vscollectionexport").empty().end().html('<center><img src="{{STATIC_URL}}img/core/loading-small.gif" /></center>');
+    		return true; 
+    	}, 
+        success: function(responseText, statusText, xhr, $form) { 
+            if (statusText == "success"){
+                $.growl(responseText, 'success');
+                $(".ui-dialog-content").dialog("close");
+            }
+        },
+        error: function(responseText, statusText, xhr, $form) {
+            $.growl(responseText, 'error');
+    		$("#vscollectionexport").empty().end();
+            $(".ui-dialog-content").dialog("close");
+        }
+    });
+});
+</script>
+{% docstring media_export_view.html %}
+Export a media item page.
+    
+Context
+-------
+
+exportareas
+	A list of exportareas that the current user is allowed to see.
+
+shapetags
+	A list of shapetags that the current user is allowed to use.
+
+projections
+	A list of metadata projections.
+    
+Plugins
+-------
+
+pluginblock
+    media_export_form core
+{% enddocstring %}

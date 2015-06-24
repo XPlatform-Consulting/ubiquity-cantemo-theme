@@ -1,0 +1,98 @@
+{% load i18n getstring %}
+{% qstring as current_qstring %}
+{% if not hidesearchform %}
+<div id="header" class="header">
+    <form action="{% url search:index %}" method="get" accept-charset="utf-8" class="searchresultsform " id="searchform" autocomplete="off">
+        <div id="largesearchformwrapper">
+            
+            <div class="input-group input-group-lg">
+                <input name="searchquery" type="text"  class="form-control "  placeholder="{% trans "Search" %}" id="searchinputfield" value="{% if not searchquery == None %}{{ searchquery|escape }}{% endif %}" autocomplete="off" role="textbox">
+               <div class="input-group-btn">
+                <button aria-expanded="false" class="btn btn-primary" type="submit">
+                    <i class="glyphicon glyphicon-search"></i> <span class="sr-only">Search</span>
+                </button>
+                <a href="#" id="show_advanced" class="show_advanced btn btn-link" rel="{% url search:advanced %}" beforeText="{% trans "show advanced" %}" afterText="{% trans "hide advanced" %}">{% if search_advanced %}{% trans "hide advanced" %}{% else %}{% trans "show advanced" %}{% endif %}</a>
+                </div>
+            </div><!-- /input-group -->
+
+            <!-- Search Criteria -->
+            <div class="sa_placeholder">
+             {% if search_advanced %}{% themeinclude "search/search_advanced.html" %}{% endif %}
+            </div>
+        </div>
+    </form>
+        <div class="mediacontextualmenu"{% if not current_qstring %} style="display:none"{% endif %}>
+         <div class="tabholder"><span class="largecontextmenu">&nbsp;</span></div>
+        <div id="mcm-dropdown" class="mcm-dropdown">
+            <ol class="actions disabled">
+                <div>
+                    <span id="selectionmsg" itemsSelectedStateLabel="{% trans "Selected Items:" %}" noItemsSelectedStateLabel="{% trans "No Items Selected" %}" class="selectedStateLabelChanges">{% trans "No Items Selected" %}</span>
+                    <span class="selectioncount"> </span>
+                </div>
+                <li><a href="" id="addtobinitems" rel="{% url vs_collection_add_form %}">{% trans "Add to Bin" %}</a></li>
+                <li><a href="" id="addtocollection" rel="{% url vs_collection_add_form %}">{% trans "Add to Collection" %}</a></li>
+                {% permissionrequired _job_write %}
+                <li><a href="" id="transcodeitems" rel="{% url vs_items_transcode %}"> {% trans "Transcode" %}</a></li>
+                {% endpermissionrequired %}
+
+                {% permissionrequired _item_shape_write  %} 
+
+                <li><a href="" id="deleteitems">{% trans "Delete" %}</a></li>
+                {% endpermissionrequired %}
+                {% if originalshape %}
+                <li><a id="exportitem" href="#">{% trans "Export" %}</a></li>
+                {% endif %}
+                {% pluginblock "SearchViewGearBoxSelected" core %}
+            </ol>
+            <ol>
+                <div>{% trans "Current Page:" %}</div>
+                <li><a href="" id="selectallcurrentpage" >{% trans "Select all on current page" %}</a></li>
+                <li><a href="" id="deselectallcurrentpage" class="disabled">{% trans "Deselect all on current page" %}</a></li>
+                {% pluginblock "SearchViewGearBoxCurrentPage" core %}
+            </ol>
+            <ol><div>{% trans "Search Result:" %}</div>
+                <li><a href="" librarySelectedStateLabel="{% trans "Deselect from all Pages" %}" noLibrarySelectedStateLabel="{% trans "Select On All Pages" %}" id="selectallresults" class="selectedLibraryLabelChanges">{% trans "Select On All Pages" %}</a></li>
+                <li><a href="{% url vs_saved_search_add_form_no_library %}?{{current_qstring}}" id="savesearch">{% trans "Save Search" %}</a></li>
+                {% pluginblock "SearchViewDropdown" core %}
+            </ol>
+        </div><!-- /#mcm-dropdown -->
+    </div><!-- /.mediacontextualmenu -->
+
+    
+    
+    <div class="viewtypes" {% if not current_qstring %} style="display:none"{% endif %}>
+         <a refs="grid" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-grid-enabled">Grid</a>
+        <a refs="list" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-list">List</a>
+    </div><!-- .viewtypes -->
+
+</div><!-- #header -->
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function () {
+        $('#searchform').submit(function () {
+            $('#searchinputfield').autocomplete('close');
+        });
+        $('#searchinputfield').autocomplete({
+            source: '{% url search:suggest %}'
+        }).bind('autocompleteopen', function (event, ui) {
+            $(this).autocomplete('widget').addClass('searchinputfieldautocomplete');
+        });
+    });
+</script>
+
+{% endif %}
+{% docstring search_results_form.html %}
+search_results_form.html - Contains the basic form for the page
+
+Context:
+* searchquery - The current search query if there has been one.
+* search_advanced - True or false on whether this is an advanced search query or not.
+
+PluginBlock:
+* search_form_pluginblock - inject things in to the current search block.
+* search_form_afterinput_pluginblock - inject after the large input block.
+* search_form_afteradvanced_pluginblock - inject after the advanced search form if that is shown.
+* SearchViewDropDown - Plugin that is shown in the gearbox menu
+* SearchViewGearBoxSelected - Plugin that is shown in the "Selected Items" sub menu
+
+{% enddocstring %}

@@ -1,0 +1,41 @@
+{% load i18n formatting %}
+<div id="player" class="player">
+    <div class="loading">{% trans "Loading..." %}</div>
+    <div class="videoblock">
+    <video class="video" webkit-playsinline>
+    	{% trans "HTML5 Video is not supported by your browser. " %}
+    </video>
+    </div>
+    <div class="timeline">
+		<div class="marker"></div>
+		<div class="loader"></div>
+		<div class="markinout"></div>
+		<div class="thumbnail"></div>
+		<div class="clipmarkers"></div>
+    </div>
+    <div class="controls">
+    	<div class="left">
+    		<div class="volume">
+    			<div class="bar"></div>
+    			<div class="marker"></div>
+    		</div>
+    	</div>
+    	<div class="middle">
+    		<a href="#" class="ccplayerbutton start">Start</a>
+    		<a href="#" class="ccplayerbutton stepb">Step back</a>
+    		<a href="#" class="ccplayerbutton play">Play</a>
+    		<a href="#" class="ccplayerbutton stepf">Step forward</a>
+    		<a href="#" class="ccplayerbutton end">End</a>
+    		<div class="timecode">00:00:00:00</div>
+    		<a href="#" class="ccplayerbutton loop">Loop</a>
+    	</div>
+    	<div class="right">
+    		&nbsp;
+    	</div>
+    </div>
+</div><!-- #player -->
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    itemPlayer = $("#player").ccplayer({'timeline' : [{'video': '{{ previews.0.uri|strip_extension }}'}, ]});
+});
+</script>

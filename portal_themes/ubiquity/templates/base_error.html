@@ -1,0 +1,19 @@
+{% themeextends 'base.html' %}
+{% load i18n %}
+{% block body %}
+    <div class="headerwrapper">
+        <div id="header" class="header">
+            <h1>{% block heading %}{% endblock heading %}</h1>
+        </div>
+    </div>
+    <div id="content" class="content">
+    {% block content %}
+
+
+
+    {% endblock content %}
+    {% if SITE_HELP %}
+        <p>{% blocktrans %}If the problem continues please contact {{ SITE_HELP }} for more information {% endblocktrans %}</p>
+    {% endif %}
+    </div>
+{% endblock body %}

@@ -1,0 +1,82 @@
+{% load i18n %}
+
+<p>{% trans "Select the format you want to transcode the selected items into." %}</p>
+<p>{% trans "Note that items of a media type different than the selected one will be ignored." %}
+<form action="{% url vs_items_transcode %}" method="post" accept-charset="utf-8" id="transcode_ajax_form">{% csrf_token %}
+  <ul>
+    <li>
+      <label for="transcodeformchooser">{% trans "Choose a format" %}</label>
+        <select id="transcodeformchooser" style="float:none;" name="format" style="" required="true">
+          <option></option>
+          {% for mediatype, shapetags in mediatypes.items %}
+            <optgroup label="{{ mediatype|title }}">
+              {% for shapetag in shapetags %}
+                <option>{{ shapetag.name }}</option>
+              {% endfor %}
+            </optgroup>
+          {% endfor %}
+        </select>
+    </li>
+
+    <input type="hidden" id="selected_library" name="selected_library" />
+    <input type="hidden" id="search_id_selected" name="search_id_selected" />
+    <input type="hidden" id="selected_collection" name="selected_collection" />
+    <input type="hidden" id="selected_items" name="selected_items" />
+    <input type="hidden" id="ignored_items" name="ignored_items" />
+    <li>
+      <label for="replaceexisting">{% trans "Replace existing transcode" %}</label>
+      <input type="checkbox" name="replaceexisting" value="on" id="replaceexisting" />
+    </li>
+    <li>
+      <label for="recreatethumbnails">{% trans "Re-create thumbnails" %}</label>
+      <input type="checkbox" name="recreatethumbnails" value="on" id="recreatethumbnails" />
+    </li>
+  </ul>
+</form>
+
+
+<script type="text/javascript"> 
+$("#transcodeformchooser").on("change", function() {
+    $("#transcode_ajax_form").valid();
+});
+
+$(function() {
+    /* Populate the form with the search result */
+    var page = undefined;
+
+    if(cntmo.app.page.searchresults) {
+        page = cntmo.app.page.searchresults;
+        $("#selected_library").val(page.library_selected);
+        $("#search_id_selected").val(page.search_id_selected);
+    } else if(cntmo.app.page.collectionitemresults) {
+        page = cntmo.app.page.collectionitemresults;
+        $("#selected_collection").val(page.library_selected);
+    }
+
+    $("#selected_items").val(page.getSelectedItemIds().join());
+    $("#ignored_items").val(page.getIgnoredItemIds().join());
+
+    $('#transcode_ajax_form').ajaxForm({dataType:'json',
+
+    	beforeSubmit: function(arr, $form, options) {
+            if($("#transcode_ajax_form").valid()) {
+                return true;
+            } else {
+                return false;
+            }
+    	}, 
+
+        success: function(responseText, statusText, xhr, $form) { 
+            if (statusText == "success"){
+                $.growl(responseText, 'success');
+                $(".ui-dialog-content").dialog("close");
+            }
+        },
+        error: function(responseText, statusText, xhr, $form) {
+            $.growl(responseText, 'error');
+    		$("#vscollectionexport").empty().end();
+            $(".ui-dialog-content").dialog("close");
+        }
+    });
+});
+</script>

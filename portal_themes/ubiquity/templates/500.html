@@ -1,0 +1,24 @@
+{% themeextends "base_error.html" %}
+{% load i18n %}
+{% block heading %}500 - {% trans 'Internal Server Error' %}{% endblock heading %}
+{% block content %}
+<div id="error" class="errormessage">
+    <p>{{ error }}</p>
+</div>
+{% pluginblock "500template" core %}  
+{% endblock content %}
+{% docstring %}
+This template is for showing 500, server error.
+    
+Context
+-------
+
+**error**
+    An error message
+
+Plugins
+-------
+
+pluginblock
+    500template core
+{% enddocstring %}

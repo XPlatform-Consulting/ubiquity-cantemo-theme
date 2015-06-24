@@ -1,0 +1,151 @@
+{% load i18n formatting general vidispinetags datetimeformatting switch %}
+{% block extra_script %}
+<script type="text/javascript">
+    var media_item_id = '{{ item.getId }}';
+</script>
+{% endblock extra_script %}
+<section class="preview">
+{% pluginblock "PodPreviewSectionPreview" item core %}
+{% if previews or item.isSequence %}
+    <div id="playerwrapper" class="playerwrapper">
+            
+    </div>
+{% else %}
+    <div>
+        {% load thumbnailer datetimeformatting %}
+        {% url vs_item item.getId as item_URL  %}
+        {% create_thumbnails item item_URL %}
+        {% pluginblock "PodPreviewSectionPreviewButton" item core %}
+        {% if item.getItemType == "ppro_project" %}
+        PPRO
+        {% endif %}
+        {% if item.getItemType == "fcpx_project" %}
+        FCPX
+        {% endif %}
+    </div>
+{% endif %}
+</section>
+<aside class="iteminfo">
+    <nav id="iteminfo" class="tabs" data-tabIndex="{% if SubClip %}1{% else %}0{% endif %}">
+        <ul>
+            <li>
+                <a href="#podpreviewiteminfo">{% trans "Item" %}</a>
+            </li>
+        {% if item.getItemType == 'video' %}
+            <li>
+                <a href="#podpreviewannotation" {% if SubClip %}class="current"{% endif %}>{% trans "Annotations" %}</a>
+            </li>
+        {% endif %}
+        </ul>
+    </nav>
+    <main>
+        <section id="podpreviewiteminfo" class="iteminfosection panes">
+            <dl>
+        {% if item.isToBeDeleted %}
+            <div class="hr-panel"></div>
+            <dt>{% trans 'Deleted' %}</dt>
+            <dd> {{ item.isToBeDeleted|datetimeobject|date:"DATETIME_FORMAT" }}</dd>
+        {% endif %}
+
+        {% for mdf in 3|getRepresentativeMetadataFields:item %}
+            {% if "type"|getMetadataFieldExtraDataValue:mdf == "date" %}
+                <dt>{{ "name"|getMetadataFieldExtraDataValue:mdf }}</dt>
+                <dd>{{ mdf.getFirstFieldValue|datetimeobject|date:"DATE_FORMAT" }}</dd>
+            {% elif "type"|getMetadataFieldExtraDataValue:mdf == "textarea" %}
+            {% if  mdf.getFirstFieldValue != ''  %}
+                <p><span class="key">{{ "name"|getMetadataFieldExtraDataValue:mdf }}:</span> {{ mdf.getFirstFieldValue }}</p>
+            {% else %}
+                <dt>{{ "name"|getMetadataFieldExtraDataValue:mdf }}</dt>
+                <dd>{{ mdf.getFirstFieldValue }}</dd>
+            {% endif %}
+            {% elif "type"|getMetadataFieldExtraDataValue:mdf == "timestamp" %}
+                <dt>{{ "name"|getMetadataFieldExtraDataValue:mdf }}</dt>
+                <dd>{{ mdf.getFirstFieldValue|datetimeobject|date:"DATETIME_FORMAT" }}</dd>
+            {% else %}
+                <dt>{{ "name"|getMetadataFieldExtraDataValue:mdf }}</dt>
+                {% if "type"|getMetadataFieldExtraDataValue:mdf == "systemfield" %}
+                    {% comment %} if this is a system field, we need to fetch the value from the item {% endcomment %}
+                    {% with "systemfield"|getMetadataFieldExtraDataValue:mdf as systemfieldname %}
+                    <dd>   {{ systemfieldname|getSytemMetadataFieldFormatted:item }}</dd>
+                    {% endwith %}
+                {% else %}
+                    <dd>{{ mdf.getFirstFieldValue }}</dd>
+                {% endif %}
+            {% endif %}
+        {% empty %}
+            <dt>{% trans "ID" %}</dt>
+            <dd>{{ item.getId }}</dd>
+        {% endfor %}
+        <dt>{% trans "Type" %}</dt>
+        <dd>{{ item|getItemTypeLabel }}</dd>
+        {% if systemmetadata.originalFilename %}
+            <dt>{% trans "Filename" %}</dt>
+            <dd>{{ item.getOriginalFilename }}</dd>
+        {% endif %}
+                
+          {% if item.getDurationTimecode or systemmetadata.durationSeconds %}
+            <dt>{% trans 'Duration' %}</dt>
+          {% if item.getDurationTimecode and systemmetadata.mediaType == "video" %}
+            <dd>{{ item.getDurationTimecode.toSMPTE }} </dd>
+          {% else %}
+            <dd>{{ ""|formatToTime:systemmetadata.durationSeconds }} </dd>
+          {% endif %}
+          {% endif %}
+
+        {% if startTimeCode and startTimeCode.frames > 0 %}
+          <dt>{% trans 'Start Timecode' %}</dt>
+          <dd>{{ startTimeCode.toSMPTE }}</dd>
+        {% endif %}
+
+        {% if systemmetadata.user %}
+            <dt>{% trans 'User' %}</dt>
+            <dd>{{ systemmetadata.user }}</dd>
+        {% endif %}
+        <dt>{% trans 'Added' %}</dt>
+        <dd>{{ item|getMetadataFieldValueByName:"created"|datetimeobject|date:"DATETIME_FORMAT" }}{% if not item|getMetadataFieldValueByName:"created" %}unknown{% endif %}</dd>
+
+        {% if systemmetadata.originalWidth and systemmetadata.originalHeight %}
+            <dt>{% trans 'Dimension' %}</dt>
+            <dd>{{ systemmetadata.originalWidth }} x {{ systemmetadata.originalHeight }}
+            {% if aspect_ratio %}
+            ({{ aspect_ratio }})
+            {% endif %}
+          </dd>
+        {% endif %}
+            {% pluginblock "PodPreviewItemInfo" item core %}
+        </dl>
+        
+        </section>
+        {% if item.getItemType == 'video' %}
+        <section id="podpreviewannotation" class="annotationsection panes">
+            {% pluginblock "PodPreviewAnnotationInfo" item core %} 
+            {% if annotations %}
+                {% for annotation in annotations %}
+                <div class="annotationelement {% if SubClip == annotation.getId %}annotationelementActive{% endif %}" id="{{ annotation.getId }}">
+                    <div class="annotationholder">
+                        <h3> {{ annotation.getTitle }}</h3>
+                        <div class="inpoint">
+                            <dl>
+                                <dt>{% trans "In" %}</dt>
+                                <dd>{{ annotation.getRelativeStartTimecode.toSMPTE }}</dd>
+                            </dl>
+                        </div>
+                        <div class="outpoint">
+                            <dl>
+                                <dt>{% trans "Out" %}</dt>
+                                <dd>{{ annotation.getRelativeEndTimecode.toSMPTE }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </section>
+        {% endif %}
+    </main>
+    <footer>
+    </footer>
+</aside>
+<footer>
+    {% pluginblock "PodPreviewFooter" item core %}
+</footer>

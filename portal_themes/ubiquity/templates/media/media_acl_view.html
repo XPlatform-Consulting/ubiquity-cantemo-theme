@@ -1,0 +1,125 @@
+{% load i18n %}
+{% block heading %}
+
+    <div id="header" class="header">
+    	<h1>{% trans 'Access Control List' %}</h1>
+    </div>
+
+{% endblock heading %}
+{% block content %}
+    <div class="pagecontent">
+
+        
+		<table class="acltable" id="tablepermission">
+				<tbody>
+            	<tr class="heading">
+            		<th></th>
+					<th>{% trans 'Recipient' %}</th>
+					<th>{% trans 'Permission' %}</th>
+					<th>{% trans 'Operation' %}</th>
+					<th id="checkboxheadinggp"></th>
+				</tr>
+				
+				{% for acl in acls %}
+					<tr rel={{ forloop.counter0 }}>
+						<td>
+							{% if acl.isForUser %}
+								<img src="{{ STATIC_URL }}img/icon-user.png" class="user">
+							{% else %}
+								<img src="{{ STATIC_URL }}img/icon-groups.png" class="group">
+							{% endif %}
+							<input type="hidden" value="{{acl.getId}}" name="aclentry_id">
+						</td>
+						<td><input type="hidden" value="{{acl.getRecipientType}}_{{ acl.getRecipient }}" name="recipient_{{ forloop.counter0 }}">{{ acl.getRecipient }}</td>
+						<td><input type="hidden" value="{{ acl.getPermission }}" name="permission_{{ forloop.counter0 }}">{{ acl.getPermissionTranslated }}</td>
+						<td><input type="hidden" value="{{ acl.getOperationURIType }}" name="operation_{{ forloop.counter0 }}">{{ acl.getOperationURITypeTranslated }}</td>
+						{% ifequal acl.getPermission "OWNER" %}
+							<td></td>
+						{% else %}
+					    	{% permissionrequired _accesscontrol_write %}						
+							<td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" class="deletegprow"></td>
+							{% endpermissionrequired %}
+						{% endifequal %}
+					</tr>
+				{% endfor %}
+				{% permissionrequired _accesscontrol_write %}
+					<tr class="inlineACLEditor">
+					  <td></td>
+					  {% for field in gpform  %}<td>{{ field }}</td>{% endfor %}
+					  <td><button id="addpermbut" class="button">{% trans "Add" %}</button></td>
+					</tr>
+				{% endpermissionrequired %}
+				</tbody>
+			</table><!-- #acltable -->
+	    <br />
+    </div>
+{% endblock content %}
+
+<script type="text/javascript"> 
+$(document).ready(function() {
+    var tblRC = {{ acls|length|default:"0" }};
+    var tblST = 0;
+    
+    $('.popup #addpermbut').die().live('click', function(event){
+        event.preventDefault();
+        {% if theme == 'onyx' %}
+        $('.content #checkboxheadinggp').html('<img src="{{ STATIC_URL }}img/{{ theme }}/icon-ajax-loader.gif" width="16" height="16" alt=" {% trans "Saving" %} ">');
+        {% else %}
+        $('.content #checkboxheadinggp').html('<img src="{{ STATIC_URL }}img/icon-ajax-loader.gif" width="16" height="16" alt=" {% trans "Saving" %} ">');
+        {% endif %}
+    	var rVal = $('.popup #id_recipient').val();
+        var pVal = $('.popup #id_permission').val();
+    	var oVal = $('.popup #id_operation').val();
+        // Call ajax function with checked state and this.value
+        $.ajax({type: 'POST', 
+            //url: 'permission_change/',
+            url: '{% url vs_item_permission_change slug %}', 
+            data: { recipient: rVal, permission: pVal, operation: oVal, action:'add' },
+            success: function(data, textStatus, XMLHttpRequest) {
+		        if ($('.popup #id_recipient').val().charAt(0) == "u")
+		        	var icon = '<img src="{{ STATIC_URL }}img/icon-user.png" class="user">';
+	        	else
+	        		var icon = '<img src="{{ STATIC_URL }}img/icon-groups.png" class="group">';
+            
+		        var nTblRow = '<tr rel='+ tblRC +'><td>' + icon + '<input type="hidden" value=' + data + ' name="aclentry_id"></td><td>'+ $('.popup  #id_recipient :selected').text() + '<input type="hidden" name="recipient_'+ tblRC +'" value="' + rVal + '" />';
+		        nTblRow += '</td><td>'+ $('.popup #id_permission :selected').text() + '<input type="hidden" name="permission_'+ tblRC +'" value="' + pVal + '" />';
+		        nTblRow += '</td><td>'+ $('.popup #id_operation :selected').text() + '<input type="hidden" name="operation_'+ tblRC +'" value="' + oVal + '" />';
+		        nTblRow += '</td><td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" class="deletegprow"></td></tr>';
+		        $('.inlineACLEditor').before(nTblRow);
+		        tblRC += 1;
+		        $('.popup #checkboxheadinggp').html('<img src="{{STATIC_URL}}img/icon-status-success.png" width="16" height="16" alt="Saved">');
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) { $('.popup #checkboxheadinggp').html('<img src="{{STATIC_URL}}img/icon-status-error.png" width="16" height="16" alt="Saved">'); }, 
+        });
+        
+    });
+    $('.deletegprow').die().live('click', function(event){
+        event.preventDefault();
+        sVal = [];
+        var $godelete = confirm("{% trans "Are you sure you want to delete?" %}");
+        if ($godelete) {
+            {% if theme == 'onyx' %}
+            $('.popup #checkboxheadinggp').html('<img src="{{ STATIC_URL }}img/{{ theme }}/icon-ajax-loader.gif" width="16" height="16" alt=" {% trans "Saving" %} ">');
+            {% else %}
+            $('.popup #checkboxheadinggp').html('<img src="{{ STATIC_URL }}img/icon-ajax-loader.gif" width="16" height="16" alt=" {% trans "Saving" %} ">');
+            {% endif %}
+            $(this).parents('tr').find('input').each(function(){
+            	sVal.push($(this).val());
+            });
+            $(this).parent('td').parent('tr').remove();
+
+            // Call ajax function with checked state and this.value
+            $.ajax({type: 'POST', 
+                //url: 'permission_change/',
+                url: '{% url vs_item_permission_change slug %}', 
+                data: { aclentry_id: sVal[0], action:'delete' },
+                success: function(data, textStatus, XMLHttpRequest) {
+                	$('.popup #checkboxheadinggp').html('<img src="{{STATIC_URL}}img/icon-status-success.png" width="16" height="16" alt="Saved">');
+            	
+                	},
+                error: function(XMLHttpRequest, textStatus, errorThrown) { $('.popup #checkboxheadinggp').html('<img src="{{STATIC_URL}}img/icon-status-error.png" width="16" height="16" alt="Saved">'); }, 
+            });
+        }
+    });
+});
+</script>

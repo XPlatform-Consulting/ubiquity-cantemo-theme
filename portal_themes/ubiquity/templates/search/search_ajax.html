@@ -1,0 +1,33 @@
+{% load i18n %}
+<div class="fullwidthcontent">
+
+    <form action="{% url vs_search_ajax %}" method="get" accept-charset="utf-8" id="search_ajax_form">
+<br />
+            <input type="text" name="searchquery" value="" id="" class="largeforminput" />
+            <input type="submit" name="action" id="ajaxsearchsubmit" value="{% trans 'Search' %}" class="largeformbutton button" />
+    </form>
+    <br />
+    <div id="searchresultsholder" style="width:800px">
+        
+    </div>
+    <div id="searchresultschoices" style="clear:left;">
+        
+    </div>
+</div><!-- .fullwidthcontent -->
+
+<script type="text/javascript"> 
+
+$(document).ready(function() {
+    $('#search_ajax_form').ajaxForm({
+        success: function(responseText, statusText, xhr, $form) { 
+            if (statusText == "success"){
+                $("#searchresultsholder").empty();
+                $("#searchresultsholder").html(responseText);
+            } else {
+                $("#searchresultsholder").html("{% trans "No results, please try again" %}");
+            }
+            }
+    });
+});
+
+</script>

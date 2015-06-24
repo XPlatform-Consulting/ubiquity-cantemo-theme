@@ -1,0 +1,86 @@
+{% load i18n %}
+<form action="{% url vs_item_transcode slug %}" method="post" accept-charset="utf-8" id="transcode_ajax_form">{% csrf_token %}
+	<ul>
+	    <li>
+		{% if not shapetags %}
+        {% if request.REQUEST.mediaType == "video" or request.REQUEST.mediaType == "image" %}
+			<label for="recreatethumbnails" style="width:50em;">{% trans 'Media already exists in all possible formats, would you still like to recreate the thumbnails?' %}
+            <input type="radio" name="recreatethumbnails" id="recreatethumbnail" value="on" style="margin-right:2px;" /><label for="recreatethumbnail" style="float:none;width:auto;margin:0 3px 0 0px;">{% trans "Yes" %}</label>
+            <input type="radio" name="recreatethumbnails" id="recreatethumbnailno" value="" style="margin-right:2px;" checked="checked" /><label for="recreatethumbnailno" style="float:none;width:auto;margin:0 3px 0 0px;">{% trans "No" %}</label>
+        </label>
+		</li>
+		<li>
+		    <input type="submit" name="transcode" value="{% trans "Close" %}" id="item_transcode_submit" class="button"  style="display:inline;float:none;">
+            <input type="hidden" name="originalshapeid" value={{ originalshape }}> 
+        </li>
+		    {% else %}
+            {% trans 'Media already exists in all possible formats' %}
+            {% endif %}
+		{% else %}
+		    <label for="transcodeformchooser">{% trans "Choose a format" %}</label>
+            <select id="transcodeformchooser" style="float:none;" name="transcodegroup" style="">
+            	<option></option>
+            	{% for shapetag in shapetags %}
+            	{% ifnotequal shapetag "original" %} 
+                	<option>{{ shapetag }}</option>
+                {% endifnotequal %}
+                {% endfor %}
+            </select>
+        </li>
+        {% if request.REQUEST.mediaType == "video" or request.REQUEST.mediaType == "image" %}
+        <li>
+            <label for="recreatethumbnails">{% trans "Re-create thumbnails" %}</label>
+            <input type="checkbox" name="recreatethumbnails" value="on" id="recreatethumbnails">
+        </li>
+        {% endif %}
+        <li class="mono">
+		    <input type="submit" name="transcode" value="{% trans "Transcode" %}" id="item_transcode_submit" class="button"  style="display:inline;float:none;">
+            <input type="hidden" name="originalshapeid" value="{{ originalshape }}"> 
+        </li>
+        {% endif %}
+	</ul>
+</form>
+
+
+<script type="text/javascript"> 
+$(document).ready(function() {
+	{% if not shapetags %}
+    $("input[name=recreatethumbnails]").change(function(event){
+        if ($('input[name=recreatethumbnails]:checked').val() === "on"){
+            $('#item_transcode_submit').val('{% trans "Transcode" %}');
+        } else {
+            $('#item_transcode_submit').val('{% trans "Close" %}');
+        }
+    });
+    {% endif %}
+    $('#item_transcode_submit').click(function(event){
+        event.stopPropagation();
+        event.preventDefault();
+        if ($(this).val() !== "Close"){
+            $('#transcode_ajax_form').ajaxSubmit({
+                type: 'POST',
+                success: function(responseText, statusText, xhr, $form) { 
+                    if (statusText == "success"){
+                        $.growl(responseText, 'success');
+                        $('#mv_formats_a').trigger('click');
+                        $('#transcodepanel').html('');
+                        try {
+                            setTimeout("cntmo.prtl.panelviews.MediaItemFormatsPanel.timedGet()", 500);
+                        } catch(e) {
+                        }
+                    } else {
+                        $.growl(responseText.responseText, 'error');
+                    }
+                },
+                error: function(responseText, statusText, xhr, $form) {
+                    $.growl(responseText.responseText, 'error');
+                }
+            });
+            return true;
+        } else {
+            $('#transcodepanel').html('');
+            return false;
+        }
+    });
+});
+</script>

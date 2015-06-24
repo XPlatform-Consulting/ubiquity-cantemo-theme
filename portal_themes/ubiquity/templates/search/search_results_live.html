@@ -1,0 +1,7 @@
+{% for item in items  %}
+    {% url vs_item item.getId as item_URL  %}
+    {% themeinclude 'media/media_inc_preview.html' %}
+{% endfor %}
+{% docstring search_results_live.html %}
+    search_results_live.html is for ajax calls on live search results that can be added to the page such as within the "last10" results page.
+{% enddocstring %}

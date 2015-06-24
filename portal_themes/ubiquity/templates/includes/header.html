@@ -1,0 +1,76 @@
+{% load compress jsi18n %}
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=9; IE=EDGE" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="svg" href="{{ STATIC_URL }}svg/CantemoPortalMediaTypeIcons.svg" type="text/html" >
+
+<!--[if IE 8]><link rel="stylesheet" href="{{ STATIC_URL }}css/portal-core-IE8.css" type="text/css" media="screen" charset="utf-8" /><![endif]-->
+<!--[if IE 7]><link rel="stylesheet" href="{{ STATIC_URL }}css/portal-core-IE7.css" type="text/css" media="screen" charset="utf-8" /><![endif]-->
+<script type="text/javascript" charset="utf-8">
+{% jsi18n LANGUAGE_CODE %}
+</script>
+
+{% comment %} 
+sdfds
+{% endcomment %} 
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/labjs/LAB.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery-ui/jquery-ui.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/underscore/lodash.underscore.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/backbone/backbone.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery-tools/jquery.tools.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/supersubs/supersubs.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery-form/jquery.form.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery-cookie/jquery.cookie.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery-growl/jquery.growl.js" charset="utf-8"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/admin/SelectFilter2-min.js" charset="utf-8"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery-validation/jquery.validate.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/jquery-dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/common/prototypes.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/common/pubsub.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/common/useful.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/common/jquery_plugins.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/portal/eyecandy.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/mediabin/app.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/media/models.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}ubiquity/js/app/portal/initialize.js"></script>
+
+{% if REALTIME_ENABLED %}<script type="text/javascript" src="{{ STATIC_URL }}js/app/realtime/hookbox.js" charset="utf-8"></script>{% endif %}
+<link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}img/core/icon-ipad.png" />
+
+<!-- Olympic JS/CSS depency libraries -->
+{% compress css %}
+<link rel="stylesheet" href="{{ STATIC_URL }}ubiquity/css/bootstrap.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}ubiquity/portal-ubiquity.css">
+{% endcompress %}
+
+<script type="text/javascript" src="{{ STATIC_URL }}ubiquity/js/jquery.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}ubiquity/js/bootstrap.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}ubiquity/js/material.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}ubiquity/js/ripples.min.js"></script>
+<script>
+    var jQuery11 = jQuery.noConflict(true);
+    jQuery11(function($) {
+        $.material.init();
+    });
+</script>
+
+{% pluginblock "header_css_js" core %}
+{% docstring %}
+header.html:
+============
+    This is an include that gets called on just about every logged in and on the front page.
+
+Context
+-------
+
+As this is an include file that will be included in almost every page, the context changes depending on which is the current page.
+
+Plugins
+-------
+
+pluginblock
+    header_css_js core - Use for overriding the current JS and CSS files with your own.
+
+{% enddocstring %}

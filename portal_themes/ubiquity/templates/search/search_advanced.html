@@ -1,0 +1,50 @@
+{% load i18n getstring %}
+{% qstring as current_qstring %}
+
+{% if not searchcollections %}
+<div class="searchcritera">
+    <div class="form-group">
+        
+        <label class="control-label">{% trans "Display:" %}</label>
+   
+        <label class="radio-inline">  
+            <input type="radio" class="display_podType" name="display_podType" value="all" {% if current_qstring|qstring_get:"display_podType" == "all" %}checked="checked"{% endif %}> 
+                   {% trans "Everything" %}
+        </label>
+
+        <label class="radio-inline">  
+            <input type="radio" class="display_podType" name="display_podType" id="display_podType_item" value="item" class="infocheckbox" {% if current_qstring|qstring_get:"display_podType" == "item" %}checked="checked"{% endif %}> 
+                   {% trans "Items Only" %}
+        </label> 
+
+   
+        <label class="radio-inline">  
+            <input type="radio" class="display_podType" name="display_podType" id="display_podType_subclip" value="subclip" {% if current_qstring|qstring_get:"display_podType" == "subclip" %}checked="checked"{% endif %}>
+                   {% trans "SubClips Only" %}
+        </label> 
+    </div>
+</div>
+{% endif %}
+<div class="panel panel-default">
+    <div class="panel-heading">Criterias</div>
+    <div class="panel-body" id="advancedsearchform">
+
+        {% themeinclude "search/search_advanced_criteria.html" %}
+        
+        {% themeinclude "includes/searchmetadataformchooser.html" %}
+    </div>    
+</div>
+<button class="btn btn-danger" type="reset" onclick="return (function() { var r = confirm('{% trans "Are you sure you wish to clear this form?" %}'); if (r==true) { try {SelectBox.move_all('crit_userchooser_to', 'crit_userchooser_from');} catch(e) {} try { $('#advancedsearchform .smartselectbox').data().SmartSelectBox.removeAll(); } catch(e){}; return; } else {return false;};})()">
+        {% trans "Clear form" %}
+</button>
+
+{% docstring search.html %}
+search_advanced.html - This holder page is called via an ajax request into the main search page.
+
+Context:
+* searchquery - The current search query if there has been one.
+* search_advanced - Set to true usually for this template.
+* theme - if an ajax call theme is set to ajax.html
+* metadatatoplevelonly - False
+
+{% enddocstring %}

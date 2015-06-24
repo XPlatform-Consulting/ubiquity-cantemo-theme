@@ -1,0 +1,40 @@
+{% load datetimeformatting i18n general vidispinetags %}<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Portal {% trans "Last 10" %}</title>
+    <link href="/vs/searchlast10/10/atom/" rel="self" />
+    <updated>{% now "c" %}</updated><author>
+    <name>{{ user }}</name>
+    </author>
+    {% for item in items  %}
+        <entry>
+            <title>{{ item.getTitle}}</title>
+            <link href="{% url vs_item item.getId %}" />
+            <id>{{ item.getId }}</id>
+            <updated>{{ item|getMetadataFieldValueByName:"created"|datetimeobject|date:"c" }}</updated>
+            <media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="{% firstof item.getThumbnails.2 item.getThumbnails.1 item.getThumbnails.0 %}" height="240" width="320" />
+        </entry>
+    {% endfor %}
+</feed>
+{% debug %}
+{% docstring search_results_last10atom.html %}
+search_results_last10atom.html
+    
+This page presents an atom feed of search results for the last 10 page. 
+Users can subscribe to this to get a feed of the last 10 itmes that have 
+been uploaded to the system that they have the rights to see.
+    
+Context:
+ * items - list of search result items.
+ * hits - Amount of search results in total.
+ * searchquery - search query in the system.
+ * history - Search history
+ * first_on_page - number from 0 of the first item on page
+ * has_next - has a next page
+ * has_other_pages - has other pages
+ * last_on_page - last on page
+ * library - Vidispine library ID
+ * next - Next page number
+ * page - Current page
+ * pages - Total number of pages
+ * results_per_page - Results to show on page.    
+{% enddocstring %}
