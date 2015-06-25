@@ -1,3 +1,4 @@
+//console.log('UBIQUITY / HS / APP / PORTAL / initialize'); 
 $(document).ready(function() {
     if (gblPrtlIsAuthenticated) {
         var helppointer = '<div class="fld_help_txt_arrow">';
@@ -11,7 +12,7 @@ $(document).ready(function() {
             "focusin" == e.type ? $(this).hasClass("error") || ($elHelp.append(helppointer), $elHelp.addClass("fld_help_txt_show").animate({
                 opacity: 1
             }, 250)) : $elHelp.css("opacity", "0").removeClass("fld_help_txt_show").find(".fld_help_txt_arrow").remove()
-        }), void 0 !== window.$LAB && $LAB.script(gblStaticURL + "js/app/mediabin/collection.js").wait().script(gblStaticURL + "js/app/mediabin/views.js").wait(function() {
+        }), void 0 !== window.$LAB && $LAB.script(gblStaticURL + "js/app/mediabin/collection.js").wait().script(gblStaticURL + "/ubiquity/js/app/mediabin/views.js").wait(function() {
             cntmo.app.page.mediaBinItems = new cntmo.prtl.MediaBin.MediaBinCollection, window.MediaBinItems = cntmo.app.page.mediaBinItems, !cntmo.app.page.mediaBin & $("#cntmo_prtl_mediabin_cnt_tmpl").length > 0 && (cntmo.app.page.mediaBin = new cntmo.prtl.MediaBin.MainView({
                 countTemplate: _.template($("#cntmo_prtl_mediabin_cnt_tmpl").html()),
                 collection: cntmo.app.page.mediaBinItems

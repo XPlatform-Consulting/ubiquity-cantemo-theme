@@ -55,16 +55,20 @@
     {% endcomment %}
     <div id="mediabin" class="mediabin mediabin-collapsed">
         <nav>
-            <ul class="sortMenu">
-                <li>{% trans "Sort by" %}</li>
-                <li class="sortMenuItem"><a href="" id="cntmo_prtl_mediabin_srt_date">{% trans "Date added" %}</a></li>
-                <li class="sortMenuItem"><a href="" id="cntmo_prtl_mediabin_srt_name">{% trans "Name" %}</a></li>
-            </ul>
-            <div id="mediabin_cntx_menu" class="mediabin_cntx_menu">
-                <ul class="plevel-one">
-                    <li><a href="#"><span id="mediabincount"></span></a>
-                        <ul class="plevel-two">
-                            <li>
+            {% trans "Sort by" %}: 
+            <div class="btn-group btn-group-sm">
+                <button class="btn btn-success" id="cntmo_prtl_mediabin_srt_date">{% trans "Date added" %}</button>
+                <button class="btn btn-success" id="cntmo_prtl_mediabin_srt_name">{% trans "Name" %}</button>
+            </div>
+            
+            <div class="pull-right">
+                <div class="btn-group  btn-group-sm">
+                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span id="mediabincount"></span>
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                     <li>
                                 <a href="{% url vs_collection_add_form %}" id="cntmo_prtl_mediabin_clct_lnk">
                                     {% trans "Add to Collection" %}</a>
                             </li>
@@ -74,12 +78,13 @@
                             <li><a href="" id="cntmo_prtl_mediabin_dlt_lnk">{% trans "Delete" %}</a></li>
                             {% endpermissionrequired %}
                             {% pluginblock "MediaBinDropdown" collection core %}
-                        </ul>
-                    </li>
-                </ul>
+                  </ul>
+                </div>
+                
+                <button class="btn btn-danger btn-sm mediabin-tab" id="mediabin-tab-hide">{% trans "Close" %}</button>    
             </div>
-            <div class="mediabin-tab" id="mediabin-tab-hide"></div>
         </nav>
+        
         <div id="mediabinholder">
             <div class="viewport">
                 <div class="mediabinitems overview"></div>
