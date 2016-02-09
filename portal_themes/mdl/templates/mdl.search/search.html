@@ -1,0 +1,27 @@
+{% themeextends "search/base_search.html" %}
+{% load i18n paginator %}
+
+{% block drawer %}
+<!-- please -->
+{% endblock drawer %}
+
+{% block body %}
+    <!-- mdl search/base_search.html block body start -->
+    <main class="mdl-layout__content">
+        <form id="search-form" class="searchresultsform" action="/search/" method="get" accept-charset="utf-8" autocomplete="off">
+            <div id="search-wrap">
+                <div class="mdl-textfield mdl-js-textfield">
+                    <input class="mdl-textfield__input search-size" type="text" id="search-input" name="searchquery">
+                    <label class="mdl-textfield__label search-size" for="search-input">Search...</label>
+                </div>
+                <button form="search-form" type="submit" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-js-ripple-effect">
+                    <i class="material-icons">search</i>
+                </button>
+            </div>
+        </form>
+
+        {% block content %}{% endblock content %}
+
+    </main>
+    <!-- mdl search/base_search.html block body end -->
+{% endblock body %}

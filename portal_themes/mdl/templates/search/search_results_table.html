@@ -1,0 +1,114 @@
+{% themeextends "ajax.html" %}
+{% load i18n paginator compress datetimeformatting general getstring %}
+{% block title %}{% trans "Search" %} {{ searchquery }}{% endblock title %}
+{% block head %}{% endblock head %}
+{% block extra_script %}{% compress js %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/media/mediabox.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/select2/select2.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/metadata/metadataform.js"></script>
+{% endcompress %}
+<script type="text/javascript">
+    var url_delete_items = '{% url vs_items_delete %}';
+</script>
+{% endblock extra_script %}
+{% block heading %}
+	{% themeinclude "search/search_results_form.html" %}
+{% endblock heading %}
+{% block content %}
+	{% themeinclude "search/search_results_header.html" %}
+    <!-- search_results_table.html -->
+    <div class="fullwidthcontent">
+	  	{% themeinclude "search/search_results_sidebar.html" %}
+        {% if hits %}
+        <table id="search_results_table">
+            <thead>
+             <tr>
+                <th>{% trans "ID" %}</th>
+                <th>{% trans "Title" %}</th>
+                <th>{% trans "Type" %}</th>
+                <th>{% trans "Duration" %}</th>
+                <th>{% trans "Created" %}</th>
+                <th></th>
+             </tr>
+            </thead>
+        <tbody>
+        </tbody>
+        </table>
+         {% else %}
+         <!-- search_results_table.html -->
+            <h2>{% trans "No media found." %}</h2>
+            <p style="font-size:1.3em;">
+            {% if searchquery == "" %}
+                {% blocktrans %}We couldn't find any media matching your search query, {% endblocktrans %}
+            {% else %}
+                {% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", {% endblocktrans %}
+            {% endif %}
+        {% if suggestions and searchquery != "" %}
+            {% trans "did you mean" %}
+            {% for suggestion in suggestions %}
+         <a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion }}">{{ suggestion }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} {% trans "or" %} {% else %},{% endif %} {% endif %}{% endfor %}?
+        {% else %}
+            {% trans "please try again." %}
+            {% endif %}</p>
+        {% endif %}
+    </div><!-- .fullwidthcontent -->
+    <div class="" style="width:100%;clear:both;height:1px;">&nbsp;</div>
+    <div class="centerwrapper">
+{% if hits %}
+        {% paginator 2 %}
+        <form action="{% url vs_searchresults %}" method="get" accept-charset="utf-8" class="searchresultsformbot" >
+            <input type="text" name="searchquery" size="32" value="{{ searchquery }}" id=""/>
+            <input type="submit" name="action" value="{% trans "Search" %}" class="button" />
+        </form>
+{% endif %}
+    </div><!-- .centerwrapper -->
+{% endblock content %}
+{% block footer %}
+{% themeinclude "search/search_results_footer.html" %}
+{% endblock footer %}
+{% block inlinejs %}
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        cntmo.app.page.searchResultsTable = $('#search_results_table').dataTable({
+             "bProcessing": true,
+             "bServerSide": true,
+             "sAjaxSource": "{% url search:library:object library  %}",
+             "asStripeClasses": [ 'even', 'odd'],
+             "iDisplayLength": parseInt('{{ user.get_profile.paginate_by|default:"50" }}',10),
+             "oLanguage": {"sSearch": ""},
+             "sDom": '<"top"ipl>rt<"bottom"><"clear">',
+             "aoColumns": [
+                 {"mDataProp": "id"},
+                 {"mDataProp": "id"},
+                 {"mDataProp": "id"},
+                 {"mDataProp": "id"},
+                 {"mDataProp": "id"},
+                 {"mDataProp": "id"}
+             ],
+             "sAjaxDataProp": 'item',
+             "oLanguage": {
+                 "sSearch": "",
+                 "sInfo": '{% trans "Showing" %} _START_ {% trans "to" %} _END_ {% trans "of" %} _TOTAL_ {% trans "jobs" %}'
+                 },
+        });
+    });
+</script>
+{% endblock %}
+{% docstring search_results_table.html %}
+search_results_table.html - Used for showing search results in a tabular format.
+
+Context:
+ * items - list of search result items.
+ * hits - Amount of search results in total.
+ * searchquery - search query in the system.
+ * history - Search history
+ * first_on_page - number from 0 of the first item on page
+ * has_next - has a next page
+ * has_other_pages - has other pages
+ * last_on_page - last on page
+ * library - Vidispine library ID
+ * next - Next page number
+ * page - Current page
+ * pages - Total number of pages
+ * results_per_page - Results to show on page.
+{% enddocstring %}

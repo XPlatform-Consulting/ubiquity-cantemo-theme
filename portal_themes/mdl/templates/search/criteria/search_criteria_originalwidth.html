@@ -1,0 +1,31 @@
+{% load i18n %}
+<div id="crit_originalwidth_dd">
+    <!-- Start Size -->
+    <div class="searchcritera">
+    <ul><li>
+    <img src="/sitemedia/img/icon-minus-circle-frame.png" id="removeoriginalwidthcritrow" style="float:right;" />
+    <label for="crit_widthsize">{% trans 'Width is' %}</label>
+    <select id="crit_widthsize" style="float:none;width:10em;" name="crit_widthsize">
+    {% if searchcriteria.crit_widthsize %}
+        <option value="exactly" {% if searchcriteria.crit_widthsize == "exactly" %}selected="selected"{%endif%}>{% trans 'exactly' %}</option>
+        <option value="morethan" {% if searchcriteria.crit_widthsize == "morethan" %}selected="selected"{%endif%}>{% trans 'more than' %}</option>
+        <option value="lessthan" {% if searchcriteria.crit_widthsize == "lessthan" %}selected="selected"{%endif%}>{% trans 'less than' %}</option>
+    {% else %}
+        <option value="exactly">{% trans 'exactly' %}</option>
+        <option value="morethan">{% trans 'more than' %}</option>
+        <option value="lessthan">{% trans 'less than' %}</option>
+    {% endif %}
+    </select>
+    <input type="number" min="0" name="crit_widthpixels" value="{% if searchcriteria.crit_widthpixels %}{{searchcriteria.crit_widthpixels}}{%endif%}" id="crit_widthpixels" style="float:none;width:8em;" />
+    {% trans 'pixels' %}</li>
+    <!-- End Size -->
+    </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#removeoriginalwidthcritrow').click(function() {
+        $("#crit_originalwidth_dd").remove();
+        $("#crit_mainchooser").append("<option value='originalWidth'>{% trans 'Width' %}</option>");
+    });
+</script>

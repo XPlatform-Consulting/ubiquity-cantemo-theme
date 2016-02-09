@@ -1,0 +1,214 @@
+{% themeextends "search/base_search_results.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Search" %} {{ searchquery }}{% endblock title %}
+
+{% block head %}
+<link href="{% url search:last_atom 10 %}" type="application/atom+xml" rel="alternate" title="{% trans "Last 10 Atom Feed" %}" />
+{% endblock head %}
+
+{% block heading %}
+<div id="header" class="header">
+    <form action="{% url search:index %}" method="get" accept-charset="utf-8" class="searchresultsform">
+        <div id="largesearchform" class="largesearchform">
+            <input type="text" name="searchquery" value="{{ searchquery }}" id="searchinputfield" class="searchinputfield" autofocus placeholder="{% trans "Search" %}" x-webkit-speech>
+            <input type="submit" name="action" value="{% trans "Search" %}" class="button searchinputbutton" id="searchinputbutton" />
+        </div>
+    </form>
+
+    <div class="mediacontextualmenu">
+        <div class="tabholder">
+            <span class="largecontextmenu">&nbsp;</span>
+        </div>
+
+        <div id="mcm-dropdown" class="mcm-dropdown">
+            <ol class="actions disabled">
+                <div>
+                    <span id="selectionmsg" itemsSelectedStateLabel="{% trans "Selected Items:" %}" noItemsSelectedStateLabel="{% trans "No Items Selected" %}" class="selectedStateLabelChanges">{% trans "No Items Selected" %}</span>
+                    <span class="selectioncount"> </span>
+                </div>
+
+                <li>
+                    <a {% if not exportareas %}class="disabled"{% endif %} data-areas-available="{% if exportareas %}true{% else %}false{% endif %}" id="exportitem" href="#">{% trans "Export" %}</a>
+                </li>
+
+                <li>
+                    <a href="" id="addtobinitems" rel="{% url vs_collection_add_form %}">{% trans "Add to Bin" %}</a>
+                </li>
+
+                <li>
+                    <a href="#" rel="{% url vs_collection_add_form %}" id="addtocollection"> {% trans "Add to Collection" %}</a>
+                </li>
+
+                {% if can_archive %}
+                    <li><a href="" id="archive_selected_items">{% trans "Archive" %}</a></li>
+                    <li><a href="" id="restore_selected_items">{% trans "Restore" %}</a></li>
+                {% endif %}
+
+                {% permissionrequired _job_write %}
+                    <li>
+                        <a href="#" rel="{% url vs_items_transcode %}" id="transcodeitems"> {% trans "Transcode" %}</a>
+                    </li>
+                {% endpermissionrequired %}
+
+                {% permissionrequired _item_shape_write  %}
+                    <li><a href="#" id="deleteitems">{% trans "Delete" %}</a></li>
+                {% endpermissionrequired %}
+
+                {% pluginblock "Last10SearchViewDropdown" core %}
+            </ol>
+
+            <ol>
+                <div>{% trans "Current page:" %}</div>
+
+                <li><a href="" id="selectallcurrentpage" >{% trans "Select all" %}</a></li>
+
+                <li>
+                  <a href="" id="deselectallcurrentpage" class="disabled">{% trans "Deselect all" %}</a>
+                </li>
+
+                {% pluginblock "RecycleBinViewGearBoxCurrentPage" core %}
+            </ol>
+        </div>
+    </div>
+</div><!-- #header -->
+{% endblock heading %}
+
+{% block content %}
+	{% themeinclude "search/search_results_header.html" %}
+
+    <div id="results-container" class="mdl-grid">
+        {% if hits %}
+            {% for item in items  %}
+                {% if item.getItemType == 'SubClip' %}
+                    {% url item_subclip item.parent_id '0' item.getId as item_URL %}
+
+                    {% with item.item as parentitem %}
+                        {% with item as annotation %}
+                            {% themeinclude 'media/media_inc_preview.html' %}
+                        {% endwith %}
+                    {% endwith %}
+                {% else %}
+                    {% url vs_item item.getId as item_URL  %}
+
+                    {% with item.item as parentitem %}
+                        {% themeinclude 'media/media_inc_preview.html' %}
+                    {% endwith %}
+                {% endif %}
+            {% endfor %}
+
+            <div id="sr_load_more" class="sr_load_more">
+                <p><a href="#sr_load_more" id="sr_load_more_lnk">{% trans "Load more results" %}</a></p>
+            </div>
+        {% else %}
+            <h2>{% trans "No media found." %}</h2>
+            {% if searchquery == "" %}
+                <p>{% blocktrans %}We couldn't find any media matching your search query, please try again.{% endblocktrans %}</p>
+            {% else %}
+                <p>{% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", please try again.{% endblocktrans %}</p>
+            {% endif %}
+        {% endif %}
+    </div><!-- #results-container -->
+
+    <div class="centerwrapper">
+
+    </div><!-- .centerwrapper -->
+{% endblock content %}
+
+
+{% block inlinejs %}
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    $('#searchform').center().submit(function(){
+        $('#searchinputfield').autocomplete('close');
+    });
+    $('#searchinputfield').autocomplete({
+        source: '{% url api_v2:search:suggest %}'
+    }).bind('autocompleteopen', function(event, ui){
+        $(this).autocomplete('widget').addClass('searchinputfieldautocomplete');
+    });
+    $('.srpaneltoggle').hide();
+    $('.srinfo').hide();
+    var intPageNo = parseInt('{{ page }}',10)+1;
+    var maxResults = parseInt('{{ hits }}',10);
+    var noOfResults = parseInt('{{ items|length }}',10);
+    var request_no_hits = parseInt('{{ request_no_hits }}',10);
+    var resultsOnPage = noOfResults*intPageNo;
+    var resultsLeft = maxResults-resultsOnPage;
+    var intInterate = 0;
+    var loadingGif = "<img src='{{ STATIC_URL }}img/{{ theme }}/icon-ajax-loader.gif' id='icon-ajax-loader' />";
+
+    if (maxResults <= noOfResults) {
+        $('.sr_load_more').hide();
+    }
+    $(".sr_load_more").click(function(){
+        var urlStr = '/search/last/'+ request_no_hits + '/' + intPageNo +'/';
+        if (resultsLeft > noOfResults) {
+            intInterate = noOfResults;
+        } else {
+            //var intInterate = resultsLeft;
+            intInterate = noOfResults;
+        }
+        for (i=1;i<=intInterate;i++) {
+            $(".sr_load_more").before("<div class='dynLPlaceHolders'>"+ loadingGif +"</div>");
+        }
+        $.ajax({
+           url: urlStr,
+           success: function(data) {
+               $(".dynLPlaceHolders").remove();
+               $('.sr_load_more').before(data);
+               intPageNo +=1;
+               resultsOnPage = noOfResults*intPageNo;
+               resultsLeft = maxResults-resultsOnPage;
+                $('ul.plevel-one').supersubs({
+                    hoverClass:    'sfHover',
+                    minWidth:    8,
+                    maxWidth:    29,
+                    extraWidth:  1
+                }).superfish({
+                    speed:       'fast'
+                });
+                try {
+                    if (search_library_id != "") {
+                        var newurl = "{% url vs_saved_search_add_form_no_library %}" + escape(search_library_id) + "/";
+                        $('.mediacontextualmenu #savesearch').attr('href', newurl).show();
+                    }
+                } catch(err) {
+
+                }
+             cntmo.app.page.searchresults.startDraggable();
+             cntmo.app.page.searchresults.updateCount();
+           },
+           complete: function(){
+               if (resultsLeft <= 0) {
+                  $(".sr_load_more").remove();
+               }
+            }
+        });
+    });
+});
+</script>
+{% endblock inlinejs %}
+
+{% docstring %}
+search_results_last10.html is shown for retrieving the last 10 results from the system.
+
+Context:
+ * items - list of search result items.
+ * hits - Amount of search results in total.
+ * searchquery - search query in the system.
+ * history - Search history
+ * first_on_page - number from 0 of the first item on page
+ * has_next - has a next page
+ * has_other_pages - has other pages
+ * last_on_page - last on page
+ * library - Vidispine library ID
+ * next - Next page number
+ * page - Current page
+ * pages - Total number of pages
+ * results_per_page - Results to show on page.
+
+PluginBlock:
+ * Last10SearchViewDropdown - Inject into the dropdown menu for the complete saved search
+
+{% enddocstring %}

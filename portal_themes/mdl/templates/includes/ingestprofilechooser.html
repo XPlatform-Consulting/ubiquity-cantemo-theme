@@ -1,0 +1,82 @@
+{% load i18n %} {% pluginblock "ingestprofilechooser_top" core %}
+<fieldset class="parentfieldset collapsibleClosed collapsed">
+    <legend class="">{% trans "Show advanced" %}</legend>
+    <div class="ingestchooser">
+        {% if ingestprofiles %}
+        <ul>
+            <li>
+                <label for="ingestprofilechooser">{% trans "Ingest profile" %}</label>
+                <select id="ingestprofilechooser" style="float:none" name="ingestprofilegroup">
+                    <option value="#">{% trans "Keep private" %}</option>
+                    {% for ip in ingestprofiles %} {% ifequal ip.getName default_ingest_group %}
+                    <option value="{{ ip.getName }}" selected="selected">{{ ip.getName }}</option>
+                    {% else %}
+                    <option value="{{ ip.getName }}">{{ ip.getName }}</option>
+                    {% endifequal %} {% endfor %}
+                </select>
+            </li>
+        </ul>
+        {% endif %}
+        <div class="chmetchooser">
+            <ul>
+                <li>
+                    <label for="changemetadataformchooser">{% trans "Change metadata form" %}</label>
+                    <select id="changemetadataformchooser" style="float:none" name="metadatagroup"></select>
+                </li>
+            </ul>
+        </div>
+        {% if collection_selector %}
+        <div class="colchooser">
+            <ul>
+                <li id="collectionselectrow">
+                    <label for="collection" style="width:10em;">{{ strcollectionname|capfirst }}</label>
+                    <input type="hidden" id="collectionselect" name="collection" multiple="multiple" rel="{% url search_collections %}" />
+                </li>
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</fieldset>
+
+{% pluginblock "ingestprofilechooser_bottom" core %} {% block extra_script %}
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/collection/utilities.js"></script>
+
+{% endblock extra_script %}
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $("#collectionselect").AjaxCollectionSelect();
+        $("fieldset.collapsible").collapse();
+        $("fieldset.collapsibleClosed").collapse({
+            closed: true
+        });
+        $.ajax({
+            dataType: 'json',
+            url: '{% url vs_get_metadatafield_groups %}',
+            success: function(data) {
+                var output = [];
+                if (data.length == 1) {
+                    $('.chmetchooser').hide();
+                    var _formtype = $('<input type="hidden" name="metadatagroup" value="' + data + '">');
+                    $('.ingestchooser').append(_formtype);
+                } else {
+                    var user_default = '{{ user.get_profile.default_metadata_group }}';
+                    $.each(data, function(key, value) {
+                        if (user_default == value) {
+                            output.push('<option value="' + value + '" selected="selected">' + value + '</option>');
+                        } else {
+                            output.push('<option value="' + value + '">' + value + '</option>');
+                        }
+                    });
+                    $('#changemetadataformchooser').html(output.join(''));
+                }
+            },
+            error: function() {
+                $.growl("{% trans "There was a problem with loading the metadata groups" %}");
+                $('.chmetchooser').remove();
+            }
+        });
+    });
+</script>
+{% docstring %} When picking a form for ingest we need to be able to let users say which ingest profile there are a part of. We can also show the changing of metadata form. Context ------- * ingestprofiles - If there are ingest profiles then we show them
+here. Plugins ------- * ingestprofilechooser_top * ingestprofilechooser_bottom {% enddocstring %}

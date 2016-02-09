@@ -1,0 +1,28 @@
+{% load i18n %}
+<div id="crit_mediaType_dd">
+    <!-- Start Mediatype -->
+    <!--<input type="checkbox" style="float:none;" name="crit_mediatypechooser" id="all" value="" class="infocheckbox">{% trans 'Any' %}-->
+    <div class="searchcritera">
+            <ul>
+                <li>
+                  <img src="/sitemedia/img/icon-minus-circle-frame.png" id="removemediaTypecritrow" style="float:right;" />
+                  <label>{% trans 'Media Type is' %}</label>
+                  <div class="inline">
+                  <input type="checkbox" style="float:none;" name="crit_mediatypechooser" id="video" value="video" class="infocheckbox" {% if "video" in searchcriteria.crit_mediatypechooser %}checked{%endif%}><label for="video">{% trans 'Video' %}</label>
+                  <input type="checkbox" style="float:none;" name="crit_mediatypechooser" id="audio" value="audio" class="infocheckbox" {% if "audio" in searchcriteria.crit_mediatypechooser %}checked{%endif%}><label for="audio">{% trans 'Audio' %}</label>
+                <input type="checkbox" style="float:none;" name="crit_mediatypechooser" id="image" value="image" class="infocheckbox" {% if "image" in searchcriteria.crit_mediatypechooser %}checked{%endif%}><label for="image">{% trans 'Image' %}</label>
+                <input type="checkbox" style="float:none;" name="crit_mediatypechooser" id="data" value="data" class="infocheckbox" {% if "data" in searchcriteria.crit_mediatypechooser %}checked{%endif%}><label for="data">{% trans 'Data' %}</label>
+                <input type="checkbox" style="float:none;" name="crit_mediatypechooser" id="placeholder" value="none" class="infocheckbox" {% if "placeholder" in searchcriteria.crit_mediatypechooser %}checked{%endif%}><label for="placeholder">{% trans 'Placeholder' %}</label>
+                  </div>
+                </li>
+            <!-- End Mediatype -->
+            </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#removemediaTypecritrow').click(function() {
+        $("#crit_mediaType_dd").remove();
+        $("#crit_mainchooser").append("<option value='mediaType'>{% trans 'Kind' %}</option>");
+    });
+</script>

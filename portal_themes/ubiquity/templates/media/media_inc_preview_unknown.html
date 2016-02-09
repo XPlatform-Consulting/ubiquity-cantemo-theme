@@ -1,9 +1,0 @@
-{% spaceless %}<div class="mediaitemtitle">
-<svg class="media_type media_type_icon" viewBox="0 0 310 310">
-    <use xlink:href="#Icon-MediaType-PlaceHolder" >
-</svg>
-{% pluginblock "MediaPreviewIcon" core %}
-<a href="{% url vs_item item.getId %}" class="ellipsis">{{ item.getTitle}}</a></div>
-{% load thumbnailer datetimeformatting i18n general %}
-{% create_thumbnails item item_URL %}
-{% endspaceless %}

@@ -1,0 +1,236 @@
+{% themeextends "admin/base_admin.html" %}
+
+{% load i18n datetimeformatting %}
+
+{% block title %}
+	<h4>{% trans 'Admin' %}</h4>
+{% endblock title %}
+
+{% block heading %}
+	<h4>{% trans 'Overview' %}</h4>
+{% endblock heading %}
+
+{% block content %}
+<!-- mdl admin/adminindex.html block content start -->
+	{% if backend_info %}
+		<h4>{{ SITE_NAME }}</h4>
+		<!-- left just incase <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored button-add button-edit" onclick="window.location=/system/">{% trans "Edit System" %}</button> -->
+
+		<table class="generictbl">
+			<!--<thead>
+				<tr>
+					<th width="34%">&nbsp;</th>
+					<th width="66%">&nbsp;</th>
+				</tr>
+			</thead>-->
+			<tbody>
+				<tr class="odd">
+					<td>{% trans "System version" %}</td>
+					<td>{{ product }} {{ version }} {% if SYSTEM_DEBUG %} <em style="color:silver;">({% trans "debug" %})</em> {% endif %}</td>
+				</tr>
+			{% if backend_info.licenseInfo %}
+				<tr class="even">
+					<td>{% trans "License" %}</td>
+					<td><strong>
+						{% if backend_info.licenseInfo.licenseStatus == 'valid' %}
+							<span style="color:green;">{% trans "Valid" %}</span>
+						{% else %}
+							<span style="color:red;">{% trans "Not Valid" %}</span>
+						{% endif %} {% trans "for the site " %} {{ site_license.sitename }}
+						</strong>
+					</td>
+				</tr>
+			{% else %}
+				<tr class="odd">
+					<td>{% trans "License" %}</td>
+					<td><strong>
+						{% if site_license.is_valid %}
+							<span style="color:green;">{% trans "Valid" %}</span>
+						{% else %}
+							<span style="color:red;">{% trans "Not Valid" %}: {{ site_license.notvalid_reason }}</span>
+						{% endif %} {% trans "for" %} {{ site_license.sitename }}
+						</strong>
+					</td>
+				</tr>
+			{% endif %}
+			{% if backend_info.licenseInfo %}
+				<tr class="odd">
+					<td>{% trans "License Expiry" %}</td>
+					<td><details>
+						<summary>{{ site_license.validitydate|date:"DATE_FORMAT" }}
+						<em style="color:silver;"> - ( {{ site_license.validitydate|timeuntil }} )</em>
+						</summary>
+						<p>Vidispine expiry: {{ backend_info.licenseInfo.expiryDate|dateobject:"%Y-%m-%d"|date:"DATE_FORMAT" }}
+							<em style="color:silver;"> - ( {{ backend_info.licenseInfo.expiryDate|dateobject:"%Y-%m-%d"|timeuntil }} )</em>
+						</p>
+						</details>
+					</td>
+				</tr>
+			{% endif %}
+			{% if backend_info.systemInfo %}
+				<tr class="even">
+					<td>{% trans "MAC Address" %}</td>
+					<td>{% for ma in backend_info.systemInfo.macaddress %} {{ ma }} {% endfor %}</td>
+				</tr>
+			{% endif %}
+
+			{% if backend_info.component %}
+				<tr class="odd">
+					<td>{% trans "Vidispine version" %}</td>
+					<td>{{ backend_info.component.0.version }}</td>
+				</tr>
+				<tr class="even">
+					<td>{% trans "Transcoder version" %}</td>
+					<td>{{ backend_info.component.1.version }}</td>
+				</tr>
+			{% endif %}
+			</tbody>
+		</table>
+        {% if appslist %}
+		<h4>{% trans "Registered Apps" %}</h4>
+        <table cellspacing="0" class="generictbl">
+            <thead>
+                <tr>
+                    <th>{% trans "Name" %}</th>
+                    <th>{% trans "Version" %}</th>
+                    <th>{% trans "Author" %}</th>
+                    <th>{% trans "Notes" %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in appslist %}
+                <tr class="{% cycle 'odd' 'even' %}">
+                    <td>{{ app.name }}</td>
+                    <td>{{ app.version }}</td>
+                    <td>{% if app.author_url%}<a href="http://{{ app.author_url }}" target="_blank">{% endif %}{{ app.author }}{% if app.author_url%}</a>{% endif %}</td>
+                    <td>{{ app.notes }}</td>
+                    <td>
+		    {% if app.enabled != None %}
+                <input type="checkbox" data-app-id="{{ app.app_id }}" name="{{ app.app_id }}" id="{{ app.app_id }}" class="togglecheckbox" value="" {% if app.enabled %}checked=checked{% endif %}>
+                <label for="{{ app.app_id }}"></label>
+		    {% endif %}
+		    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+            {% if backend_info.licenseInfo %}
+		{% with backend_info.licenseInfo as bil %}
+		<h4>{% trans "System allowances" %}</h4>
+			<table class="generictbl">
+				<thead>
+					<tr>
+						<th width="34%">{% trans "Name" %}</th>
+						<th>{% trans "Allowed" %}</th>
+						<th>{% trans "Current" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="odd">
+						<td>{% trans "Users" %}</td>
+						<td>{% if bil.userNumber.allowed == '-1' %}{% trans "Unlimited" %}{% else %}{{ bil.userNumber.allowed }}{% endif %}</td>
+						<td>{{ bil.userNumber.current }}</td>
+					</tr>
+					<tr class="even">
+						<td>{% trans "Items" %}</td>
+						<td>{% if bil.itemNumber.allowed == '-1' %}{% trans "Unlimited" %}{% else %}{{ bil.itemNumber.allowed }}{% endif %}</td>
+						<td>{{ bil.itemNumber.current }}</td>
+					</tr>
+					<tr class="odd">
+						<td>{% trans "Storages" %}</td>
+						<td>{% if bil.storageNumber.allowed == '-1' %}{% trans "Unlimited" %}{% else %}{{ bil.storageNumber.allowed }}{% endif %}</td>
+						<td>{{ bil.storageNumber.current }}</td>
+					</tr>
+					<tr class="even">
+						<td>{% trans "Transcoders" %}</td>
+						<td>{% if bil.transcoderNumber.allowed == '-1' %}{% trans "Unlimited" %}{% else %}{{ bil.transcoderNumber.allowed }}{% endif %}</td>
+						<td>{{ bil.transcoderNumber.current }}</td>
+					</tr>
+				</tbody>
+			</table>
+		{% endwith %}
+		{% endif %}
+		{% if backend_info.licenseInfo.codecStatus.codec %}
+			<h4>{% trans "Codec information" %}</h4>
+			<table class="generictbl">
+				<thead>
+					<tr>
+						<th width="34%">{% trans "Name" %}</th>
+						<th>{% trans "Encode" %}</th>
+						<th>{% trans "Decode" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for codec in backend_info.licenseInfo.codecStatus.codec %}
+					<tr class="{% cycle 'odd' 'even' %}">
+						<td>{% if codec.name == 'Codec_unlimited' %} {% trans "All codecs" %}{% else %}{{ codec.name }}{% endif %}</td>
+						<td>{{ codec.encode }}</td>
+						<td>{{ codec.decode }}</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+	{% else %}
+		<h3>{% trans "Please select from the side bar" %}</h3>
+	{% endif %}
+    {% pluginblock "admin_index_page" core %}
+<!-- mdl admin/adminindex.html block content end -->
+{% endblock content %}
+{% block inlinejs %}
+<script type="text/javascript" charset="utf-8">
+
+/* TODO: Replace this with a better implementation which doesn't reload the page */
+
+$(document).ready(function() {
+    $("input:checkbox.togglecheckbox").on("change", function(e) {
+        var $target = $(e.currentTarget),
+            app_id = $target.data("appId"),
+            new_state;
+        if ($target.is(':checked')) {
+            new_state = "enable";
+        } else {
+            new_state = "disable";
+        }
+        $.ajax({
+            url: "/API/v2/apps/" + app_id + "/" + new_state + "/",
+            type: 'PUT',
+            error: function(data, textStatus, errorThrown) {
+                $.growl('Failed to update app status', 'error');
+            }
+        });
+    });
+});
+</script>
+{% endblock inlinejs %}
+{% docstring %}
+Admin index page
+
+Context
+-------
+
+**object_name**
+    The name/label of the types of object being deleted
+
+**totalobjects**
+    The total number of objects being deleted.
+
+**deletable_objects**
+    List of objects being deleted.
+
+**backend_info**
+	This is a an Object with version numbers and other things from the backed resource.
+
+**appslist**
+    List of apps in the system that have registered themselves
+
+Plugins
+-------
+
+pluginblock
+    admin_index_page core - Use for adding extra information into the main page area of the admin home page.
+    admin_plugin_info core - Used for displaying information on the plugins that are registered in the system.
+
+{% enddocstring %}

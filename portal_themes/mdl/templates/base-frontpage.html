@@ -1,0 +1,68 @@
+{% load compress %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+
+<head>
+    {% themeinclude "includes/header.html" %} {% block extra_script %}{% endblock %}
+    <title>Portal: {% block title %}{% endblock %}</title>
+    {% block head %}{% endblock head %}
+</head>
+
+<body id="frontpage">
+    {% block body %}
+        {% block content %}{% endblock %}
+    {% endblock body %}
+
+    {% block inlinejs %}{% endblock %}
+</body>
+
+</html>
+
+{% compress js inline %}
+<script type="text/javascript" charset="utf-8">
+    (function() {
+        var forms = document.forms || [];
+        for (var i = 0; i < forms.length; i++) {
+            for (var j = 0; j < forms[i].length; j++) {
+                if (!forms[i][j].readonly != undefined && forms[i][j].type != "hidden" && forms[i][j].disabled != true && forms[i][j].style.display != 'none') {
+                    forms[i][j].focus();
+                    return;
+                }
+            }
+        }
+    })();
+
+    function preloader() {
+        if (document.images) {
+            var img1 = new Image();
+            var img2 = new Image();
+            var img3 = new Image();
+            var img4 = new Image();
+            var img5 = new Image();
+
+            img1.src = "{{ STATIC_URL }}img/core/searchinputfield.png";
+            img2.src = "{{ STATIC_URL }}img/sprite-menus.png";
+            img3.src = "{{ STATIC_URL }}img/icon-preloader-horizontal.gif";
+            img4.src = "{{ STATIC_URL }}img/player/sprite.png";
+            img5.src = "{{ STATIC_URL }}img/sprite-menus-retina.png";
+        }
+    }
+
+    function addLoadEvent(func) {
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            window.onload = func;
+        } else {
+            window.onload = function() {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            }
+        }
+    }
+    addLoadEvent(preloader);
+</script>
+{% endcompress %}

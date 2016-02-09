@@ -1,0 +1,34 @@
+{% load i18n %}
+<div id="crit_durationSeconds_dd">
+    <!-- Start Duration -->
+    <div class="searchcritera">
+      <ul>
+        <li>
+                    <img src="/sitemedia/img/icon-minus-circle-frame.png" id="removedurationSecondscritrow" style="float:right;" />
+                    <label for="crit_duration">{% trans 'Duration is' %}</label>
+                    <select id="crit_duration" style="float:none;width:10em;" name="crit_duration">
+                    {% if searchcriteria.crit_duration %}
+                        <option value="exactly" {% if searchcriteria.crit_duration == "exactly" %}selected="selected"{%endif%}>{% trans 'exactly' %}</option>
+                        <option value="longerthan" {% if searchcriteria.crit_duration == "longerthan" %}selected="selected"{%endif%}>{% trans 'longer than' %}</option>
+                        <option value="shorterthan" {% if searchcriteria.crit_duration == "shorterthan" %}selected="selected"{%endif%}>{% trans 'shorter than' %}</option>
+                    {% else %}
+                        <option value="exactly">{% trans 'exactly' %}</option>
+                        <option value="longerthan">{% trans 'longer than' %}</option>
+                        <option value="shorterthan">{% trans 'shorter than' %}</option>
+                    {% endif %}
+                    </select>
+                <input type="number" min="0" name="crit_durationseconds" value="{% if searchcriteria.crit_durationseconds%}{{ searchcriteria.crit_durationseconds }}{%endif%}" id="crit_durationseconds" style="width:8em;" />
+            {% trans 'seconds' %}</li>
+            
+    <!-- End Duration -->
+   
+            </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#removedurationSecondscritrow').click(function() {
+        $("#crit_durationSeconds_dd").remove();
+        $("#crit_mainchooser").append("<option value='durationSeconds'>{% trans 'Duration' %}</option>");
+    });
+</script>

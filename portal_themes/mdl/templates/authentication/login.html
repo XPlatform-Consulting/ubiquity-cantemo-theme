@@ -1,0 +1,201 @@
+{% themeextends "base-frontpage.html" %}
+
+{% load i18n %}
+
+{% block title %}
+	    {% trans 'Login' %}
+{% endblock %}
+
+{% block body %}
+<div class="mdl-layout mdl-js-layout">
+
+	{% block content %}
+		<div class="login-card mdl-card mdl-shadow--2dp">
+			<div class="mdl-card__title">
+                {% if themeobject.logoimageretina and themeobject.logo_width and themeobject.logo_height %}
+	                <img src="{{ MEDIA_URL }}{{ themeobject.logoimage }}" data-src2x="{{ MEDIA_URL }}{{ themeobject.logoimageretina }}" width="100%" height="auto" border="0" />
+                {% elif themeobject.logoimage %}
+                    <img src="{{ MEDIA_URL }}{{ themeobject.logoimage }}" border="0" alt="{% trans 'Portal' %}" />
+				{% else %}
+					<h2 class="mdl-card__title-text">{% trans "Login" %}</h2>
+				{% endif %}
+			</div>
+
+			<div class="mdl-card__supporting-text">
+
+				{% comment %}
+				should be 'if not license_expired',
+				currently this allows me to bypass the expired key problem on my current dev server
+				{% endcomment %}
+				{% if license_expired %}
+					<div id="login-messages">
+						{% if error or form.non_field_errors %}
+							<div class="loginerrormessage">
+								<p>{{ error }}</p>
+								{% for ferror in form.non_field_errors %}
+									<p>{{ ferror }}</p>
+								{% endfor %}
+							</div>
+							{% pluginblock "login_error" core %}
+						{% endif %}
+
+						{% if notice %}
+							<div class="loginnoticemessage">
+								<p>{{ notice }}</p>
+							</div>
+							{% pluginblock "login_notice" core %}
+						{% endif %}
+					</div>
+
+					<form id="loginform" action="" method="post">
+						{% csrf_token %}
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+							<label class="mdl-button mdl-js-button mdl-button--icon" for="username-input">
+								<i class="material-icons">perm_identity</i>
+							</label>
+							<div class="mdl-textfield__expandable-holder">
+								<input id="username-input" class="mdl-textfield__input" type="text" name="username" placeholder="{% trans "Username" %}" maxlength="30" name="username" {% if form.username.value %} value="{{ form.username.value }}"{% else %} autofocus{% endif %}>
+								<label class="mdl-textfield__label" for="username-input">Expandable Input</label>
+							</div>
+						</div>
+
+						<div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+							<label class="mdl-button mdl-js-button mdl-button--icon" for="password-input">
+								<i class="material-icons">lock</i>
+							</label>
+							<div class="mdl-textfield__expandable-holder">
+								<input  id="password-input" class="mdl-textfield__input" type="password" placeholder="{% trans "Password" %}" type="password" class="inputText" name="password" maxlength="2048" {% if form.username.value %}autofocus{% endif %}>
+								<label class="mdl-textfield__label" for="password-input">Expandable Input</label>
+							</div>
+						</div>
+						<input type="submit" id="submit-form" value="{% trans 'Login' %}" style="display:none" />
+					</form>
+
+				{% else %}
+
+					<div>
+					  <div class="loginerrormessage">
+						<p>License invalid. Please contact supplier.</p>
+						<p>{{notice}}</p>
+					  </div>
+					</div>
+
+				{% endif %}
+			</div>
+
+			{% comment %}
+			should be 'if not license_expired',
+			currently this allows me to bypass the expired key problem on my current dev server
+			{% endcomment %}
+			{% if license_expired %}
+				<div class="mdl-card__actions mdl-card--border">
+					<label for="submit-form" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" >{% trans 'Login' %}</label>
+				</div>
+
+				<div class="mdl-card__menu">
+					<button id="login-menu-extra" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored">
+				  		<i class="material-icons">more_vert</i>
+					</button>
+					<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="login-menu-extra">
+					  	<li class="mdl-menu__item">
+							{% pluginblock "login_form" core %}
+						</li>
+					</ul>
+				</div>
+
+			{% endif %}
+		</div>
+
+		<div id="tandcholder" style="overflow: auto;">
+
+		</div>
+
+		{% pluginblock "login_error" core %}
+
+	{% endblock content %}
+
+        <div class="login-copyright">
+            <form action="/i18n/setlang/" method="post">
+                {% csrf_token %}
+
+                {% if SITE_I18N and LANGUAGES|length > 1 %}
+                    <select name="language" class="changelanguage">
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %}selected="selected" {% endifequal %}>{{ lang.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="{% trans " Change " %}" class="changelanguage" />
+                {% endif %}
+
+                <p id="poweredby" style="float:right;line-height:2.5em;opacity:0;">Powered by Cantemo Portal&trade; including Vidispine media backbone. </p>
+            </form>
+        </div>
+</div>
+{% endblock body %}
+
+{% block inlinejs %}
+<script type="text/javascript" charset="utf-8">
+	$(function() {
+		$('#poweredby').css({
+			'background': 'url(/sitemedia/img/CantemoPortalLogo-poweredBy.png) no-repeat',
+			'height': '80',
+			'text-indent': '-9999px',
+			'width': '260',
+			'margin-top': '-40px',
+			'cursor': 'pointer'
+		}).animate({
+			opacity: 1
+		}, 1200);
+
+		{% if not is_enterprice %}
+			$('#poweredby').click(function() {
+				jQuery('#tandcholder').load('/termsandconditions/').dialog({
+					modal: true,
+					title: 'Cantemo Portal™ End User License Agreement',
+					resizable: false,
+					dialogClass: 'tandc',
+					minWidth: 600,
+					minHeight: 400,
+					maxHeight: 400,
+					show: {
+						effect: "fade",
+						duration: 500
+					},
+					hide: {
+						effect: "fade",
+						duration: 500
+					},
+					buttons: [{
+						text: "Close",
+						click: function() {
+							$(this).dialog('close')
+						},
+						class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+					}]
+				}).css({
+					'max-height': '400px',
+					'background-color': '#fff'
+				});
+			});
+		{% endif %}
+	});
+</script>
+{% endblock inlinejs %}
+
+{% docstring %}
+This template is the main login screen for the system. This will be presented if Portal core theme is the main theme.
+
+You should not remove the Copyright and Powered by notices unless specifically have permission to do so.
+
+Context
+-------
+
+
+Plugins
+-------
+
+pluginblock
+    login_error core
+    login_notice core
+    login_form core
+{% enddocstring %}

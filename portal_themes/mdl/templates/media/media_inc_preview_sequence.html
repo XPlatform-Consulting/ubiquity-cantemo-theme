@@ -1,0 +1,16 @@
+{% load switch %}{% spaceless %}<div class="mediaitemtitle">
+{% switch item.getItemType %}
+    {% case "fcpx_project" %}
+        <img src="{{ STATIC_URL }}img/icon-applefcpxlibrary16x16.svg" class="media_type media_type_icon">
+    {% case "ppro_project" %}
+        <img src="{{ STATIC_URL }}img/icon-adobepremierepro16x16.svg" class="media_type media_type_icon">
+    {% else %}
+        <svg class="media_type media_type_icon" viewBox="0 0 310 310">
+            <use xlink:href="#Icon-MediaType-Sequence" >
+        </svg>
+{% endswitch %}
+{% pluginblock "MediaPreviewIcon" core %}
+<a href="{{ item_URL }}" title="{{ item.getTitle }}" class="ellipsis">{{ item.getTitle}}</a></div>
+{% load thumbnailer datetimeformatting i18n general %}
+{% create_thumbnails item item_URL %}
+{% endspaceless %}

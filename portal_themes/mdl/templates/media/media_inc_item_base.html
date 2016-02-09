@@ -1,0 +1,169 @@
+{% load thumbnailer datetimeformatting i18n general vidispinetags switch getstring cache assign %}
+
+{% assign archive_status item|getMetadataFieldValueByName:"portal_archive_status" %}
+
+{% block card %}
+<div class="media-item-card mdl-card mdl-shadow--4dp">
+    <div class="mdl-card__title">
+        {% block title %}{% endblock %}
+
+        <h4 id="{{ item.getId }}-title" class="mdl-card__title-text">{{ item.getTitle }}</h4>
+        <div class="mdl-tooltip mdl-tooltip--large" for="{{ item.getId }}-title">
+            {{ item.getTitle }}
+        </div>
+    </div>
+
+    <div class="mdl-card__media">
+        {% block media %}{% endblock %}
+    </div>
+
+    <div class="mdl-card__supporting-text">
+        {% block supporttext %}{% endblock %}
+
+        <input type="checkbox" name="mediaitem" value="{{ item.getId }}" id="item_{{ item.getId }}" class="infocheckbox" style="display:none">
+
+        {% if item.isToBeDeleted %}
+            <span class="info">
+                {% trans "Deleted" %}: {{ item.isToBeDeleted|datetimeobject|date:"DATETIME_FORMAT" }}
+            </span>
+
+            <span class="info">
+                {% trans "Approx Removal" %}:
+                {% if item.isToBeDeleted|timeuntilremoval == 0 %}
+                    {% trans "Under 1 Hour" %}
+                {% else %}
+                    {{ item.isToBeDeleted|timeuntilremoval }} {% trans "Hour" %}{{ item.isToBeDeleted|timeuntilremoval|pluralize }}
+                {% endif %}
+            </span>
+        {% endif %}
+
+        <!-- this works because parent '.mdl-card__supporting-text' is using flexbox -->
+        <div class="mdl-layout-spacer"></div>
+
+        <div class="item-info">
+            {% if not item.isToBeDeleted %}
+                {% for mdf in 3|getRepresentativeMetadataFields:item %}
+                    <div class="mediabox-id">
+                        <span class="info">
+                            {{ "name"|getMetadataFieldExtraDataValue:mdf }}:
+                            {% if "type"|getMetadataFieldExtraDataValue:mdf == "date" %}
+                              {{ mdf.getFirstFieldValue|datetimeobject|date:"DATE_FORMAT" }}
+                            {% else %}
+
+                                {% if "type"|getMetadataFieldExtraDataValue:mdf == "timestamp" %}
+                                    {{ mdf.getFirstFieldValue|datetimeobject|date:"DATETIME_FORMAT" }}
+                                {% else %}
+
+                                    {% if "type"|getMetadataFieldExtraDataValue:mdf == "systemfield" %}
+                                        {% comment %} if this is a system field, we need to fetch the value from the item {% endcomment %}
+                                        {% with "systemfield"|getMetadataFieldExtraDataValue:mdf as systemfieldname %}
+                                            {{ systemfieldname|getSytemMetadataFieldFormatted:item }}
+                                        {% endwith %}
+                                    {% elif "type"|getMetadataFieldExtraDataValue:mdf == "checkbox" %}
+                                        <span class="extrarelatedinfo marquee" title="{{ mdf.getChoicesValues|join:", " }}">
+                                            {{ mdf.getChoicesValues|join:", " }}
+                                        </span>
+                                    {% elif "type"|getMetadataFieldExtraDataValue:mdf == "dropdown" %}
+                                        <span class="extrarelatedinfo marquee" title="{{ mdf.getChoicesValues|join:", " }}">
+                                            {{ mdf.getChoicesValues|join:", " }}
+                                        </span>
+                                    {% else %}
+                                        <span class="extrarelatedinfo marquee" title="{{ mdf.getFieldValues|join:", "}}">
+                                            {{ mdf.getFieldValues|join:", "}}
+                                        </span>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                        </span>
+                    </div>
+                {% empty %}
+                    <div class="mediabox-id">
+                        <span class="info">{% trans "ID" %}: {{ item.getId }}</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="mediabox-id">
+                    <span class="info">{% trans "ID" %}: {{ item.getId }}</span>
+                </div>
+            {% endif %}
+
+            {% if not item.isToBeDeleted %}
+                {% if item|getMetadataFieldValueByName:"created"|datetimeobject|comparetime:user.last_login %}
+                    <div href="#" class="starburst">
+                       <span>
+                           <span>
+                               <span>
+                                   <br />
+                                   {% trans "New" %}
+                               </span>
+                           </span>
+                       </span>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <span class="info added">
+                {% trans "Added" %}: {{ item|getMetadataFieldValueByName:"created"|datetimeobject|date:"DATETIME_FORMAT" }}
+            </span>
+        </div>
+    </div>
+
+    <div class="mdl-card__menu">
+        <span id="{{ item.getId }}-menu" class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">more_vert</i>
+        </span>
+
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="{{ item.getId }}-menu">
+            {% if not item.isToBeDeleted and item.getItemType != 'SubClip' %}
+                <li class="mdl-menu__item">
+                    <a href="{% url vs_collection_add_form %}" class="mdl-menu__item add_to_collection" ref="{{ item.getId }}">{% trans "Add to Collection" %}</a>
+                </li>
+
+                <li class="mdl-menu__item">
+                    <a href="" class="mdl-menu__item pod_preview" rel="{{ item.getId }}" data-podpreviewurl="{% url pod_preview item.getId %}" data-itemtype="{{ item.getItemType }}" title="{{ item.getTitle }}">{% trans "Preview" %}</a>
+                </li>
+
+                <li class="mdl-menu__item">
+                    <a href="" class="mdl-menu__item add_to_bin" ref="{{ item.getId }}" name="{{ item.getTitle }}">{% trans "Add to Bin" %}</a>
+                </li>
+
+                {% if can_archive %}
+                    <li class="mdl-menu__item">
+                        {% ifequal item|getMetadataFieldValueByName:"portal_archive_status"  "Archived" %}
+                            <a href="" class="mdl-menu__item restore_item" ref="{{ item.getId }}">{% trans "Restore" %}</a>
+                        {% else %}
+                            <a href="" class="mdl-menu__item archive_item" ref="{{ item.getId }}">{% trans "Archive" %}</a>
+                        {% endifequal %}
+                    </li>
+                {% endif %}
+
+                {% pluginblock "MediaViewDropdown" collection core %}
+
+            {% else %}
+
+                {% if item.getItemType == 'SubClip'  %}
+                    <li class="mdl-menu__item">
+                        <a href=""
+                           class="mdl-menu__item pod_preview"
+                           rel="{{ item.getId }}"
+                           title="{{ item.getTitle }}"
+                           data-itemtype="{{ item.getItemType }}"
+                           data-parentitem="{{ parentitem.getId }}"
+                           data-podpreviewurl="{% url pod_preview parentitem.getId %}"
+                           data-title="{{ item.getTitle }}"
+                           data-relstarttimecode="{{ item.getStartTimecode.toSMPTE }}"
+                           data-relendtimecode="{{ item.getEndTimecode.toSMPTE }}">
+                            {% trans "Preview" %}
+                        </a>
+                    </li>
+
+                    {% pluginblock "SubClipViewDropdown" collection core %}
+
+                {% endif %}
+
+                {% pluginblock "MediaViewDeletableDropdown" mediaitem core %}
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock card %}

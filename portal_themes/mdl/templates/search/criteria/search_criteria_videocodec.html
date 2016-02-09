@@ -1,0 +1,26 @@
+{% load i18n %}
+<div id="crit_{{name}}_dd">
+    <!-- Start Format -->
+    <div class="searchcritera">
+      <ul>
+        <li>
+          <img src="/sitemedia/img/icon-minus-circle-frame.png" id="remove{{name}}critrow" style="float:right;" />
+          <label for="crit_videocodec">{% trans 'Video Codec is' %}</label>
+          <select name="crit_videocodec" multiple="multiple">
+          {% for vc in videocodecs %}
+            <option value="{{ vc }}" {% if vc in searchcriteria.crit_videocodec %}selected="selected"{% endif %}>{{ vc }}</option>
+          {% endfor %}
+        </select>
+        </li>
+      </ul>
+    </div>
+    <!-- End Format -->
+    
+</div>
+
+<script type="text/javascript">
+    $('#remove{{name}}critrow').click(function() {
+        $("#crit_{{name}}_dd").remove();
+        $("#crit_mainchooser").append("<option value='originalVideoCodec'>{% trans 'Video Codec' %}</option>");
+    });
+</script>

@@ -1,0 +1,119 @@
+{% load i18n datetimeformatting %}
+{% if request.is_ajax == None %}
+<h5>{% trans 'Enter a search query' %}</h5>
+<input type="text" name="searchquery" value="{% if textquery %}{{textquery}}{%endif%}" id="" class="largeforminput" />
+    {% if not nosubmission %}
+        <input type="submit" name="action" value="{% trans 'Search' %}" class="largeformbutton button" />
+    {% endif %}
+{% endif %}
+
+<fieldset class="parentfieldset" id="searchoptions" name="searchoptions">
+            <select id="crit_mainchooser" style="float:none;width:13em;" name="crit_mainchooser">
+                <option value="">{% trans 'Add Criteria' %}</option>
+                <option value="title">{% trans 'Title' %}</option>
+                <option value="created">{% trans 'Creation Date' %}</option>
+                <option value="user">{% trans 'Owner' %}</option>
+                {% if not searchcollections %}
+                <option value="mediaType">{% trans 'Media Type' %}</option>
+                <option value="durationSeconds">{% trans 'Duration' %}</option>
+                {% comment %}
+                <!--<option value="durationTimeCode">{% trans 'Duration' %}</option>-->
+                <option value="originalFormat">{% trans 'File Container' %}</option>
+                {% endcomment %}
+                <option value="originalAudioCodec">{% trans 'Audio Codec' %}</option>
+                <option value="originalVideoCodec">{% trans 'Video Codec' %}</option>
+                <option value="originalWidth">{% trans 'Width' %}</option>
+                <option value="originalHeight">{% trans 'Height' %}</option>
+                <option value="annotationMetadata">{% trans 'Annotation Metadata' %}</option>
+                {% endif %}
+            </select>
+            <!--<img src="/sitemedia/img/icon-plus-circle-frame.png" id="addcritrow" />-->
+        <div id="searchcriteria_div">
+            {% if searchcriteria.crit_title %}
+                {% with 'title' as name %}
+                {% themeinclude "search/criteria/search_criteria_title.html" %}
+                <script>$("#crit_mainchooser option[value=title]").remove();</script>
+              {% endwith %}
+            {% endif %}
+            {% if searchcriteria.crit_date %}
+                {% with 'created' as name %}
+                {% themeinclude "search/criteria/search_criteria_created.html" %}
+                <script>$("#crit_mainchooser option[value=created]").remove();</script>
+                {% endwith %}
+            {% endif %}
+            {% if searchcriteria.crit_mediatypechooser %}
+                {% with 'mediaType' as name %}
+                {% themeinclude "search/criteria/search_criteria_mediatype.html" %}
+                <script>$("#crit_mainchooser option[value=mediaType]").remove();</script>
+                {% endwith %}
+            {% endif %}
+            {% if searchcriteria.crit_userchooser %}
+                {% themeinclude "search/criteria/search_criteria_owner.html" %}
+                <script>$("#crit_mainchooser option[value=user]").remove();</script>
+            {% endif %}
+
+            {% if searchcriteria.crit_durationseconds %}
+                {% themeinclude "search/criteria/search_criteria_durationseconds.html" %}
+                <script>$("#crit_mainchooser option[value=durationSeconds]").remove();</script>
+            {% endif %}
+
+            {% if searchcriteria.crit_heightpixels %}
+                {% themeinclude "search/criteria/search_criteria_originalheight.html" %}
+                <script>$("#crit_mainchooser option[value=originalHeight]").remove();</script>
+            {% endif %}
+
+            {% if searchcriteria.crit_widthpixels %}
+                {% themeinclude "search/criteria/search_criteria_originalwidth.html" %}
+                <script>$("#crit_mainchooser option[value=originalWidth]").remove();</script>
+            {% endif %}
+
+            {% if searchcriteria.crit_audiocodec %}
+              {% with searchcriteria.crit_audiocodec_list as audiocodecs %}
+                {% themeinclude "search/criteria/search_criteria_audiocodec.html" %}
+                <script>$("#crit_mainchooser option[value=originalAudioCodec]").remove();</script>
+              {% endwith %}
+            {% endif %}
+
+            {% if searchcriteria.crit_videocodec %}
+              {% with searchcriteria.crit_videocodec_list as videocodecs %}
+                {% themeinclude "search/criteria/search_criteria_videocodec.html" %}
+                <script>$("#crit_mainchooser option[value=originalVideoCodec]").remove();</script>
+              {% endwith %}
+            {% endif %}
+            {% comment %}
+                {% if searchcriteria.crit_annotationMetadata %}
+                    {% with 'annotation' as name %}
+                    {% themeinclude "search/criteria/search_criteria_annotation.html" %}
+                    {% endwith %}
+                    <script>$("#crit_mainchooser option[value=annotationMetadata]").remove();</script>
+                {% endif %}
+            {% endcomment %}
+        </div>
+    </dl>
+    {% comment %}
+    <dl>
+        <dt>{% trans 'Search within collections' %}</dt>
+        <dd><input type="checkbox" name="searchcollections" id="searchcollections" class="infocheckbox"></dd>
+    </dl>
+    {% endcomment %}
+</fieldset>
+<script type="text/javascript">
+$(document).ready(function() {
+    //$('#addcritrow').click(function() {
+    $('#crit_mainchooser').change(function() {
+        selValue = $("#crit_mainchooser").val();
+        if (selValue == "") {
+            return true;
+        }
+        $.ajax({
+                url: '{% url vs_search_criteria_form %}?criteria='+ selValue,
+                context: document.body,
+                success: function(data){
+                    $("#searchcriteria_div").append(data);
+                    $("#crit_mainchooser option[value=" + selValue +"]").remove();
+                }
+        });
+    });
+
+});
+</script>

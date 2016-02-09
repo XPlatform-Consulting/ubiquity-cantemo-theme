@@ -1,5 +1,0 @@
-WEBVTT
-{% for st in subtitles %}
-{{ st.start.to8601 }} --> {{ st.end.to8601 }} line:100%
-{{ st.text|safe }}
-{% endfor %}

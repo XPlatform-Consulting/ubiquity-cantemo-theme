@@ -1,0 +1,13 @@
+{% themeextends "base.html" %}
+
+{% block theme %}
+    {% block navigation %}
+        {% themeinclude 'includes/navigation.html' %}
+    {% endblock navigation %}
+
+    {% block drawer %}{% endblock %}
+
+    {% block body %}{% endblock body %}
+
+    {% block footer %}{% endblock %}
+{% endblock %}

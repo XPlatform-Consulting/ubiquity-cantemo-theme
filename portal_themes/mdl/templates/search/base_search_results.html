@@ -1,0 +1,46 @@
+{% themeextends "search/base_search.html" %}
+{% load i18n %}
+
+{% block extra_script %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/media/mediabox.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/libs/select2/select2.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/metadata/metadataform.js"></script>
+
+<script type="text/javascript">
+    var theme = '{{ theme }}';
+    var url_delete_items = '{% url vs_items_delete %}';
+</script>
+{% endblock extra_script %}
+
+{% block head %}{% endblock %}
+
+{% block heading %}{% endblock %}
+
+{% block drawer %}{% endblock %}
+
+{% block body %}
+<!-- mdl search/base_search_results.html block body start -->
+<main class="mdl-layout__content">
+    {% block content %}{% endblock %}
+</main>
+<!-- mdl search/base_search_results.html block body end -->
+{% endblock body %}
+
+{% block footer %}
+<script type="text/javascript" charset="utf-8">
+    if (cntmo.app.page.searchresults !== undefined) {
+        cntmo.app.page.searchresults.library = '{{ library }}';
+        cntmo.app.page.searchresults.search_id = '{{ search_id }}';
+        cntmo.app.page.searchresults.parseNewPage();
+    }
+    var current_page = '{{ page }}'
+
+</script>
+{% endblock footer %}
+
+{% docstring %}
+base_search_results.html is a container for search results pages.
+
+Context:
+ * theme - Current theme for the user. Can be overridden to have "ajax.html".
+{% enddocstring %}

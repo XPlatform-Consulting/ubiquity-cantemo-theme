@@ -1,0 +1,117 @@
+{% themeextends "base.html" %}
+
+{% load i18n messages  %}
+
+{% block theme %}
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+    {% block navigation %}
+        {% themeinclude 'includes/navigation.html' %}
+    {% endblock navigation %}
+
+    {% block drawer %}
+        {% url admin_index as admin_index %}
+        {% url vs_users_all as vs_users_all %}
+        {% url vs_groups_all as vs_groups_all %}
+        {% url vs_profile_templates as vs_profile_templates %}
+        {% url vs_metadata_management as vs_metadata_management %}
+        {% url themes as themes %}
+        {% url vs_export_locations as vs_export_locations %}
+        {% url vs_shape_tags as vs_shape_tags %}
+        {% url vs_storages as vs_storages %}
+        {% url vs_jobs as vs_jobs %}
+        {% url vs_indexes as vs_indexes %}
+        {% url admin_logreport as admin_logreport %}
+        {% url system_index as system_index %}
+        {% url archive_framework:jobs as archive_jobs %}
+
+        <!-- mdl admin/base_admin.html block drawer start -->
+        <div class="mdl-layout__drawer">
+            <span class="mdl-layout-title">{% block heading %}{% endblock heading %}</span>
+
+            <nav class="mdl-navigation">
+                <div id="admin-main" class="nav-group">
+                    <a href="{{ admin_index }}" class="mdl-navigation__link {% ifequal request.path  admin_index %}selected{% endifequal %}">{% trans "System Overview" %}</a>
+
+                    <a href="{{ system_index }}" class="mdl-navigation__link {% ifequal request.path system_index %}selected{% endifequal %}">{% trans "System Settings" %}</a>
+                </div>
+
+                {% if user|has_role:"_group_write" %}
+                <div id="" class="nav-group">
+                    <a href="{{ vs_users_all }}" class="mdl-navigation__link {% ifequal request.path  vs_users_all %}selected{% endifequal %}"><span class="iicon" style="background-position:-4px -334px"></span>{% trans 'Users' %}</a>
+
+                    <a href="{{ vs_groups_all }}" class="mdl-navigation__link {% ifequal request.path vs_groups_all %}selected{% endifequal %}">{% trans 'Groups' %}</a>
+
+                    <a href="{{ vs_profile_templates }}" class="mdl-navigation__link {% ifequal request.path vs_profile_templates %}selected{% endifequal %}">{% trans 'Profile Templates' %}</a>
+                </div>
+                {% endif %}
+
+                <div id="admin-main" class="nav-group">
+                    {% if user|has_role:"_metadata_field_group_write" and user|has_role:"_metadata_field_write" %}
+                    <a href="{{ vs_metadata_management }}" target="_blank" class="mdl-navigation__link {% ifequal request.path vs_metadata_management %}selected{% endifequal %}">{% trans 'Metadata Management' %}</a>
+                    {% endif %}
+
+                    <a href="{{ themes }}" class="mdl-navigation__link {% ifequal request.path themes %}selected{% endifequal %}">{% trans 'Themes' %}</a>
+                    <a href="{{ vs_export_locations }}" class="mdl-navigation__link {% ifequal request.path vs_export_locations %}selected{% endifequal %}">{% trans 'Export Locations' %}</a>
+                    {% if user|has_role:"_shape_tag_write" %}
+                    <a href="{{ vs_shape_tags }}" class="mdl-navigation__link {% ifequal request.path vs_shape_tags %}selected{% endifequal %}">{% trans 'Transcode Profiles' %}</a>
+                    {% endif %}
+
+                    {% if user|has_role:"_storage_write" and user|has_role:"_storage_group_write" %}
+                    <a href="{{ vs_storages }}" class="mdl-navigation__link {% ifequal request.path vs_storages %}selected{% endifequal %}">{% trans 'Storages' %}</a>
+                    {% endif %}
+
+                    {% if user|has_role:"_job_read" %}
+                    <a href="{{ vs_jobs }}" class="mdl-navigation__link {% ifequal request.path vs_jobs %}selected{% endifequal %}">{% trans 'Jobs' %}</a>
+                    {% endif %}
+
+                    {% if user|has_role:"_administrator" %}
+                    <a href="{{ vs_indexes }}" class="mdl-navigation__link {% ifequal request.path vs_indexes %}selected{% endifequal %}">{% trans 'Indexes' %}</a>
+                    {% endif %}
+
+                    {% if user|has_role:"_administrator" %}
+                    <a href="{{ admin_logreport }}" class="mdl-navigation__link {% ifequal request.path admin_logreport %}selected{% endifequal %}">{% trans 'Report Error' %}</a>
+                    {% endif %}
+
+                    {% if user|has_role:"_administrator" %}
+                    <a href="{% url admin:comments_comment_changelist %}" class="mdl-navigation__link {% if '/admin/comments/' in request.path %}selected{% endif %}">{% trans 'Comments' %}</a>
+                    {% endif %}
+
+                    {% if can_archive %}
+                    <a href="{{ archive_jobs }}" class="mdl-navigation__link {% if archive_jobs in request.path %}selected{% endif %}">{% trans 'Archive Jobs' %}</a>
+                    {% endif %}
+
+                    {% pluginblock "admin_left_panel_insidemenu" core %}
+                </div>
+            {% pluginblock "AdminLeftPanelBottomPanePlugin" core %}
+            </nav>
+        </div>
+
+        {% block javascriptvalidator %}
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function() {
+                // Metadata form
+                $(".formmain").validate();
+            });
+        </script>
+        {% endblock %}
+
+        <!-- mdl admin/base_admin.html block drawer end -->
+    {% endblock drawer %}
+
+    {% block body %}
+        <!-- mdl admin/base_admin.html block body start -->
+        <main class="mdl-layout__content">
+            {% block content %}{% endblock content %}
+        </main>
+        <!-- mdl admin/base_admin.html block body end -->
+    {% endblock body %}
+
+</div>
+{% endblock theme %}
+
+{% docstring %}
+
+TODO: edit description
+This is the base template for the admin pages, showing the menu on the lefthand side.
+
+{% enddocstring %}

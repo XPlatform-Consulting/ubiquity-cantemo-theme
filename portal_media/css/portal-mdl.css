@@ -1,0 +1,224 @@
+/**
+ * Platform X | MDL theme for Cantemo
+ * Author: Jared Smith <jared@highwaythreesolutions.com>
+ * Github: @jrods
+ *
+ * Description:
+ *
+**/
+
+/** Main
+**********************************************/
+#main {
+    height: 100vh;
+    width: 100vw;
+}
+body {
+
+}
+select {
+    color: rgba(0,0,0,0.54);
+    display: block;
+    width: 100%;
+    border: 0;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 16px !important;
+    line-height: 24px;
+    cursor: pointer;
+}
+li, ul {
+    list-style: none;
+    text-decoration: none;
+}
+
+/** Login
+**********************************************/
+#frontpage {
+
+}
+#frontpage .mdl-layout {
+    align-items: center;
+    justify-content: center;
+}
+#frontpage .login-card > .mdl-card__title {
+    max-height: 64px;
+}
+#frontpage .login-card > .mdl-card__menu {
+    color: #fff;
+}
+#frontpage .mdl-card__actions {
+    text-align: right;
+}
+#frontpage .login-card .mdl-textfield {
+    display: block;
+    padding: 10px;
+}
+#frontpage .mdl-textfield__expandable-holder {
+    width: 82%;
+}
+#frontpage .mdl-textfield .mdl-button {
+    bottom: auto;
+}
+#login-messages p {
+    padding-left: 20px;
+}
+.login-copyright {
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+}
+#frontpage .ui-widget-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#frontpage .ui-dialog-titlebar,
+#frontpage .ui-dialog-content,
+#frontpage .ui-dialog-buttonpane {
+    background-color: #fff;
+}
+#frontpage .ui-dialog-titlebar {
+    padding-bottom: 10px;
+}
+#frontpage .ui-dialog-buttonpane {
+    padding-top: 10px;
+}
+#frontpage .tandc .ui-dialog-titlebar-close {
+    display: none;
+}
+
+/** Navigation
+**********************************************/
+.mdl-layout__header {
+    border-top: 4px solid #3F51B5 !important;
+    border-bottom: 4px solid #3F51B5 !important;
+}
+#main-nav.mdl-navigation > .mdl-navigation__link:hover {
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+#main-nav.mdl-navigation > .mdl-navigation__link:hover {
+    border-bottom: 4px solid #fff;
+}
+#Account.mdl-button {
+    overflow: auto;
+}
+#Account .mdl-badge {
+    position: static;
+}
+/** Drawer
+*********************/
+.mdl-layout__drawer > .mdl-layout__title, .mdl-layout__drawer > .mdl-layout-title {
+    border: 4px solid transparent;
+}
+.mdl-navigation .mdl-navigation__link.selected {
+    background-color: #3F51B5;
+    color: #fff !important;
+}
+.nav-group {
+    padding-bottom: 16px;
+}
+.mdl-navigation .nav-group .mdl-navigation__link {
+    padding: 4px 40px !important;
+}
+
+/** Mediabin
+**********************************************/
+#mediabin-tab-show {
+    bottom: 100px;
+    right: 100px;
+}
+
+/** Main
+**********************************************/
+.mdl-layout__content {
+    padding: 0 40px;
+}
+
+/** Admin
+**********************************************/
+
+/** Search
+**********************************************/
+#search-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+}
+#search-wrap {
+    display: flex;
+    align-items: center;
+}
+#search-wrap .mdl-textfield {
+    width: auto;
+}
+#search-wrap .mdl-textfield input {
+    min-width: 500px;
+}
+.search-size {
+    font-size: 32px !important;
+}
+label.search-size {
+    top: 30px;
+    line-height: 32px;
+}
+#advanced-search-card.mdl-card {
+    display: none;
+    width: 700px;
+    height: auto;
+}
+#advanced-search-card > .mdl-card__title {
+  color: #fff;
+}
+#advanced-search-card #display-choices-wrap {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+/** Criteria
+**********************/
+.form-group {
+    padding: 10px;
+}
+.form-group > * {
+    display: inline-block;
+}
+.form-group > label {
+    font-size: 16px;
+}
+
+/** Items
+**********************************************/
+.media-item-card {
+    width: 100% !important;
+    height: 300px;
+}
+.media-item-card .mdl-card__menu {
+    background-color: #fff;
+    position: absolute;
+    right: 12px;
+    top: 10px;
+}
+.media-item-card .mdl-menu__item {
+    line-height: 32px;
+    height: 32px;
+    padding: 0 8px;
+}
+.media-item-card .mdl-card__supporting-text {
+    width: auto;
+    height: 100%;
+    box-sizing: padding-box;
+}
+.media-item-card .mdl-card__supporting-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.media-item-card .mdl-card__supporting-text h5 {
+    margin: 0;
+}
+.media-item-card .mdl-card__supporting-text .info.added {
+
+}

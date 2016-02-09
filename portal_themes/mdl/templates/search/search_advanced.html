@@ -1,0 +1,46 @@
+{% load i18n getstring %}
+{% qstring as current_qstring %}
+
+{% if not searchcollections %}
+<div id="display-group">
+    <h6 class="mdl-typography--title">{% trans "Display" %}</h6>
+
+    <div id="display-choices-wrap">
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="display_podType_all">
+            <input type="radio" id="display_podType_all" class="mdl-radio__button" name="display_podType" value="all" {% if current_qstring|qstring_get:"display_podType" == "item" %}checked{% endif %}>
+            <span class="mdl-radio__label">{% trans "Everything" %}</span>
+        </label>
+
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="display_podType_item">
+            <input type="radio" id="display_podType_item" class="mdl-radio__button" name="display_podType" value="item" {% if current_qstring|qstring_get:"display_podType" == "item" %}checked{% endif %}>
+            <span class="mdl-radio__label">{% trans "Items Only" %}</span>
+        </label>
+
+        <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="display_podType_subclip">
+            <input type="radio" id="display_podType_subclip" class="mdl-radio__button" name="display_podType" value="subclip" {% if current_qstring|qstring_get:"display_podType" == "subclip" %}checked{% endif %}>
+            <span class="mdl-radio__label">{% trans "SubClips Only" %}</span>
+        </label>
+    </div>
+</div>
+
+{% endif %}
+
+<div class="panel panel-default">
+    <h6 class="mdl-typography--title">{% trans "Criterias" %}</h6>
+
+    {% themeinclude "search/search_advanced_criteria.html" %}
+
+    {% themeinclude "includes/searchmetadataformchooser.html" %}
+</div>
+
+
+{% docstring search.html %}
+search_advanced.html - This holder page is called via an ajax request into the main search page.
+
+Context:
+* searchquery - The current search query if there has been one.
+* search_advanced - Set to true usually for this template.
+* theme - if an ajax call theme is set to ajax.html
+* metadatatoplevelonly - False
+
+{% enddocstring %}

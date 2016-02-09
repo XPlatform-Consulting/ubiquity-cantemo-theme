@@ -1,0 +1,12 @@
+{% themeextends "media/media_inc_item_base.html" %}
+
+{% load thumbnailer datetimeformatting i18n general vidispinetags %}
+
+{% create_thumbnails item item_URL %}
+
+{% block title %}
+    {% pluginblock "MediaPreviewIcon" core %}
+    <svg class="media_type media_type_icon" width="16px" height="16px" viewBox="0 0 310 310">
+        <use xlink:href="#Icon-MediaType-Image" >
+    </svg>
+{% endblock title %}
