@@ -10,6 +10,14 @@ Author: Jared Smith <jared@highwaythreesolutions.com>
 ```
 cd portal_media/mdl
 bower install material-design-lite#1.1.1 --save
+ln -s bower_components/material-design-lite/material.js material.js
+ln -s bower_components/material-design-lite/material.css material.css
+```
+
+If Cantemo isn't serving the material files here, try without the symlinks
+```
+cp bower_components/material-design-lite/material.js material.js
+cp bower_components/material-design-lite/material.css material.css
 ```
 
 ## Cantemo

@@ -1,2 +1,3 @@
 *.DS_Store
+portal_media/mdl/material.*
 portal_media/mdl/bower_components/*
