@@ -1,26 +1,17 @@
 {% themeextends "search/base_search.html" %}
 {% load i18n %}
 
-{% block extra_script %}
-<script type="text/javascript" src="{{ STATIC_URL }}js/app/media/mediabox.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/libs/select2/select2.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}js/app/metadata/metadataform.js"></script>
-
-<script type="text/javascript">
-    var theme = '{{ theme }}';
-    var url_delete_items = '{% url vs_items_delete %}';
-</script>
-{% endblock extra_script %}
-
-{% block head %}{% endblock %}
-
-{% block heading %}{% endblock %}
-
 {% block drawer %}{% endblock %}
 
 {% block body %}
 <!-- mdl search/base_search_results.html block body start -->
 <main class="mdl-layout__content">
+    {% themeinclude "search/search_results_icons.html" %}
+
+    {% themeinclude "search/search_results_header.html" %}
+
+    {% themeinclude "search/search_results_search_info.html" %}
+    
     {% block content %}{% endblock %}
 </main>
 <!-- mdl search/base_search_results.html block body end -->

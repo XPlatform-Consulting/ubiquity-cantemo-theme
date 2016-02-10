@@ -126,8 +126,9 @@
 	</ul>
 </div><!-- #srfilterside -->
 
+{% comment %}
 {% block footer %}
-    <script type="text/javascript" charset="utf-8">    
+    <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         if ($.cookie("searchSidebarToggle") == "open") {
             $('#srfilterside').show();
@@ -149,6 +150,7 @@
     });
     </script>
 {% endblock footer %}
+{% endcomment %}
 
 {% docstring search_results_sidebar.html %}
     search_results_sidebar.html is the filter container for the search pages.

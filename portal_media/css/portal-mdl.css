@@ -188,6 +188,20 @@ label.search-size {
 .form-group > label {
     font-size: 16px;
 }
+/** Last 10 items
+**********************/
+.title-bar {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+}
+.title-bar h3 {
+    margin: 0;
+    margin-right: 16px;
+}
+.title-bar #selectallcurrentpage {
+    padding: 0 8px;
+}
 
 /** Items
 **********************************************/

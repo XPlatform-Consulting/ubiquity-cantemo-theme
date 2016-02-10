@@ -14,7 +14,7 @@ ln -s bower_components/material-design-lite/material.js material.js
 ln -s bower_components/material-design-lite/material.css material.css
 ```
 
-If Cantemo isn't serving the material files here, try without the symlinks
+If Cantemo isn't serving the material files, try without the symlinks
 ```
 cp bower_components/material-design-lite/material.js material.js
 cp bower_components/material-design-lite/material.css material.css
