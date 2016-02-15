@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded', function() {
+    /*
     var mediabin = document.querySelector('#mediabin-tab-show.mediabin-tab');
     mediabin.addEventListener('click', function() {
         cntmo.app.page.mediaBin.toggle();
@@ -40,5 +41,5 @@ window.addEventListener('DOMContentLoaded', function() {
     }).bind('autocompleteopen', function (event, ui) {
         $(this).autocomplete('widget').addClass('searchinputfieldautocomplete');
     });
-
+    */
 });

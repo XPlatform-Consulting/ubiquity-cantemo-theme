@@ -1,0 +1,1 @@
+cntmo.prtl.Search.Model=Backbone.Model.extend({});

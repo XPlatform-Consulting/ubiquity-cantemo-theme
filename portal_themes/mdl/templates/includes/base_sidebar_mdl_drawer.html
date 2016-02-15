@@ -1,0 +1,12 @@
+<div class="mdl-layout__drawer">
+	<span class="mdl-layout-title">
+		{% block title %}{% endblock %}
+	</span>
+    
+    {% block menu %}{% endblock %}
+    
+    <script>
+        var mdlLayout = document.querySelector('div.mdl-layout');
+        mdlLayout.className += " mdl-layout--fixed-drawer";
+    </script>
+</div>

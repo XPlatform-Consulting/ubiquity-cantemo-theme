@@ -1,0 +1,33 @@
+{% themeextends "base.html" %}
+
+{% block extra_script %}{% endblock %}
+
+{% block theme %}
+<!-- media/base_media_view.html theme start -->
+<div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+
+    {% block navigation %}
+        {% themeinclude 'includes/navigation.html' %}
+    {% endblock navigation %}
+
+    {% block drawer %}{% endblock %}
+
+    {% block body %}
+    <!-- media/base_media_view.html body start -->
+        <main class="mdl-layout__content">
+            <div class="headerwrapper">
+                {% block heading %}{% endblock %}
+            </div>
+
+            <div id="content" class="content">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    <!-- media/base_media_view.html body end -->
+    {% endblock body %}
+
+</div>
+<!-- media/base_media_view.html theme end -->
+{% endblock theme %}
+
+{% block inlinejs %}{% endblock %}

@@ -1,0 +1,31 @@
+{% load compress getstring %}
+{% qstring as current_qstring %}
+
+{% compress js inline %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/dist/vendors.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/dist/search.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/dist/newmetadataform.js"></script>
+{% endcompress %}
+
+<div id="react-search-form" 
+     class="{% if not current_qstring %}centered_searchform{% else %}left_searchform{% endif %}"
+     data-show-fields="{% if search_advanced %}true{% else %}false{% endif %}"></div>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+   $('#searchform').center();
+});
+</script>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    $('#searchform').submit(function(){
+        $('#searchinputfield').autocomplete('close');
+    });
+    $('#searchinputfield').autocomplete({
+        source: '{% url api_v2:search:suggest %}'
+    }).bind('autocompleteopen', function(event, ui){
+        $(this).autocomplete('widget').addClass('searchinputfieldautocomplete');
+    });
+});
+</script>

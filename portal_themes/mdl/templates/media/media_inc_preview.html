@@ -2,7 +2,7 @@
 
 {% assign archive_status item|getMetadataFieldValueByName:"portal_archive_status" %}
 
-<div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--6-tablet mdl-cell--8-phone {% if item.getItemType == "SubClip" %}mediaitemsubclip{% endif %} mediaitem mediaitemgrid {% if item.isToBeDeleted %}mediaitemtobedeleted{% endif %} {{ item.getOriginalTag.getMimeType|cssMimeTypes }} "
+<div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--6-tablet mdl-cell--8-phone {% if item.getItemType == "SubClip" %}mediaitemsubclip{% endif %} mediaitem mediaitemgrid {% if item.isToBeDeleted %}mediaitemtobedeleted{% endif %} {{ item.getOriginalTag.getMimeType|cssMimeTypes }} "
     id="{{ item.getId }}"
     name="{{ item.getId }}"
     data-itemtype="{{ item.getItemType }}"

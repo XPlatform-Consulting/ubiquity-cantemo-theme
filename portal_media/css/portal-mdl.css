@@ -177,6 +177,9 @@ label.search-size {
     align-items: center;
     align-content: center;
 }
+.srinfo {
+    padding: 0 16px;
+}
 /** Criteria
 **********************/
 .form-group {
@@ -188,7 +191,7 @@ label.search-size {
 .form-group > label {
     font-size: 16px;
 }
-/** Last 10 items
+/** Search Header
 **********************/
 .title-bar {
     display: flex;

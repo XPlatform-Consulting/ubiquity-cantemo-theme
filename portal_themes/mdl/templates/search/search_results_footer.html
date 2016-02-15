@@ -1,8 +1,19 @@
 {% load i18n compress %}
+
 {% compress js %}
-<script type="text/javascript" src="{{ STATIC_URL }}ubiquity/js/app/search/views.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}ubiquity/js/app/search/collection.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/search/views.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/search/collection.js"></script>
 {% endcompress %}
+
+{% themeinclude "search/delete_warning_collections.html" %}
+
+<script type="text/template" id="cntmo_prtl_delete_library_confirm_tmpl">
+    {% trans "Are you sure you want to schedule deletion of " %}
+    <%= selected_items_count %>
+    {% trans " items returned by this search?" %}
+</script>
+
+
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
   sfoptions = {
@@ -87,16 +98,18 @@ $(document).ready(function() {
     el: $('#main'),
     search_adv_open: {{ search_advanced|yesno:"true,false" }},
     search_adv_tog: {{ search_advanced|yesno:"true,false" }},
+    delete_template: $('#cntmo_prtl_delete_warning_collections_tmpl'),
+    deleteLibraryConfirm: $('#cntmo_prtl_delete_library_confirm_tmpl'),
     definedurls: {
       exportallurl: '{% url vs_collection_export collection.getId %}',
       exporturl: '{% url vs_items_export %}',
       delete_item_url: '{% url vs_items_delete %}',
+      items_relation_url: '{% url vs_items_relation %}',
       item_api: '/API/v1/item/',
       sequence_api: '/API/v1/sequence/'
     },
     message_strings: {
-      deleteConfirm: '{% trans "Are you sure that you want to Delete?" %}',
-      deleteLibraryConfirm: '{% trans "Are you sure you want to schedule deletion of " %} {{ hits }} {% trans " items returned by this search?" %}',
+      deleteConfirm: '{% trans "Are you sure you want to delete the selected items?" %}',
       deletedConfirmation: '{% trans "Your items have been deleted" %}',
       deleteError: '{% trans "There was an error deleting" %}',
       collectionAddButton: '{% trans "Add to Collection" %}',
@@ -109,7 +122,7 @@ $(document).ready(function() {
     search_id: '{{ search_id }}',
     {% endif %}
     {% if searchcollections %}
-    searchcollections: True,
+    searchcollections: '{{ searchcollections }}',
     {% endif %}
     library_selected: undefined,
     searchquery: '{{ searchquery }}',

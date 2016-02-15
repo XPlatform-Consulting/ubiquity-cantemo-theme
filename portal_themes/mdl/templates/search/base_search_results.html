@@ -3,19 +3,9 @@
 
 {% block drawer %}{% endblock %}
 
-{% block body %}
-<!-- mdl search/base_search_results.html block body start -->
-<main class="mdl-layout__content">
-    {% themeinclude "search/search_results_icons.html" %}
-
-    {% themeinclude "search/search_results_header.html" %}
-
-    {% themeinclude "search/search_results_search_info.html" %}
-    
-    {% block content %}{% endblock %}
-</main>
-<!-- mdl search/base_search_results.html block body end -->
-{% endblock body %}
+{% block content %}
+<!-- hello? search/base_search_results.html here content block -->
+{% endblock content %}
 
 {% block footer %}
 <script type="text/javascript" charset="utf-8">
@@ -25,7 +15,6 @@
         cntmo.app.page.searchresults.parseNewPage();
     }
     var current_page = '{{ page }}'
-
 </script>
 {% endblock footer %}
 

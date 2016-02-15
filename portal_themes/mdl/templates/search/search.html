@@ -1,48 +1,13 @@
 {% themeextends "search/base_search.html" %}
-{% load i18n paginator %}
+{% load i18n %}
 
-{% block drawer %}
-<!-- drawer -->
-{% endblock drawer %}
+{% block heading %}{% endblock %}
 
-{% block body %}
-    <!-- mdl search/base_search.html block body start -->
-    <main class="mdl-layout__content">
-        <form id="search-form" class="searchresultsform" action="/search/" method="get" accept-charset="utf-8" autocomplete="off">
-            <div id="search-wrap">
-                <a id="show_advanced" href="#" rel="/search/advanced/" class="show_advanced mdl-button mdl-js-button mdl-button--colored mdl-button--icon mdl-js-ripple-effect">
-                    <i class="material-icons">more_vert</i>
-                </a>
-
-                <div class="mdl-textfield mdl-js-textfield">
-                    <input class="mdl-textfield__input search-size" type="text" id="search-input" name="searchquery">
-                    <label class="mdl-textfield__label search-size" for="search-input">Search...</label>
-                </div>
-
-                <button form="search-form" type="submit" class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored mdl-js-ripple-effect">
-                    <i class="material-icons">search</i>
-                </button>
-            </div>
-
-            <div id="advanced-search-card" class="mdl-card mdl-shadow--2dp" style="display:none;">
-                <div class="mdl-card__supporting-text">
-                    {% themeinclude "search/search_advanced.html" %}
-                </div>
-
-                <div class="mdl-card__actions mdl-card--border">
-                    <button id="clear-advanced-form" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect btn btn-danger" type="reset" onclick="return ">{% trans "Clear form" %}</button>
-                </div>
-            </div>
-
-            {% comment %}
-            need to figure out what this is for, i didn't see it in the org ubiquity theme
-            {% themeinclude "search/search_results_form.html" %}
-            {% endcomment %}
-        </form>
-
-    </main>
-    <!-- mdl search/base_search.html block body end -->
-{% endblock body %}
+{% block content%}
+<!-- search/search.html content start -->
+	{% themeinclude "search/search_component.html" %}
+<!-- search/search.html content end -->
+{% endblock content %}
 
 {% docstring search.html %}
 search.html - Basic search page for the site.

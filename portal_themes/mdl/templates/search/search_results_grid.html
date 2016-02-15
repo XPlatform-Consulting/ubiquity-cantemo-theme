@@ -1,74 +1,43 @@
 {% themeextends "search/base_search_results.html" %}
-
-{% load i18n paginator getstring cache %}
+{% load i18n paginator getstring cache url_for %}
 {% qstring as current_qstring %}
 
-{% comment %}
-{% block title %}{% trans "Search" %} {{ searchquery }}{% endblock title %}
-
-{% block heading %}
-	{% themeinclude "search/search_results_form.html" %}
-{% endblock heading %}
-{% endcomment %}
-
 {% block drawer %}
-	<div class="mdl-layout__drawer">
-		{% themeinclude "search/search_results_sidebar.html" %}
-	</div>
+    {% themeinclude "search/search_results_sidebar.html" %}
 {% endblock drawer %}
 
 {% block content %}
-<!-- search_results_grid.html -->
+<div class="fullwidthcontent">
+    {% themeinclude "search/search_results_header.html" %}
+    
+    <div id="searchresultswrapper" class="mdl-grid">
+    {% if hits %}
+        {% themeinclude "search/search_results_items_grid.html" %}
+    {% else %}
 
-<div id="results-container" class="mdl-grid">
-	{% if hits %}
-		{% for item in items  %}
-			{% if item.getItemType == 'SubClip' %}
-				{% url item_subclip item.parent_id '0' item.getId as item_URL %}
-
-				{% with item.item as parentitem %}
-					{% with item as annotation %}
-						{% themeinclude 'media/media_inc_preview.html' %}
-					{% endwith %}
-				{% endwith %}
-			{% else %}
-				{% url vs_item item.getId as item_URL  %}
-
-				{% with item.item as parentitem %}
-					{% themeinclude 'media/media_inc_preview.html' %}
-				{% endwith %}
-			{% endif %}
-		{% endfor %}
-
-		<div id="sr_load_more" class="sr_load_more">
-			<p><a href="#sr_load_more" id="sr_load_more_lnk">{% trans "Load more results" %}</a></p>
-		</div>
-	{% else %}
-
-		<h2>{% trans "No media found." %}</h2>
-
-		<p style="font-size:1.3em;">
-			{% if searchquery == "" %}
-				{% blocktrans %}We couldn't find any media matching your search query, {% endblocktrans %}
-			{% else %}
-				{% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", {% endblocktrans %}
-			{% endif %}
-
-			{% if suggestions and searchquery != "" %}
-				{% trans "did you mean" %}
-				{% for suggestion in suggestions %}
-			 		<a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion|urlencode }}">{{ suggestion }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} {% trans "or" %} {% else %},{% endif %} {% endif %}{% endfor %}?
-			{% else %}
-				{% trans "please try again." %}
-			{% endif %}
-		</p>
-	{% endif %}
-</div><!-- #results-container -->
+        <h2>{% trans "No media found." %}</h2>
+        <p style="font-size:1.3em;">
+            {% if searchquery == "" %}
+                {% blocktrans %}We couldn't find any media matching your search query, {% endblocktrans %}
+            {% else %}
+                {% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", {% endblocktrans %}
+            {% endif %}
+            {% if suggestions and searchquery != "" %}
+                {% trans "did you mean" %}
+                {% for suggestion in suggestions %}
+             <a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion|urlencode }}">{{ suggestion }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} {% trans "or" %} {% else %},{% endif %} {% endif %}{% endfor %}?
+            {% else %}
+                {% trans "please try again." %}
+            {% endif %}
+        </p>
+    {% endif %}
+    </div><!-- #searchresultswrapper -->
+</div><!-- .fullwidthcontent -->
 
 <div class="centerwrapper">
-	{% if hits %}
+    {% if hits %}
         {% paginator 2 %}
-	{% endif %}
+    {% endif %}
 </div><!-- .centerwrapper -->
 {% endblock content %}
 
