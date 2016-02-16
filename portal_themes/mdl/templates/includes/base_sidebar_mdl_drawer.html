@@ -6,6 +6,8 @@
     {% block menu %}{% endblock %}
     
     <script>
+    	// A quick hack (not really) for the mdl layout to have a drawer
+    	// be integrated to the nav bar without complicating the templates
         var mdlLayout = document.querySelector('div.mdl-layout');
         mdlLayout.className += " mdl-layout--fixed-drawer";
     </script>

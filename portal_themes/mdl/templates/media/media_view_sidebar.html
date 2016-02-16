@@ -1,96 +1,88 @@
 {% themeextends "includes/base_sidebar_mdl_drawer.html" %}
 
-{% load i18n %}
+{% load i18n settings %}
 
 {% block title %}
 	{% trans "Media" %}
 {% endblock title %}
 
 {% block menu %}
+{% settings "COMMENTS_ENABLED" as COMMENTS_ENABLED %}
 <div class="leftcontent" id="mv_menu">
-    <ol class="mi_contextmenu" id="mi_contextmenu">
-        <li>
-            <a href="#" class="selected" id="mv_preview_a" shortcut="preview"  rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "norender":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","large"]}}'>
-                <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-preview.svg)"></span>
+    <!--<ol class="mi_contextmenu" id="mi_contextmenu">-->
+    <nav id="mi_contextmenu" class="mdl-navigation">
+        <li><a href="#" class="selected mdl-navigation__link" id="mv_preview_a" shortcut="preview"  rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "norender":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","large"]}}'>
+            <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-preview.svg)"></span>
                 {% trans "Preview" %}
-            </a>
-        </li>
-        <li>
-            <a href="#" id="mv_thumbnails_a" shortcut="thumbnails" rel='{"viewopen":["MediaItemThumbnailPanel", "MediaItemMetadataPanel"]}'>
-                <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-thumbnails.svg)"></span>
-                {% trans "Thumbnails" %}
-            </a>
-        </li>
+        </a></li>
+        
+        <li><a href="#" id="mv_thumbnails_a" class="mdl-navigation__link" shortcut="thumbnails" rel='{"viewopen":["MediaItemThumbnailPanel", "MediaItemMetadataPanel"]}'>
+            <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-thumbnails.svg)"></span>
+            {% trans "Thumbnails" %}
+        </a></li>
+        
         {% if systemmetadata.mediaType == "video" %}
             {% permissionrequired _thumbnail_read %}
-        <li>
-            <a href="#" id="mv_posters_a" shortcut="posters" rel='{"viewopen":["MediaItemPosterPanel", ""]}'>
-                <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-poster.svg)"></span>
-                {% trans "Posters" %}
-            </a>
-        </li>
+                <li><a href="#" id="mv_posters_a" class="mdl-navigation__link" shortcut="posters" rel='{"viewopen":["MediaItemPosterPanel", ""]}'>
+                    <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-poster.svg)"></span>
+                    {% trans "Posters" %}
+                </a></li>
             {% endpermissionrequired %}
         {% endif %}
-        {% if item.getShapes %}{% if aclcurrentuser.hasURIReadPermission %}
-        <li>
-            <a href="#" id="mv_formats_a" shortcut="formats" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemFormatsPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
-                <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-formats.svg)"></span>
-                {% trans "Formats" %}
-            </a>
-        </li>
-        {% endif %}{% endif %}
+        
+        {% if item.getShapes %}
+            {% if aclcurrentuser.hasURIReadPermission %}
+                <li><a href="#" id="mv_formats_a" class="mdl-navigation__link" shortcut="formats" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemFormatsPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
+                    <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-formats.svg)"></span>
+                    {% trans "Formats" %}
+                </a></li>
+            {% endif %}
+        {% endif %}
+
         {% permissionrequired _job_read %}
-        <li>
-            <a href="#" id="mv_history_a" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemHistoryPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
+            <li><a href="#" id="mv_history_a" class="mdl-navigation__link" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemHistoryPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
                 <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-history.svg)"></span>
                 {% trans "History" %}
-            </a>
-        </li>
+            </a></li>
         {% endpermissionrequired %}
+
         {% permissionrequired _accesscontrol_read %}
-        <li>
-            <a href="#" id="mv_accesscontrol_a" shortcut="accesscontrol" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemACLPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
+            <li><a href="#" id="mv_accesscontrol_a" class="mdl-navigation__link" shortcut="accesscontrol" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemACLPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
                 <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-access-rights.svg)"></span>
                 {% trans "Access Right" %}
-            </a>
-        </li>
+            </a></li>
         {% endpermissionrequired %}
+
         {% if version_support %}
-        <li>
-            <a href="#" id="mv_versions_a" shortcut="versions" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "norender":["MediaItemPreviewPanel", "MediaItemVersionsPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemVersionsPanel.render", "args":["itemPlayer","small"]}}'>
+            <li><a href="#" id="mv_versions_a" class="mdl-navigation__link" shortcut="versions" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "norender":["MediaItemPreviewPanel", "MediaItemVersionsPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemVersionsPanel.render", "args":["itemPlayer","small"]}}'>
                 <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-versions.svg)"></span>
                 {% trans "Versions" %}
-            </a>
-        </li>
+            </a></li>
         {% endif %}
 
         {% if COMMENTS_ENABLED %}
-        <li>
-            <a href="#" id="mv_comments_a" shortcut="comments" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemCommentsPanel"], "norender":["MediaItemPreviewPanel", "MediaItemCommentsPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemCommentsPanel.render", "args":["itemPlayer","large"]}}'>
-            {% if commentcount > 0  %}
-                <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-comments-present.svg)"></span>
-                {% trans "Comments" %}
-                <span class="commentsCommentCount">({{ commentcount }})</span>
-            {% else %}
-                <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-comments.svg)"></span>
-                {% trans "Comments" %}
-                <span class="commentsCommentCount"></span>
-            {% endif %}
-            </a>
-        </li>
+            <li><a href="#" id="mv_comments_a" class="mdl-navigation__link" shortcut="comments" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemCommentsPanel"], "norender":["MediaItemPreviewPanel", "MediaItemCommentsPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemCommentsPanel.render", "args":["itemPlayer","large"]}}'>
+                {% if commentcount > 0  %}
+                    <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-comments-present.svg)"></span>
+                    {% trans "Comments" %}
+                    <span class="commentsCommentCount">({{ commentcount }})</span>
+                {% else %}
+                    <span class="iicon previewicon" style="background-image: url({{ STATIC_URL }}/img/core/item-comments.svg)"></span>
+                    {% trans "Comments" %}
+                    <span class="commentsCommentCount"></span>
+                {% endif %}
+            </a></li>
         {% endif %}
 
-        <li>
-            <a href="#" id="mv_related_a" shortcut="related" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemRelatedPanel"], "norender":["MediaItemPreviewPanel", "MediaItemRelatedPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemRelatedPanel.render", "args":["itemPlayer","small"]}}'>
+            <li><a href="#" id="mv_related_a" class="mdl-navigation__link" shortcut="related" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemRelatedPanel"], "norender":["MediaItemPreviewPanel", "MediaItemRelatedPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemRelatedPanel.render", "args":["itemPlayer","small"]}}'>
                 <span class="iicon previewicon" style="background-image: url(/sitemedia/img/core/item-related.svg)"></span>
                 {% trans "Related" %}
-            </a>
-        </li>
+            </a></li>
         {% pluginblock "MediaViewLeftPanelMenu" %}
-    </ol>
+    </nav>
+    <!--</ol>-->
     <ol>
         {% pluginblock "MediaViewLeftContentBottom" %}
     </ol>
-    <div class="clearfix" style="height:0;clear:both;">&nbsp;</div>
 </div><!-- .leftcontent -->
 {% endblock menu %}
