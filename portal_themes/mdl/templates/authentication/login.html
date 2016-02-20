@@ -27,7 +27,7 @@
 				should be 'if not license_expired',
 				currently this allows me to bypass the expired key problem on my current dev server
 				{% endcomment %}
-				{% if license_expired %}
+				{% if not license_expired %}
 					<div id="login-messages">
 						{% if error or form.non_field_errors %}
 							<div class="loginerrormessage">
@@ -87,7 +87,7 @@
 			should be 'if not license_expired',
 			currently this allows me to bypass the expired key problem on my current dev server
 			{% endcomment %}
-			{% if license_expired %}
+			{% if not license_expired %}
 				<div class="mdl-card__actions mdl-card--border">
 					<label for="submit-form" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect" >{% trans 'Login' %}</label>
 				</div>

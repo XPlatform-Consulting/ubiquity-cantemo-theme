@@ -1,0 +1,9 @@
+{% load i18n %}
+
+{% if thumbnails %}
+    {% for thumb in thumbnails  %}
+        <img src="{{ thumb }}" class="mdl-cell mdl-cell--3-col mdl-cell--4-col-tablet mdl-cell--12-col-phone" />
+    {% endfor %}
+{% else %}
+    {% trans "There are currently no thubmnails to show." %}
+{% endif %}

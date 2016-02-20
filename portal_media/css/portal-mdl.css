@@ -254,6 +254,16 @@ label.search-size {
 #panel_preview.panel {
     padding: 0 !important;
 }
+#search-prev-next {
+    width: 100%;
+    min-height: 0;
+    margin-bottom: 16px;
+}
+#search-prev-next {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 #media-info-card {
     width: 100%;
 }
@@ -279,5 +289,12 @@ label.search-size {
 }
 #panel-content-card {
     width: 100%;
+}
+#player {
+    width: 100% !important;
+    height: 100% !important;
+}
+#noflashnotice a > br {
+    display: none;
 }
 

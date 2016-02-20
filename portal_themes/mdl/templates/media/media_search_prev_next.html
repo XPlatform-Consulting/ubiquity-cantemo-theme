@@ -1,0 +1,41 @@
+{% load i18n url_for humanize %}
+{# Previous/Next buttons for an item when opened from search results #}
+{% if search_prev or search_next %}
+    <div id="search-prev-next" class="mdl-card mdl-shadow--2dp">
+        {% if search_prev %}
+            {% if search_prev.kind == 'subclip' %}
+                {% url_for item_subclip search_prev.item.vidispine_id '0' search_prev.uuid index=search_prev_index search_id=search_id sortfield=sortfield sortdirection=sortdirection as search_prev_URL %}
+            {% else %}
+                {% url_for vs_item search_prev.vidispine_id index=search_prev_index search_id=search_id sortfield=sortfield sortdirection=sortdirection as search_prev_URL %}
+            {% endif %}
+            <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" href="{{ search_prev_URL }}" title="{% trans "View Previous from Search Results" %}">
+                &#10094; {% trans "Previous" %}
+            </a>
+        {% else %}
+            <a class="mdl-button mdl-js-button" href="{{ search_prev_URL }}" title="{% trans "View Previous from Search Results" %}" disabled>
+                &#10094; {% trans "Previous" %}
+            </a>
+        {% endif %}
+
+        {% if search_url %}
+            <a class="mdl-button mdl-js-button mdl-js-ripple-effect" href="{{ search_url }}" title="{% trans "Back to Search Results" %}">{{ index|add:1 }} {% trans "of" %} {{ search_total }} {% trans "Results" %}</a>
+        {% else %}
+            <span class="mdl-button mdl-js-button">{{ index|add:1 }} {% trans "of" %} {{ search_total }} {% trans "Results" %}</span>
+        {% endif %}
+
+        {% if search_next %}
+            {% if search_next.kind == 'subclip' %}
+                {% url_for item_subclip search_next.item.vidispine_id '0' search_next.uuid index=search_next_index search_id=search_id sortfield=sortfield sortdirection=sortdirection as search_next_URL %}
+            {% else %}
+                {% url_for vs_item search_next.vidispine_id index=search_next_index search_id=search_id sortfield=sortfield sortdirection=sortdirection as search_next_URL %}
+            {% endif %}
+            <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--primary" href="{{ search_next_URL }}" title="{% trans "View Next from Search Results" %}">
+                {% trans "Next" %} &#10095;
+            </a>
+        {% else %}
+            <a class="mdl-button mdl-js-button" href="{{ search_prev_URL }}" title="{% trans "View Next from Search Results" %}" disabled>
+                {% trans "Next" %} &#10095;
+            </a>                
+        {% endif %}
+    </div>
+{% endif %}

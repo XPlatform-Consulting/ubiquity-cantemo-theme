@@ -120,11 +120,11 @@
             <div class="panel-wrap">
                 {% pluginblock "MediaViewPanelRow1" %}
 
-                <div style="display:none;" class="panel" id="panel_thumbnails">
+                <div style="display:none;" class="panel mdl-grid" id="panel_thumbnails">
                     {% trans "There are currently no thumbnails to show." %}
                 </div><!--#mv_thumbnails -->
 
-                <div style="display:none;" class="panel" id="panel_posters">
+                <div style="display:none;" class="panel mdl-grid" id="panel_posters">
                     {% trans "There are currently no posters to show." %}
                 </div>
 
@@ -480,7 +480,7 @@
                             </td>
                         </script>
                     </div>
-                    
+
                     <div id="panel_comments"  class="panel" style="display:none;">
                         <div class="panel-header">
                             <h2>{% trans "Comments" %}</h2>
@@ -551,7 +551,7 @@
                             {% endif %}
                         }),{% endif %}
                     'MediaItemThumbnailPanel': new cntmo.prtl.Item.MediaItemThumbnailPanel({
-                        el:$('#panel_thumbnails'),
+                        el:$('#panel_thumbnails.mdl-grid'),
                         {% if item.getOriginalTag.getEssenceVersion %}
                             url: "{% url vs_item_get_thumbs_version item.getId item.getOriginalTag.getEssenceVersion %}"
                         {% else %}

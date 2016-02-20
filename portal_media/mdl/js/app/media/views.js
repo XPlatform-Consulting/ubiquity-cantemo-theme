@@ -158,7 +158,8 @@ function(Item, $, undefined) {
             return $(event.target).panelMgr({
                 contextMenu: "li",
                 el: event.target,
-                panelName: "mv_panel"
+                panelName: "mv_panel",
+                console.log(event.target)
             }), $(event.target).is("[shortcut]") ? this.router.navigate($(event.target).attr("shortcut"), {
                 trigger: !1,
                 replace: !0
