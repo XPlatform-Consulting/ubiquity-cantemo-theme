@@ -120,7 +120,7 @@
             <div class="panel-wrap">
                 {% pluginblock "MediaViewPanelRow1" %}
 
-                <div style="display:none;" class="panel mdl-grid" id="panel_thumbnails">
+                <div style="display:none;" class="panel mdl-grid mdl-card mdl-shadow--2dp" id="panel_thumbnails">
                     {% trans "There are currently no thumbnails to show." %}
                 </div><!--#mv_thumbnails -->
 
@@ -128,33 +128,34 @@
                     {% trans "There are currently no posters to show." %}
                 </div>
 
-                <div id="panel_preview" class="panel mdl-grid" style="display:flex !important;">
-                <!-- style="display:flex !important" is a dirty hack, 
-                i can't find how style="display:block" is getting append onto the element
-                this is needed because mdl-grid uses flexbox -->
+                <div id="panel_preview" class="panel mdl-grid" style="display:flex">
                     <div id="player-wrap" class="mdl-cell mdl-cell--7-col mdl-cell--8-col-tablet">
-                        {% if previews %}
-                            {% previewplayer item %}
-                        {% else %}
+                        <div id="player-card" class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__supporting-text">
+                                {% if previews %}
+                                    {% previewplayer item %}
+                                {% else %}
 
-                            <div id="placeholderspacer" class="placeholderspacer smallPlayer {% if item.isSequence %}sequence{% endif %} {{ item.getItemType }}">
-                                {% if item.getItemType == "ppro_project" %}
+                                    <div id="placeholderspacer" class="placeholderspacer smallPlayer {% if item.isSequence %}sequence{% endif %} {{ item.getItemType }}">
+                                        {% if item.getItemType == "ppro_project" %}
 
-                                {% endif %}
-                
-                                {% if item.getItemType == "fcpx_project" %}
-
-                                {% endif %}
-
-                                {% if item.isPlaceholder or item.isEmpty %}
-                                    {% if skipIngestButton == False %}
-                                        {% if aclcurrentuser.hasURIWritePermission and user|has_role:"_import" and user|has_role:"_storage_read" %}
-                                            <a href="{% url vs_storage_ingest_to_placeholder item.getId %}{% if item.isEmpty %}?version=True{% endif %}" style="color:transparent;"><button type="button" class="button" onclick="window.location=this.parentNode.href;">{% trans "Ingest to Placeholder" %}</button></a>
                                         {% endif %}
-                                    {% endif %}
+                        
+                                        {% if item.getItemType == "fcpx_project" %}
+
+                                        {% endif %}
+
+                                        {% if item.isPlaceholder or item.isEmpty %}
+                                            {% if skipIngestButton == False %}
+                                                {% if aclcurrentuser.hasURIWritePermission and user|has_role:"_import" and user|has_role:"_storage_read" %}
+                                                    <a href="{% url vs_storage_ingest_to_placeholder item.getId %}{% if item.isEmpty %}?version=True{% endif %}" style="color:transparent;"><button type="button" class="button" onclick="window.location=this.parentNode.href;">{% trans "Ingest to Placeholder" %}</button></a>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
                                 {% endif %}
                             </div>
-                        {% endif %}
+                        </div>
                     </div>
 
                     <div class="versionsmenu" style="display:none;">
@@ -261,232 +262,259 @@
         </div><!-- .row -->
 
         <div class="row">
-            <div class="panel-wrap align-with-margin">
-                <div id="panel-content-card" class="mdl-card mdl-shadow--2dp">
-                    {% pluginblock "MediaViewPanelRow2" %}
-                    {% if aclcurrentuser.hasMetadataReadPermission %}
-                        <div id="panel_metadata" class="panel">
-                            <div id="react-metadataform"
-                                 data-id="{{ item.getId }}"
-                                 data-edit-url="{% url vs_item_get_metadataform item.getId %}"
-                                 data-new-url="{% url vs_item_associate_metadata item.getId %}"
-                                 data-metadata-write-permission="{{ aclcurrentuser.hasMetadataWritePermission|lower }}">
-                            </div>
-                        </div><!-- #panel_metadata .panel -->
-                    {% endif %}
-
-                    {% if item.getShapes %}
-                        {% if aclcurrentuser.hasURIReadPermission %}
-                            <div id="panel_format" class="panel" style="display:none;">
-                                <div class="panel-header">
-                                    <h2>{% trans "Formats" %}</h2>
-                                    {% if originalshape and aclcurrentuser.hasURIWritePermission and systemmetadata.mediaType != "data" and item.isOriginalShapeOnline %}
-                                        {% permissionrequired _job_write %}
-                                            <a href="" id="transcodeitem" class="buttonlink">
-                                                <button class="button button-add button-transcode">{% trans "Transcode" %}</button>
-                                            </a>
-                                        {% endpermissionrequired %}
-                                    {% endif %}
-                                </div>
-
-                                <table id="cntmo_prtl_mediaitem_shape_table">
-                                    <thead>
-                                    <tr>
-                                        <th>{% trans "Name" %}</th>
-                                        <th>{% trans "Format" %}</th>
-                                        <th>{% trans "Filesize" %}</th>
-                                        <th>{% trans "Filename" %}</th>
-                                        <th>{% trans "Storage" %}</th>
-                                        <th style="width:150px;"></th>
-                                        <th style="width:150px;"></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <td colspan="7" class="imgpreloader" >
-                                        {% if theme == 'onyx' %}
-                                            <img src="{{ STATIC_URL }}img/onyx/icon-ajax-loader.gif">
-                                        {% else %}
-                                            <img src="{{ STATIC_URL }}img/icon-ajax-loader.gif">
-                                        {% endif %}
-                                    </td>
-                                    </tbody>
-                                </table>
-
-                                <div id="transcodepanel"></div>
-                            </div><!-- #panel_format -->
-                        {% endif %}
-                    {% endif %}
-
-                    <div id="panel_related" class="panel" style="display:none;">
-                        <div class="panel-header">
-                            <h2>{% trans "Related Items" %}</h2>
+            <div id="panel-content-card" class="panel-wrap align-with-margin">
+                {% pluginblock "MediaViewPanelRow2" %}
+                {% if aclcurrentuser.hasMetadataReadPermission %}
+                    <div id="panel_metadata" class="mdl-card mdl-shadow--2dp panel">
+                        <div id="react-metadataform" class="mdl-card__supporting-text"
+                             data-id="{{ item.getId }}"
+                             data-edit-url="{% url vs_item_get_metadataform item.getId %}"
+                             data-new-url="{% url vs_item_associate_metadata item.getId %}"
+                             data-metadata-write-permission="{{ aclcurrentuser.hasMetadataWritePermission|lower }}">
                         </div>
+                        <script>
+                        /*
+                        var reactMetadataForm = document.querySelector('#react-metadataform');
+                        var foundPanelHeader = false;
 
-                        <div class="related_wrapper"></div>
-                    </div><!--#panel_related -->
+                        reactMetadataForm.addEventListener('DOMSubtreeModified', function() {
+                            if (foundPanelHeader) {
+                                return;
+                            }
 
-                    {% permissionrequired _job_read %}
-                        <div id="panel_history"  class="panel" style="display:none;">
-                            <div class="panel-header"><h2>{% trans "History" %}</h2></div>
-                            <table class="jobstable" id="jobstbl">
-                                <thead>
-                                    <tr class="heading">
-                                        <th>{% trans 'Status' %}</th>
-                                        <th>{% trans 'Type' %}</th>
-                                        <th>{% trans 'Current Step' %}</th>
-                                        <th>{% trans 'Started' %}</th>
-                                        <th>{% trans 'User' %}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div><!--#panel_history -->
-                    {% endpermissionrequired %}
+                            if (panelHeader = reactMetadataForm.querySelector('.panel-header')) {
+                                foundPanelHeader = true;  
 
-                    <div id="panel_acl" class="panel" style="display:none;">
-                        <div class="panel-header"><h2>{% trans "Access Rights" %}</h2>
-                            {% permissionrequired _administrator %}
-                                <a href="#" id="showhideaudit" class="buttonlink" rel="{% url vs_item_accessrights_ajax item.getId %}" before="{% trans "Show audit" %}" after="{% trans "Show access list" %}"><button class="button">{% trans "Show audit" %}</button></a>
-                            {% endpermissionrequired %}
-                            {% if aclcurrentuser.hasURIWritePermission %}
-                                <a href="#" id="aclmanage" class="buttonlink" rel="{% url vs_acl_form %}"><button class="button button-add button-acl">{% trans "Add Access Rights" %}</button></a>
-                            {% endif %}
-                        </div><!-- .panel-header -->
-                        <table id="access_rights">
-                            <thead>
-                            <th>{% trans "Recipient" %}</th>
-                            <th>{% trans "Permission" %}</th>
-                            <th style="width:150px;"></th>
-                            </thead>
-                            <tbody>
-                            <td colspan="3" class="imgpreloader" >
-                                {% if theme == 'onyx' %}
-                                    <img src="{{ STATIC_URL }}img/onyx/icon-ajax-loader.gif">
-                                {% else %}
-                                    <img src="{{ STATIC_URL }}img/icon-ajax-loader.gif">
-                                {% endif %}
-                            </td>
-                            </tbody>
-                            <tfoot>
-                            </tfoot>
-                        </table>
-                        <table id="audit_access_rights" style="display:none;">
-                            <thead>
-                            <th>{% trans "Recipient" %}</th>
-                            <th>{% trans "Permission" %}</th>
-                            <th>{% trans "Why" %}</th>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                        <script type="text/template" id="cntmo_prtl_mediaitem_acl_tmpl">
-                            <td><% if (user != "") { print(user) } else { print(group) } %></td>
-                            <td style="text-transform:capitalize;"><%= permission.toLowerCase() %></td>
-                            <td style="width:2em;">
-                                {% if aclcurrentuser.hasURIWritePermission %}
-                                    <% if (permission.toLowerCase() != 'owner'){ %>
-                                    <a href="#" class="remove hidden">{% trans "Remove" %}</a>
-                                    <% } %>
-                                {% endif %}
-                            </td>
+                                var spacer = document.createElement('div');
+                                spacer.className = "mdl-layout-spacer";
+
+                                panelHeader.insertBefore(spacer, reactMetadataForm.querySelector('.edit_metadata'));
+
+                                // convert NodeList to ArrayList
+                                var buttons = Array.prototype.slice.call(panelHeader.querySelectorAll('a button'));
+
+                                buttons.map(function(button) {
+                                    button.className += " mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised";
+                                    button.className += (button.parentElement.className == 'edit_metadata buttonlink') ?  " mdl-button--colored" : " mdl-button--accent";
+                                });                             
+                            }                            
+                        });
+                        */
                         </script>
-                        <script type="text/template" id="cntmo_prtl_mediaitem_history_tmpl">
-                            <td>
-                                <% if (joblink !== '') { %>
-                                <a href="<%= joblink %>"><%= status_label %></a>
-                                <% } else { %>
-                                <%= status_label %>
-                                <% } %>
-                            </td>
-                            <td><%= type %></td>
-                            <td><%= current_step_description %></td>
-                            <td><%= started %></td>
-                            <td><%= user %></td>
-                        </script>
-                        <script type="text/template" id="cntmo_prtl_mediaitem_format_tmpl">
-                            <td><%= name %></td>
-                            <td class="shapeformat" style="cursor:pointer;cursor:hand;"><strong><%= format %></strong>
-                                <% if (format) { %>
-                                <div class="cnxtualMenu"><div class="cnxtualMenu_arrow"></div>
-                                    <table>
-                                        <% if (mimetype.indexOf('image') != -1) { %>
-                                        <tr>
-                                            <td>{% trans "Image Type:" %}</td>
-                                            <td class="value"><%= videoCodec %></td>
-                                            <td>{% trans "Resolution:" %}</td>
-                                            <td class="value"><%= videoResolution %>px</td>
-                                        </tr>
+                    </div><!-- #panel_metadata .panel -->
+                {% endif %}
 
-                                        <% } else if (mimetype.indexOf('video') != -1 || mimetype.indexOf('application/mxf') != -1) { %>
-                                        <tr>
-                                            <td>{% trans "Video codec:" %}</td>
-                                            <td class="value"><%= videoCodec %></td>
-                                            <td>{% trans "Bitrate:" %}</td>
-                                            <td class="value"><%= videoBitRate %></td>
-                                            <td>{% trans "Framerate:" %}</td>
-                                            <td class="value"><%= videoFPS %>FPS</td>
-                                            <td>{% trans "Resolution:" %}</td>
-                                            <td class="value"><%= videoResolution %>px</td>
-                                            <td>{% trans "Field Order:" %}</td>
-                                            <td class="value"><%= fieldOrder %></td>
-                                        </tr>
-                                        <tr>
-                                            <td>{% trans "Audio codec:" %}</td>
-                                            <td class="value"><%= audioCodec %></td>
-                                            <td>{% trans "Bitrate:" %}</td>
-                                            <td class="value"><%= audioBitRate %></td>
-                                            <td>{% trans "Samplerate:" %}</td>
-                                            <td class="value"><%= audioSamplingRate %>Hz</td>
-                                            <td>{% trans "Channel count:" %}</td>
-                                            <td class="value"><%= audioChannelCount %></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        <% } else if (mimetype.indexOf('audio') != -1) { %>
-                                        <tr>
-                                            <td>{% trans "Audio codec:" %}</td>
-                                            <td class="value"><%= audioCodec %></td>
-                                            <td>{% trans "Bitrate:" %}</td>
-                                            <td class="value"><%= audioBitRate %></td>
-                                            <td>{% trans "Samplerate:" %}</td>
-                                            <td class="value"><%= audioSamplingRate %>Hz</td>
-                                            <td>{% trans "Channel count:" %}</td>
-                                            <td class="value"><%= audioChannelCount %></td>
-                                        </tr>
-                                        <% } %>
-                                    </table>
-                                </div><!-- /.cnxtualMenu -->
-                                <% } %>
-                            </td>
-                            <td><%= filesize %></td>
-                            <td><%= filename %></td>
-                            <td><%= storagename %></td>
-                            <td><% if (download_uri != "" && (name != 'Original' || original_media_online)) { print('<a href="' + download_uri +'">{% trans "Download" %}</a>') } %></td>
-                            <td style="width:2em;">
-                                {% if aclcurrentuser.hasURIWritePermission %}
-                                    {% permissionrequired _item_shape_write %}
-                                        <% if (!original_media_online && name == 'Original') { %>
-                                        <span>Archived</span>
-                                        <% } else if (filename == '') { %>
-                                        <a href="#" class="remove hidden">{% trans "Delete" %}</a>
-                                        <% } else { %>
-                                        <a href="<%= manage_shape_url %>" data-shape-name="<%= name %>" class="manage">{% trans "Manage" %}</a>
-                                        <% } %>
+                {% if item.getShapes %}
+                    {% if aclcurrentuser.hasURIReadPermission %}
+                        <div id="panel_format" class="mdl-card mdl-shadow--2dp panel" style="display:none;">
+                            <div class="panel-header">
+                                <h2>{% trans "Formats" %}</h2>
+                                {% if originalshape and aclcurrentuser.hasURIWritePermission and systemmetadata.mediaType != "data" and item.isOriginalShapeOnline %}
+                                    {% permissionrequired _job_write %}
+                                        <a href="" id="transcodeitem" class="buttonlink">
+                                            <button class="button button-add button-transcode">{% trans "Transcode" %}</button>
+                                        </a>
                                     {% endpermissionrequired %}
                                 {% endif %}
-                            </td>
-                        </script>
+                            </div>
+
+                            <table id="cntmo_prtl_mediaitem_shape_table">
+                                <thead>
+                                <tr>
+                                    <th>{% trans "Name" %}</th>
+                                    <th>{% trans "Format" %}</th>
+                                    <th>{% trans "Filesize" %}</th>
+                                    <th>{% trans "Filename" %}</th>
+                                    <th>{% trans "Storage" %}</th>
+                                    <th style="width:150px;"></th>
+                                    <th style="width:150px;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <td colspan="7" class="imgpreloader" >
+                                    {% if theme == 'onyx' %}
+                                        <img src="{{ STATIC_URL }}img/onyx/icon-ajax-loader.gif">
+                                    {% else %}
+                                        <img src="{{ STATIC_URL }}img/icon-ajax-loader.gif">
+                                    {% endif %}
+                                </td>
+                                </tbody>
+                            </table>
+
+                            <div id="transcodepanel"></div>
+                        </div><!-- #panel_format -->
+                    {% endif %}
+                {% endif %}
+
+                <div id="panel_related" class="mdl-card mdl-shadow--2dp panel" style="display:none;">
+                    <div class="panel-header">
+                        <h2>{% trans "Related Items" %}</h2>
                     </div>
 
-                    <div id="panel_comments"  class="panel" style="display:none;">
-                        <div class="panel-header">
-                            <h2>{% trans "Comments" %}</h2>
-                        </div>
-                        <div class="comments_wrapper"></div>
+                    <div class="related_wrapper"></div>
+                </div><!--#panel_related -->
+
+                {% permissionrequired _job_read %}
+                    <div id="panel_history" class="mdl-card mdl-shadow--2dp panel" style="display:none;">
+                        <div class="panel-header"><h2>{% trans "History" %}</h2></div>
+                        <table class="jobstable" id="jobstbl">
+                            <thead>
+                                <tr class="heading">
+                                    <th>{% trans 'Status' %}</th>
+                                    <th>{% trans 'Type' %}</th>
+                                    <th>{% trans 'Current Step' %}</th>
+                                    <th>{% trans 'Started' %}</th>
+                                    <th>{% trans 'User' %}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!--#panel_history -->
+                {% endpermissionrequired %}
+
+                <div id="panel_acl" class="mdl-card mdl-shadow--2dp panel" style="display:none;">
+                    <div class="panel-header"><h2>{% trans "Access Rights" %}</h2>
+                        {% permissionrequired _administrator %}
+                            <a href="#" id="showhideaudit" class="buttonlink" rel="{% url vs_item_accessrights_ajax item.getId %}" before="{% trans "Show audit" %}" after="{% trans "Show access list" %}"><button class="button">{% trans "Show audit" %}</button></a>
+                        {% endpermissionrequired %}
+                        {% if aclcurrentuser.hasURIWritePermission %}
+                            <a href="#" id="aclmanage" class="buttonlink" rel="{% url vs_acl_form %}"><button class="button button-add button-acl">{% trans "Add Access Rights" %}</button></a>
+                        {% endif %}
+                    </div><!-- .panel-header -->
+                    <table id="access_rights">
+                        <thead>
+                        <th>{% trans "Recipient" %}</th>
+                        <th>{% trans "Permission" %}</th>
+                        <th style="width:150px;"></th>
+                        </thead>
+                        <tbody>
+                        <td colspan="3" class="imgpreloader" >
+                            {% if theme == 'onyx' %}
+                                <img src="{{ STATIC_URL }}img/onyx/icon-ajax-loader.gif">
+                            {% else %}
+                                <img src="{{ STATIC_URL }}img/icon-ajax-loader.gif">
+                            {% endif %}
+                        </td>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                    <table id="audit_access_rights" style="display:none;">
+                        <thead>
+                        <th>{% trans "Recipient" %}</th>
+                        <th>{% trans "Permission" %}</th>
+                        <th>{% trans "Why" %}</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <script type="text/template" id="cntmo_prtl_mediaitem_acl_tmpl">
+                        <td><% if (user != "") { print(user) } else { print(group) } %></td>
+                        <td style="text-transform:capitalize;"><%= permission.toLowerCase() %></td>
+                        <td style="width:2em;">
+                            {% if aclcurrentuser.hasURIWritePermission %}
+                                <% if (permission.toLowerCase() != 'owner'){ %>
+                                <a href="#" class="remove hidden">{% trans "Remove" %}</a>
+                                <% } %>
+                            {% endif %}
+                        </td>
+                    </script>
+                    <script type="text/template" id="cntmo_prtl_mediaitem_history_tmpl">
+                        <td>
+                            <% if (joblink !== '') { %>
+                            <a href="<%= joblink %>"><%= status_label %></a>
+                            <% } else { %>
+                            <%= status_label %>
+                            <% } %>
+                        </td>
+                        <td><%= type %></td>
+                        <td><%= current_step_description %></td>
+                        <td><%= started %></td>
+                        <td><%= user %></td>
+                    </script>
+                    <script type="text/template" id="cntmo_prtl_mediaitem_format_tmpl">
+                        <td><%= name %></td>
+                        <td class="shapeformat" style="cursor:pointer;cursor:hand;"><strong><%= format %></strong>
+                            <% if (format) { %>
+                            <div class="cnxtualMenu"><div class="cnxtualMenu_arrow"></div>
+                                <table>
+                                    <% if (mimetype.indexOf('image') != -1) { %>
+                                    <tr>
+                                        <td>{% trans "Image Type:" %}</td>
+                                        <td class="value"><%= videoCodec %></td>
+                                        <td>{% trans "Resolution:" %}</td>
+                                        <td class="value"><%= videoResolution %>px</td>
+                                    </tr>
+
+                                    <% } else if (mimetype.indexOf('video') != -1 || mimetype.indexOf('application/mxf') != -1) { %>
+                                    <tr>
+                                        <td>{% trans "Video codec:" %}</td>
+                                        <td class="value"><%= videoCodec %></td>
+                                        <td>{% trans "Bitrate:" %}</td>
+                                        <td class="value"><%= videoBitRate %></td>
+                                        <td>{% trans "Framerate:" %}</td>
+                                        <td class="value"><%= videoFPS %>FPS</td>
+                                        <td>{% trans "Resolution:" %}</td>
+                                        <td class="value"><%= videoResolution %>px</td>
+                                        <td>{% trans "Field Order:" %}</td>
+                                        <td class="value"><%= fieldOrder %></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{% trans "Audio codec:" %}</td>
+                                        <td class="value"><%= audioCodec %></td>
+                                        <td>{% trans "Bitrate:" %}</td>
+                                        <td class="value"><%= audioBitRate %></td>
+                                        <td>{% trans "Samplerate:" %}</td>
+                                        <td class="value"><%= audioSamplingRate %>Hz</td>
+                                        <td>{% trans "Channel count:" %}</td>
+                                        <td class="value"><%= audioChannelCount %></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <% } else if (mimetype.indexOf('audio') != -1) { %>
+                                    <tr>
+                                        <td>{% trans "Audio codec:" %}</td>
+                                        <td class="value"><%= audioCodec %></td>
+                                        <td>{% trans "Bitrate:" %}</td>
+                                        <td class="value"><%= audioBitRate %></td>
+                                        <td>{% trans "Samplerate:" %}</td>
+                                        <td class="value"><%= audioSamplingRate %>Hz</td>
+                                        <td>{% trans "Channel count:" %}</td>
+                                        <td class="value"><%= audioChannelCount %></td>
+                                    </tr>
+                                    <% } %>
+                                </table>
+                            </div><!-- /.cnxtualMenu -->
+                            <% } %>
+                        </td>
+                        <td><%= filesize %></td>
+                        <td><%= filename %></td>
+                        <td><%= storagename %></td>
+                        <td><% if (download_uri != "" && (name != 'Original' || original_media_online)) { print('<a href="' + download_uri +'">{% trans "Download" %}</a>') } %></td>
+                        <td style="width:2em;">
+                            {% if aclcurrentuser.hasURIWritePermission %}
+                                {% permissionrequired _item_shape_write %}
+                                    <% if (!original_media_online && name == 'Original') { %>
+                                    <span>Archived</span>
+                                    <% } else if (filename == '') { %>
+                                    <a href="#" class="remove hidden">{% trans "Delete" %}</a>
+                                    <% } else { %>
+                                    <a href="<%= manage_shape_url %>" data-shape-name="<%= name %>" class="manage">{% trans "Manage" %}</a>
+                                    <% } %>
+                                {% endpermissionrequired %}
+                            {% endif %}
+                        </td>
+                    </script>
+                </div>
+
+                <div id="panel_comments" class="mdl-card mdl-shadow--2dp panel" style="display:none;">
+                    <div class="panel-header">
+                        <h2>{% trans "Comments" %}</h2>
                     </div>
+                    <div class="comments_wrapper"></div>
                 </div>
             </div>
         </div><!-- .row -->

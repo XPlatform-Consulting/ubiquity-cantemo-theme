@@ -1,12 +1,12 @@
 cntmo.prtl.ViewClass = Backbone.View.extend({
     render: function() {
-        return this
+        return this, this.$el.css("display", "flex")
     },
     hide: function(speed) {
         return this.$el.hide(speed), this.$el.addClass("hidden"), this
     },
     show: function(speed, renderifshowing) {
-        return this.isHidden === !0 ? this.render() : (void 0 === renderifshowing || renderifshowing === !0) && this.render(), this.$el.show(speed), this.$el.removeClass("hidden"), this
+        return this.isHidden === !0 ? this.render() : (void 0 === renderifshowing || renderifshowing === !0) && this.render(), this.$el.show(speed), this.$el.removeClass("hidden"), this, this.$el.css("display", "flex")
     },
     isHidden: function() {
         return this.$el.hasClass("hidden")
@@ -16,7 +16,7 @@ cntmo.prtl.ViewClass = Backbone.View.extend({
         void 0 === this.options && (this.options = options || {}), this.viewurl = this.options.url, _.bindAll(this, "render"), this.bind("render", this.render)
     },
     render: function() {
-        return this.$el.load(this.viewurl), this.$el.html(""), this
+        return this.$el.load(this.viewurl), this.$el.html(""), this, this.$el.css("display", "flex")
     }
 }), cntmo.prtl.views.ShapeManage = Backbone.View.extend({
     events: function() {
@@ -158,8 +158,7 @@ function(Item, $, undefined) {
             return $(event.target).panelMgr({
                 contextMenu: "li",
                 el: event.target,
-                panelName: "mv_panel",
-                console.log(event.target)
+                panelName: "mv_panel"
             }), $(event.target).is("[shortcut]") ? this.router.navigate($(event.target).attr("shortcut"), {
                 trigger: !1,
                 replace: !0
@@ -458,8 +457,13 @@ function(Item, $, undefined) {
                 };
             self.$dialogEl = $("<div></div>"), self.$dialogEl.load(self.definedurls.cloneitemurl).dialog(standardOptions)
         }
-    }), 
-    Item.MediaItemThumbnailPanel = cntmo.prtl.ViewClassLoad.extend(), 
+    }),
+    Item.MediaItemThumbnailPanel = cntmo.prtl.ViewClassLoad.extend({
+        render: function() {
+            // a silly way of calling the parent methods, but whatever
+            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex")
+        }
+    }),     
     Item.MediaItemPreviewPanel = cntmo.prtl.ViewClass.extend(), 
     Item.MediaItemPosterPanel = cntmo.prtl.ViewClassLoad.extend(), 
     Item.MediaItemMetadataPanel = cntmo.prtl.ViewClass.extend(), 
@@ -512,7 +516,7 @@ function(Item, $, undefined) {
                 success: function() {
                     this.$("td.imgpreloader").hide()
                 }
-            }), this
+            }), this.$el.css("display", "flex"), this
         },
         addOne: function(shape) {
             var view = new cntmo.prtl.Item.ShapeView({
@@ -560,7 +564,7 @@ function(Item, $, undefined) {
                         active: !1
                     })
                 }
-            }), this
+            }), this.$el.css("display", "flex"), this
         }
     }), 
     Item.MediaItemHistoryPanel = cntmo.prtl.ViewClass.extend({
@@ -575,7 +579,7 @@ function(Item, $, undefined) {
                 success: function() {
                     this.$("td.imgpreloader").hide()
                 }
-            }), this
+            }), this.$el.css("display", "flex"), this
         },
         addOne: function(job) {
             var view = new cntmo.prtl.Item.HistoryView({
@@ -603,7 +607,7 @@ function(Item, $, undefined) {
                 success: function() {
                     this.$("td.imgpreloader").hide()
                 }
-            }), this.auditshowing = !1, this.$("#aclmanage").show(), this
+            }), this.auditshowing = !1, this.$("#aclmanage").show(), this.$el.css("display", "flex"), this
         },
         addOne: function(ACL) {
             var view = new cntmo.prtl.Item.ACLView({
@@ -658,7 +662,7 @@ function(Item, $, undefined) {
         },
         render: function() {
             var url, self = this;
-            return this.options.share !== undefined ? (url = self.options.url + "?asset_id=" + self.options.share.asset_id, url += "&email_address=" + self.options.share.email_address, url += "&unique_key=" + self.options.share.unique_key) : url = self.options.url, this.$el.find(".comments_wrapper").load(url), this
+            return this.options.share !== undefined ? (url = self.options.url + "?asset_id=" + self.options.share.asset_id, url += "&email_address=" + self.options.share.email_address, url += "&unique_key=" + self.options.share.unique_key) : url = self.options.url, this.$el.find(".comments_wrapper").load(url), this.$el.css("display", "flex"), this
         },
         submitForm: function(event) {
             event.preventDefault(event);
@@ -804,7 +808,7 @@ function(Item, $, undefined) {
             })
         },
         render: function() {
-            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this.$cnxtualMenu = this.$el.find(".cnxtualMenu"), this.$cnxtualMenu_arrow = this.$el.find(".cnxtualMenu_arrow"), this
+            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this.$cnxtualMenu = this.$el.find(".cnxtualMenu"), this.$cnxtualMenu_arrow = this.$el.find(".cnxtualMenu_arrow"), this.$el.css("display", "flex"), this
         }
     }), 
     Item.HistoryView = Backbone.View.extend({
@@ -813,7 +817,7 @@ function(Item, $, undefined) {
             this.template = _.template($("#cntmo_prtl_mediaitem_history_tmpl").html()), _.bindAll(this, "render"), this.model.bind("change", this.render), this.model.view = this
         },
         render: function() {
-            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this
+            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this.$el.css("display", "flex"), this
         }
     }), 
     Item.ACLView = Backbone.View.extend({
@@ -836,7 +840,7 @@ function(Item, $, undefined) {
             this.template = _.template($("#cntmo_prtl_mediaitem_acl_tmpl").html()), _.bindAll(this, "render"), this.model.bind("change", this.render), this.model.view = this
         },
         render: function() {
-            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this
+            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this.$el.css("display", "flex"), this
         }
     })
 }(cntmo.prtl.Item = cntmo.prtl.Item || {}, jQuery);
