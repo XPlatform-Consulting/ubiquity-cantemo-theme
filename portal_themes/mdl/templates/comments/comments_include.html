@@ -1,0 +1,80 @@
+{% load mptt_tags i18n comments users %}
+
+<div class="panel-header mdl-card__title mdl-card--border">
+    <h3 class="mdl-card__title-text">{% trans "Comments" %}</h3>
+</div>
+
+<div class="mdl-card__supporting-text">
+{% if comments %}
+    {% recursetree comments %}
+    {% if node.is_public or user.is_authenticated %}
+        <div id="comment{{ node.id }}" class="comment">
+            <a name="comment{{ node.id }}"></a>
+
+            <section class="comment-body">
+                <div class="comment-avatar">
+                    {% get_avatar_image node.user %}
+                    <strong>{{ node.user.get_full_name|default:node.user|default:node.user_email }}</strong>
+                </div>
+
+                {% if node.is_removed %}
+                    <div class="comment-text" rel="{{ node.id }}"> {% trans "-- Comment Removed --" %}</div>
+                {% else %}
+                    <div class="comment-text {% spaceless %}{% if not node.is_removed %}
+                                    {% if node.user == request.user %}
+                                        commentEditable
+                                    {% else %}
+                                        {% if sharelink and not request.user.is_authenticated %}
+                                            {% if node.user_email == sharelink.email_address %}
+                                                commentEditable
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}{% endspaceless %}"
+                          rel="{{ node.id }}">{{ node.comment|linebreaksbr }}</div>
+                {% endif %}
+
+                <div class="comment-time">
+                    <time>{% trans "Posted" %}: {{ node.datetime_created|timesince }} {% trans "ago" %}</time>
+
+                    {% if node.datetime_modified %}
+                        <time class="modified">
+                            {% if node.is_removed %}
+                                {% trans "Deleted" %}
+                            {% else %}
+                                {% trans "Modified" %}
+                            {% endif %}
+                        : {{ node.datetime_modified|timesince }} {% trans "ago" %}</time>
+                    {% endif %}
+                </div>
+
+                <div class="comment-actions">
+                    <a href="{{ object.get_absolute_url }}#comments/c{{ node.id }}">{% trans "Direct Link" %}<a> |
+                    <a href="#" class="replyToComment" rel="{{ node.id }}" ref="comment{{ node.id }}">{% trans "Reply" %}</a>
+                    {% if request.user == node.user and not node.is_removed %}
+                        | <a href="#" class="deleteComment" rel="{{ node.id }}" ref="comment{{ node.id }}">{% trans "Delete" %}</a>
+                    {% endif %}
+                </div>
+            </section>
+
+            <div class="commentsCommentFormInlineHolder"></div>
+
+            {# recursion! children of a given comment #}
+            {% if not node.is_leaf_node %}
+                <div class="comment-children" style="margin-left: 32px;">
+                    {{ children }}
+                </div>
+            {% endif %}
+
+        </div>
+    {% endif %}
+    {% endrecursetree %}
+
+{% else %}
+    <p>{% trans "There are no comments right now" %}</p>
+{% endif %}
+</div>
+
+<div class="commentsFormHolder mdl-card__actions mdl-card--border">
+    {% render_comment_form for asset_type asset_id asset_version %}
+</div>

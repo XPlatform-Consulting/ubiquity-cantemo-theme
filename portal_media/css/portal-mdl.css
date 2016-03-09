@@ -111,6 +111,9 @@ form li:after {
     border-top: 4px solid #3F51B5 !important;
     border-bottom: 4px solid #3F51B5 !important;
 }
+#main-row {
+    height: 52px;
+}
 #main-nav.mdl-navigation > .mdl-navigation__link:hover {
     border-top: 4px solid transparent;
     border-bottom: 4px solid transparent;
@@ -153,6 +156,7 @@ form li:after {
     padding: 0 40px;
 }
 #content {
+    padding-top: 24px;
     padding-bottom: 16px;
 }
 
@@ -263,15 +267,26 @@ label.search-size {
 
 /** Media View
 **********************************************/
+#media-header {
+    height: 48px;
+}
 .panel-wrap {
-    padding: 8px;
+    padding-bottom: 24px;
 }
 #player-wrap {
     margin-left: 0;
-    margin-right: 24px;
+    margin-right: 16px;
 }
 #player-card {
     width: 100%;
+    height: 100%;
+}
+#player-card .mdl-card__supporting-text {
+    width: calc(100% - 48px);
+    /* for aligning the content inside, in the middle,
+    because i took away the margin on the left side,
+    inspect element with hightlight on to see what i mean */
+    padding: 16px 24px;
 }
 #player {
     width: 100% !important;
@@ -280,7 +295,11 @@ label.search-size {
 #noflashnotice a > br {
     display: none;
 }
+#player-0-video video {
+    width: 100%;
+}
 .itemmenu.mdl-cell {
+    margin-left: 16px;
     margin-right: 0;
 }
 #panel_preview.panel {
@@ -298,6 +317,7 @@ label.search-size {
 }
 #media-info-card {
     width: 100%;
+
 }
 #media-info-card dl {
     margin: 0;
@@ -320,7 +340,7 @@ label.search-size {
     margin-left: 10px;
 }
 #panel-content-card {
-    
+
 }
 #panel-content-card > div {
     width: 100%;
@@ -328,8 +348,109 @@ label.search-size {
 #panel_thumbnails {
     width: 100%;
 }
+#panel_format .mdl-card__title {
+    justify-content: space-between;
+}
+#panel_format .mdl-card__title h3,
+#panel_history .mdl-card__title h3,
+#panel_acl .mdl-card__title h3 {
+    margin: 0;
+}
+#panel_format {
+    overflow: visible;
+}
+#format-info {
+    overflow: inherit;
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+}
+/*
+#cntmo_prtl_mediaitem_shape_table {
+    text-align: left;
+    width: 100%;
+}
+#cntmo_prtl_mediaitem_shape_table > tbody > tr {
+    padding-bottom: 4px;
+}
+#cntmo_prtl_mediaitem_shape_table tr:last-child {
+    padding-bottom: 0;
+}
+#cntmo_prtl_mediaitem_shape_table th {
+    padding-right: 16px;
+}
+#cntmo_prtl_mediaitem_shape_table th:last-child {
+    padding-right: 0;
+}
+*/
+#cntmo_prtl_mediaitem_shape_table {
+    white-space: normal;
+    width: 100%;
+}
+.cnxtualMenu {
+    z-index: 100;
+}
+#cntmo_prtl_mediaitem_shape_table > tbody > tr:first-child {
+    display: none;
+}
+.imgpreloader {
+    display: none;
+}
+.shapeformat {
+    cursor: hand;
+}
+.cnxtualMenu {
+    text-align: left;
+    vertical-align: top;
+    display: none;
+    position: absolute;
+    padding: 4px;
+    background: #fff;
+    -webkit-transition: opacity .2s ease-in;
+    -moz-transition: opacity .2s ease-in;
+    -o-transition: opacity .2s ease-in;
+    transition: opacity .2s ease-in;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(0,0,0, 0.4);
+    border-radius: 2px;
+}
+.cnxtualMenu-show {
+    opacity: 1;
+    display: inline-block;
+}
+.cnxtualMenu_arrow {
+    display: none;
+}
+.cnxtualMenu table td {
+    padding: 8px;
+}
+.cnxtualMenu table td:first-child {
+    padding-left: 8px;
+}
+.cnxtualMenu table td:nth-child(odd) {
+    font-weight: 600;
+    padding-right: 0;
+}
+.cnxtualMenu table td:nth-child(even) {
+    padding-right: 8px;
+}
+.cnxtualMenu table td:last-child {
 
+}
+#transcodepanel > * {
+    padding-top: 16px;
+}
+#jobstbl {
+    text-align: left;
+    width: 100%;
+}
+.table-wrap {
+    box-sizing: border-box;
+    width: 100% !important;
+}
+#panel_acl {
 
+}
 
 
 
@@ -434,8 +555,8 @@ label.search-size {
 .metadatafieldwrapper .select2-search-field .select2-input {
     min-width: 200px;
 }
-.fld_help_txt, 
-.formmain div.fld_help_txt, 
+.fld_help_txt,
+.formmain div.fld_help_txt,
 .formmain div div.fld_help_txt {
     vertical-align: top;
     position: absolute;
@@ -457,9 +578,9 @@ label.search-size {
     display: inline;
     opacity: 1;
 }
-.select2-container, 
-.select2-drop, 
-.select2-search, 
+.select2-container,
+.select2-drop,
+.select2-search,
 .select2-search input {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -502,9 +623,9 @@ label.search-size {
 .select2-container ul {
     padding: 0;
 }
-#metadataform ul.metadatafieldwrapper ul.select2-choices, 
-.metadataform ul.metadatafieldwrapper ul.select2-choices, 
-#metadataform ul.metadatafieldwrapper li.choice_wrapper, 
+#metadataform ul.metadatafieldwrapper ul.select2-choices,
+.metadataform ul.metadatafieldwrapper ul.select2-choices,
+#metadataform ul.metadatafieldwrapper li.choice_wrapper,
 .metadataform ul.metadatafieldwrapper li.choice_wrapper {
     width: 37em;
     display: inline-block;
@@ -1183,4 +1304,91 @@ img {
     background: #fff;
     color: #4b4b4b;
     visibility: visible;
+}
+
+#panel_comments .comments_wrapper {
+    width: 100%;
+}
+#panel_comments .comment-body form {
+    display: flex;
+    flex-wrap: wrap;
+}
+#panel_comments .mdl-card__supporting-text {
+    box-sizing: border-box;
+    width: 100%;
+}
+#panel_comments .mdl-card__supporting-text > .comment {
+    margin-bottom: 15px;
+    border-bottom: 1px solid;
+    border-bottom-color: #ccc;
+}
+#panel_comments .mdl-card__supporting-text > .comment:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+#panel_comments .comment {
+
+}
+#panel_comments .comment .submit {
+    margin: 0;
+}
+#panel_comments .comment .comment-body {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 0;
+}
+#panel_comments .comment .comment-body > * {
+    padding-bottom: 10px;
+}
+#panel_comments .comment .comment-body .comment-text {
+    flex: 1 auto;
+    font-size: 18px;
+    margin-top: 5px;
+}
+#panel_comments .comment .comment-body .comment-text.commentEditable {
+    cursor: text;
+}
+#panel_comments .comment .comment-body .comment-time {
+    font-size: 10px;
+}
+#panel_comments .comment .comment-body .comment-time time.modified {
+    padding-left: 5px;
+}
+#panel_comments .comment .comment-body .comment-time,
+#panel_comments .comment .comment-body .comment-actions {
+    flex: 1 100%;
+}
+#panel_comments .comment .comment-body .comment-avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: 10px;
+}
+#panel_comments .comment .comment-body .comment-avatar .user-avatar-wrapper {
+    max-width: 48px;
+}
+#panel_comments .comment .comment-body .comment-avatar .user-avatar-wrapper > * {
+    max-width: inherit;
+    height: auto;
+}
+#panel_comments .commentsFormHolder.mdl-card__actions .comment-fields {
+    display: flex;
+    flex-wrap: wrap;
+}
+#panel_comments .commentsFormHolder.mdl-card__actions .comment-fields .user-avatar-wrapper {
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+#panel_comments .commentsFormHolder.mdl-card__actions .comment-fields #comment-submit {
+    flex: 1 100%;
+    padding-top: 10px;
+}
+#panel_comments .commentsFormHolder.mdl-card__actions .mdl-textfield {
+    padding: 0;
+}
+#panel_comments .commentsFormHolder.mdl-card__actions .mdl-textfield textarea {
+    resize: both;
+}
+#panel_comments .commentsFormHolder.mdl-card__actions .mdl-textfield label {
+    top: 5px;
 }

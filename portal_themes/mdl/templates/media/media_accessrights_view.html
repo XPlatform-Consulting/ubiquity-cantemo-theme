@@ -1,0 +1,44 @@
+{% load i18n %}
+{% block content %}
+{% for acl in accessrights %}
+	<tr rel={{ forloop.counter0 }}>
+		<td class="acl_image mdl-data-table__cell--non-numeric" style="vertical-align:top;">
+			<img src="{{ STATIC_URL }}img/icon-user.png" class="user">
+			<input type="hidden" value="{{acl.access.getId}}" name="access_id">
+			{% permissionrequired _administrator %}
+				<a href="{% url vs_user_view acl.name %}"><input type="hidden" value="{{ acl.name }}" name="username">{{ acl.name }}</a></td>
+			{% else %}
+				<input type="hidden" value="{{ acl.name }}" name="username">{{ acl.name }}</td>
+			{% endpermissionrequired %}
+		<td class="acl_permission mdl-data-table__cell--non-numeric" style="vertical-align:top;"><input type="hidden" value="{{ acl.accesses.0.getPermission }}" name="permission">{{ acl.accesses.0.getPermission }}</td>
+		<td class="acl_why mdl-data-table__cell--non-numeric">							
+			{% if acl.accesses.0 %}
+			<ul>
+				{% comment %}<li>{% trans 'User access is of type ' %}{{ acl.accesses.0.getType }}{% trans ' and permission ' %}{{ acl.accesses.0.getPermission }}</li>{% endcomment %}
+				{% if acl.accesses.0.getGroup %}
+					<li>{% trans 'The user has this access by being a member of the group ' %}
+					{% permissionrequired _administrator %}
+						<a href="{% url vs_group_view acl.accesses.0.getGroup %}">{{ acl.accesses.0.getGroup }}</a>
+					{% else %}
+						{{ acl.accesses.0.getGroup }}
+					{% endpermissionrequired %}
+					</li>
+				{% endif %}
+				<li>{% trans 'These rights are given through '%}
+				{% if acl.accesses.0.getCollection %}
+					{% trans 'the collection ' %}<a href="{% url vs_collection acl.accesses.0.getCollection %}">{{ acl.accesses.0.getCollection }}</a>
+				{% else %}
+					{% if acl.accesses.0.getLibrary %}
+						{% trans 'the library ' %} {{ acl.accesses.0.getLibrary }}
+					{% else %}
+						{% trans 'direct access to the item.' %}
+					{% endif %}
+				{% endif %}
+				</li>
+			</ul>
+			{% endif %}
+		</td>
+	</tr>
+{% endfor %}
+{% endblock content %}
+

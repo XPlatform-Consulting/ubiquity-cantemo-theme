@@ -1,12 +1,12 @@
 cntmo.prtl.ViewClass = Backbone.View.extend({
     render: function() {
-        return this, this.$el.css("display", "flex")
+        return this
     },
     hide: function(speed) {
         return this.$el.hide(speed), this.$el.addClass("hidden"), this
     },
     show: function(speed, renderifshowing) {
-        return this.isHidden === !0 ? this.render() : (void 0 === renderifshowing || renderifshowing === !0) && this.render(), this.$el.show(speed), this.$el.removeClass("hidden"), this, this.$el.css("display", "flex")
+        return this.isHidden === !0 ? this.render() : (void 0 === renderifshowing || renderifshowing === !0) && this.render(), this.$el.show(speed), this.$el.removeClass("hidden"), this
     },
     isHidden: function() {
         return this.$el.hasClass("hidden")
@@ -16,7 +16,7 @@ cntmo.prtl.ViewClass = Backbone.View.extend({
         void 0 === this.options && (this.options = options || {}), this.viewurl = this.options.url, _.bindAll(this, "render"), this.bind("render", this.render)
     },
     render: function() {
-        return this.$el.load(this.viewurl), this.$el.html(""), this, this.$el.css("display", "flex")
+        return this.$el.load(this.viewurl), this.$el.html(""), this
     }
 }), cntmo.prtl.views.ShapeManage = Backbone.View.extend({
     events: function() {
@@ -72,7 +72,7 @@ function(Item, $, undefined) {
             "comments/c:id": "viewcomments"
         },
         viewcomments: function(id) {
-            $("nav.mi_contextmenu a").find("selected").removeClass("selected"), 
+            $("nav.mi_contextmenu a").find("selected").removeClass("selected"),
             $("a#mv_comments_a").panelMgr({
                 contextMenu: "li",
                 el: event.target,
@@ -82,7 +82,7 @@ function(Item, $, undefined) {
             }, 1e3)
         },
         clickPanel: function() {
-            $("#mv_posters_a").click(), 
+            $("#mv_posters_a").click(),
             this.parentView.$el.find("#" + Backbone.history.fragment).click()
         }
     }), Item.MediaViewPage = Backbone.View.extend({
@@ -104,29 +104,29 @@ function(Item, $, undefined) {
             "click a.share_item": "shareItem"
         },
         initialize: function(options) {
-            this.options = options || {}, 
-            this.model = options.model, 
-            this.definedurls = options.definedurls || {}, 
-            this.panels = options.panels, 
-            this.message_strings = options.message_strings, 
+            this.options = options || {},
+            this.model = options.model,
+            this.definedurls = options.definedurls || {},
+            this.panels = options.panels,
+            this.message_strings = options.message_strings,
             this.router = new Item.MediaViewRouter({
                 parentView: this
-            }), 
-            this.initializePanelRouters(), 
-            options.initializePanels === !0 && this.model !== undefined && this.initializePanels(), 
-            this.views = {}, 
+            }),
+            this.initializePanelRouters(),
+            options.initializePanels === !0 && this.model !== undefined && this.initializePanels(),
+            this.views = {},
             $(".title_editable").editinplace();
-            
+
             var self = this;
             var mainPlayer = $(cntmo.app.players.mainPlayer);
-            if (mainPlayer.on("grabStill", function(ev, timeObject) { self.grabStill(ev, timeObject) }), 
-                cntmo.app.players !== undefined && cntmo.app.players.mainPlayer !== undefined) 
+            if (mainPlayer.on("grabStill", function(ev, timeObject) { self.grabStill(ev, timeObject) }),
+                cntmo.app.players !== undefined && cntmo.app.players.mainPlayer !== undefined)
             {
                 var queryDict = {};
                 location.search.substr(1).split("&").forEach(function(item) {
                     queryDict[item.split("=")[0]] = item.split("=")[1]
-                }), 
-                queryDict.hasOwnProperty("startTimecode") && 
+                }),
+                queryDict.hasOwnProperty("startTimecode") &&
                 $(cntmo.app.players.mainPlayer.timeline.currentClip().video).on("canplay", function() {
                     cntmo.app.players.mainPlayer.setCurrentTC(new Timecode({
                         smpte: queryDict.startTimecode
@@ -143,7 +143,7 @@ function(Item, $, undefined) {
         initializePanelRouters: function() {
             var self = this;
             self.$el.find("#mi_contextmenu a").each(function(idx, el) {
-                $(el).is("[shortcut]") || $(el).attr("shortcut", "shortcut" + $(el).attr("id")), 
+                $(el).is("[shortcut]") || $(el).attr("shortcut", "shortcut" + $(el).attr("id")),
                 self.router.route($(el).attr("shortcut"), function() {
                     $(document).ready(function() {
                         self.$el.find("#mi_contextmenu").find('[shortcut="' + Backbone.history.fragment + '"]').click()
@@ -461,28 +461,43 @@ function(Item, $, undefined) {
     Item.MediaItemThumbnailPanel = cntmo.prtl.ViewClassLoad.extend({
         render: function() {
             // a silly way of calling the parent methods, but whatever
-            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex")
+            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex");
         }
-    }),     
-    Item.MediaItemPreviewPanel = cntmo.prtl.ViewClass.extend(), 
-    Item.MediaItemPosterPanel = cntmo.prtl.ViewClassLoad.extend(), 
-    Item.MediaItemMetadataPanel = cntmo.prtl.ViewClass.extend(), 
+    }),
+    Item.MediaItemPreviewPanel = cntmo.prtl.ViewClass.extend({
+        render: function() {
+            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex");
+        },
+        show: function() {
+            return this.constructor.__super__.show.call(this), this.$el.css("display", "flex");
+        }
+    }),
+    Item.MediaItemPosterPanel = cntmo.prtl.ViewClassLoad.extend(),
+    Item.MediaItemMetadataPanel = cntmo.prtl.ViewClass.extend(),
     Item.MediaItemVersionsPanel = cntmo.prtl.ViewClass.extend({
         el: "div",
         initialize: function(options) {
-            this.options = options || {}, this.collection = new Backbone.Collection([], {
+            this.options = options || {};
+            this.collection = new Backbone.Collection([], {
                 url: this.options.url
-            }), _.bindAll(this, "render", "closeViewPanel"), this.collection.bind("add", this.addOne), this.collection.bind("reset", this.addAll), this.bind("render", this.render), this.$el = $(".versionsmenu"), this.url = options.url || "versions/", this.currentSelectedVersion = options.currentSelectedVersion || ""
+            });
+            _.bindAll(this, "render", "closeViewPanel");
+            this.collection.bind("add", this.addOne);
+            this.collection.bind("reset", this.addAll);
+            this.bind("render", this.render);
+            this.$el = $(".versionsmenu");
+            this.url = options.url || "versions/";
+            this.currentSelectedVersion = options.currentSelectedVersion || "";
         },
         render: function() {
             var self = this,
                 url = self.url;
-            self.$el.removeClass("hidden").show(), 
-            self.$el.find("container").html(""), 
+            self.$el.removeClass("hidden").show(),
+            self.$el.find("container").html(""),
             $("#mi_contextmenu").on("click", "a", function() {
                 self.closeViewPanel()
-            }), "" !== self.currentSelectedVersion && 
-                (url += "?currentSelectedVersion=" + self.currentSelectedVersion), 
+            }), "" !== self.currentSelectedVersion &&
+                (url += "?currentSelectedVersion=" + self.currentSelectedVersion),
                 $.ajax(url, {
                     beforeSend: function() {
                         $(".loading-icon").show(), $(".itemmenu").hide()
@@ -491,8 +506,8 @@ function(Item, $, undefined) {
                         $(".loading-icon").hide(), self.$el.find(".versions").html(data), self.$el.show()
                     },
                     error: function() {
-                        $.growl("There was an error loading up versions", "error"), 
-                        $(".loading-icon").hide(), 
+                        $.growl("There was an error loading up versions", "error"),
+                        $(".loading-icon").hide(),
                         self.$el.find(".versions").html("")
                     }
             })
@@ -500,15 +515,15 @@ function(Item, $, undefined) {
         closeViewPanel: function() {
             return $("#mi_contextmenu").off("click", "a"), $(".itemmenu").show(), !0
         }
-    }), 
+    }),
     Item.MediaItemFormatsPanel = cntmo.prtl.ViewClass.extend({
         initialize: function(options) {
             this.options = options || {}, this.collection = new cntmo.prtl.Item.ShapeCollection([], {
                 url: this.options.url
-            }), 
-            _.bindAll(this, "addOne", "addAll", "render"), 
-            this.collection.bind("add", this.addOne), 
-            this.collection.bind("reset", this.addAll), 
+            }),
+            _.bindAll(this, "addOne", "addAll", "render"),
+            this.collection.bind("add", this.addOne),
+            this.collection.bind("reset", this.addAll),
             this.bind("render", this.render)
         },
         render: function() {
@@ -516,7 +531,7 @@ function(Item, $, undefined) {
                 success: function() {
                     this.$("td.imgpreloader").hide()
                 }
-            }), this.$el.css("display", "flex"), this
+            }), this
         },
         addOne: function(shape) {
             var view = new cntmo.prtl.Item.ShapeView({
@@ -546,7 +561,7 @@ function(Item, $, undefined) {
                 })
             }, 5e3)
         }
-    }), 
+    }),
     Item.MediaItemRelatedPanel = cntmo.prtl.ViewClassLoad.extend({
         render: function() {
             var self = this;
@@ -564,14 +579,18 @@ function(Item, $, undefined) {
                         active: !1
                     })
                 }
-            }), this.$el.css("display", "flex"), this
+            }), this
         }
-    }), 
+    }),
     Item.MediaItemHistoryPanel = cntmo.prtl.ViewClass.extend({
         initialize: function(options) {
             this.options = options || {}, this.collection = new cntmo.prtl.Item.JobCollection([], {
                 url: this.options.url
-            }), _.bindAll(this, "addOne", "addAll", "render"), this.collection.bind("add", this.addOne), this.collection.bind("reset", this.addAll), this.bind("render", this.render)
+            }),
+            _.bindAll(this, "addOne", "addAll", "render"),
+            this.collection.bind("add", this.addOne),
+            this.collection.bind("reset", this.addAll),
+            this.bind("render", this.render)
         },
         render: function() {
             return this.collection.fetch({
@@ -579,7 +598,7 @@ function(Item, $, undefined) {
                 success: function() {
                     this.$("td.imgpreloader").hide()
                 }
-            }), this.$el.css("display", "flex"), this
+            }), this
         },
         addOne: function(job) {
             var view = new cntmo.prtl.Item.HistoryView({
@@ -590,7 +609,7 @@ function(Item, $, undefined) {
         addAll: function() {
             this.$("#jobstbl tbody").html(""), this.collection.each(this.addOne)
         }
-    }), 
+    }),
     Item.MediaItemACLPanel = cntmo.prtl.ViewClass.extend({
         events: {
             "click #aclmanage": "loadacladd",
@@ -607,7 +626,7 @@ function(Item, $, undefined) {
                 success: function() {
                     this.$("td.imgpreloader").hide()
                 }
-            }), this.auditshowing = !1, this.$("#aclmanage").show(), this.$el.css("display", "flex"), this
+            }), this.auditshowing = !1, this.$("#aclmanage").show(), this
         },
         addOne: function(ACL) {
             var view = new cntmo.prtl.Item.ACLView({
@@ -648,21 +667,33 @@ function(Item, $, undefined) {
                 }
             })
         }
-    }), 
+    }),
     Item.MediaItemCommentsPanel = cntmo.prtl.ViewClass.extend({
         tagName: "div",
         events: {
             "click .submit-post": "submitForm",
             "click .replyToComment": "replyToComment",
             "click .deleteComment": "deleteComment",
-            "click main.commentEditable": "editComment"
+            "click .commentEditable": "editComment"
         },
         initialize: function(options) {
             this.options = options || {}, _.bindAll(this, "render", "submitForm", "replyToComment")
         },
         render: function() {
-            var url, self = this;
-            return this.options.share !== undefined ? (url = self.options.url + "?asset_id=" + self.options.share.asset_id, url += "&email_address=" + self.options.share.email_address, url += "&unique_key=" + self.options.share.unique_key) : url = self.options.url, this.$el.find(".comments_wrapper").load(url), this.$el.css("display", "flex"), this
+            var url;
+
+            if (this.options.share !== undefined) {
+                url = this.options.url +
+                      "?asset_id=" + this.options.share.asset_id +
+                      "&email_address=" + this.options.share.email_address +
+                      "&unique_key=" + this.options.share.unique_key;
+            } else {
+                url = this.options.url;
+            }
+
+            console.log(this);
+            return this.$el.find(".comments_wrapper").load(url),
+                   this
         },
         submitForm: function(event) {
             event.preventDefault(event);
@@ -713,9 +744,13 @@ function(Item, $, undefined) {
             var cancelButton, updateButton, buttonWrapper, textarea, self = this,
                 targetEl = $(event.target),
                 html = targetEl.html();
-            targetEl.hasClass("commentEditable") && targetEl.find("textarea.commentEditing").length < 1 && (textarea = $("<textarea>").html(html), buttonWrapper = $('<div class="buttonWrapper">'), cancelButton = $('<input type="reset" class="comment-canceledit" value="' + gettext("Cancel") + '">').on("click", function(event) {
+            console.log(targetEl);
+            targetEl.hasClass("commentEditable") && targetEl.find("textarea.commentEditing").length < 1 && (textarea = $("<textarea>").html(html),
+            buttonWrapper = $('<div class="buttonWrapper">'),
+            cancelButton = $('<input type="reset" class="comment-canceledit" value="' + gettext("Cancel") + '">').on("click", function(event) {
                 event.preventDefault(), targetEl.html(html)
-            }), updateButton = $('<input type="submit" class"comment-update" value="' + gettext("Update") + '">').on("click", function(event) {
+            }),
+            updateButton = $('<input type="submit" class"comment-update" value="' + gettext("Update") + '">').on("click", function(event) {
                 event.preventDefault();
                 var comment_data = {
                     comment: textarea.val()
@@ -739,7 +774,8 @@ function(Item, $, undefined) {
                         $.growl(error_text, "error")
                     }
                 }), $(this).off()
-            }), textarea.addClass("commentEditing"), buttonWrapper.append(updateButton, cancelButton), targetEl.html(textarea).append(buttonWrapper))
+            }),
+            textarea.addClass("commentEditing"), buttonWrapper.append(updateButton, cancelButton), targetEl.html(textarea).append(buttonWrapper))
         },
         deleteComment: function(event) {
             event.preventDefault(event);
@@ -762,11 +798,18 @@ function(Item, $, undefined) {
         },
         replyToComment: function(event) {
             event.preventDefault(event);
-            var self = this,
-                targetEl = $(event.target);
-            self.$commentForm === undefined && (self.$commentForm = self.$el.find(".commentsCommentFormWrapper")), self.$commentDiv !== undefined && (self.$commentDiv.find(".commentsCommentFormWrapper").remove(), self.$commentDiv = undefined), self.$commentDiv = $("#" + targetEl.attr("ref")), self.$commentDiv.find(".commentsCommentFormInlineHolder").append(self.$commentForm.clone()), self.$commentDiv.find("#commentsCommentForm").append('<input type="hidden" name="parent" value="' + targetEl.attr("rel") + '">')
+            var self     = this;
+            var targetEl = $(event.target);
+
+            console.log(this);
+
+            self.$commentForm === undefined && (self.$commentForm = self.$el.find(".commentsCommentFormWrapper")),
+            self.$commentDiv !== undefined && (self.$commentDiv.find(".commentsCommentFormWrapper").remove(), self.$commentDiv = undefined),
+            self.$commentDiv = $("#" + targetEl.attr("ref")),
+            self.$commentDiv.find(".commentsCommentFormInlineHolder").append(self.$commentForm.clone()),
+            self.$commentDiv.find("#commentsCommentForm").append('<input type="hidden" name="parent" value="' + targetEl.attr("rel") + '">')
         }
-    }), 
+    }),
     Item.ShapeView = Backbone.View.extend({
         tagName: "tr",
         events: {
@@ -778,7 +821,9 @@ function(Item, $, undefined) {
             "mouseleave .shapeformat": "removeextraformatinfo"
         },
         initialize: function() {
-            this.template = _.template($("#cntmo_prtl_mediaitem_format_tmpl").html()), _.bindAll(this, "render"), this.model.bind("change", this.render), this.model.view = this, this.$cnxtualMenu = ""
+            this.template = _.template($("#cntmo_prtl_mediaitem_format_tmpl").html()), _.bindAll(this, "render"),
+            this.model.bind("change", this.render),
+            this.model.view = this, this.$cnxtualMenu = ""
         },
         hoverin: function() {
             this.$el.find(".hidden").fadeIn(250)
@@ -788,10 +833,23 @@ function(Item, $, undefined) {
         },
         showextraformatinfo: function() {
             var mimetype = this.model.get("mimetype");
-            if (-1 != mimetype.indexOf("image") || -1 != mimetype.indexOf("video") || -1 != mimetype.indexOf("audio") || -1 != mimetype.indexOf("application/mxf")) {
-                var _pos = this.$cnxtualMenu.parent("td").position(),
-                    _pos_left = (this.$cnxtualMenu.width() / 2, _pos.left - 130 + "px");
-                this.$cnxtualMenu.addClass("cnxtualMenu-show").css("left", _pos_left), this.$cnxtualMenu.addClass("cnxtualMenu-show").css("top", _pos.top + 30 + "px"), this.$cnxtualMenu_arrow.css("left", "136px")
+
+            if (-1 != mimetype.indexOf("image") ||
+                -1 != mimetype.indexOf("video") ||
+                -1 != mimetype.indexOf("audio") ||
+                -1 != mimetype.indexOf("application/mxf")) {
+                    // Have to use the .offset() method because chrome and webkit rendering hierarchy
+                    //  doesn't respect parental position with position: relative when using .position()
+                    var _tr_pos = this.$el.offset();
+                    var _pos = this.$cnxtualMenu.parent("td").offset();
+                    var _pos_left = ((_pos.left - _tr_pos.left - 16) + "px");
+                    var _pos_top = ((_pos.top - _tr_pos.top - 20) + "px");
+
+                    this.$cnxtualMenu.addClass("cnxtualMenu-show");
+                    this.$cnxtualMenu.css({
+                        "left": _pos_left,
+                        "top": _pos_top
+                    });
             }
         },
         removeextraformatinfo: function() {
@@ -808,18 +866,30 @@ function(Item, $, undefined) {
             })
         },
         render: function() {
-            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this.$cnxtualMenu = this.$el.find(".cnxtualMenu"), this.$cnxtualMenu_arrow = this.$el.find(".cnxtualMenu_arrow"), this.$el.css("display", "flex"), this
+            return this.$el.html(this.template(this.model.toJSON())),
+                    "iPad" === navigator.platform ||
+                    "iPhone" === navigator.platform ||
+                    "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"),
+                    this.$cnxtualMenu = this.$el.find(".cnxtualMenu"),
+                    this.$cnxtualMenu_arrow = this.$el.find(".cnxtualMenu_arrow"),
+                    this.$panelFormat = document.querySelector("#panel_format"),
+                    this
         }
-    }), 
+    }),
     Item.HistoryView = Backbone.View.extend({
         tagName: "tr",
         initialize: function() {
-            this.template = _.template($("#cntmo_prtl_mediaitem_history_tmpl").html()), _.bindAll(this, "render"), this.model.bind("change", this.render), this.model.view = this
+            this.template = _.template($("#cntmo_prtl_mediaitem_history_tmpl").html()),
+            _.bindAll(this, "render"),
+            this.model.bind("change", this.render),
+            this.model.view = this
         },
         render: function() {
-            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this.$el.css("display", "flex"), this
+            return this.$el.html(this.template(this.model.toJSON())),
+                    "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"),
+                    this
         }
-    }), 
+    }),
     Item.ACLView = Backbone.View.extend({
         tagName: "tr",
         events: {
@@ -840,7 +910,7 @@ function(Item, $, undefined) {
             this.template = _.template($("#cntmo_prtl_mediaitem_acl_tmpl").html()), _.bindAll(this, "render"), this.model.bind("change", this.render), this.model.view = this
         },
         render: function() {
-            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this.$el.css("display", "flex"), this
+            return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this
         }
     })
 }(cntmo.prtl.Item = cntmo.prtl.Item || {}, jQuery);
