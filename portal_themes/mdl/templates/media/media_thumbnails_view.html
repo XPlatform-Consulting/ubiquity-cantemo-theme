@@ -2,7 +2,9 @@
 
 {% if thumbnails %}
     {% for thumb in thumbnails  %}
-        <img src="{{ thumb }}" class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--4-col-phone" />
+        <div class="imagethumbnailwrapper mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--4-col-phone">
+            <img src="{{ thumb }}" class="" />
+        </div>
     {% endfor %}
 {% else %}
     {% trans "There are currently no thubmnails to show." %}

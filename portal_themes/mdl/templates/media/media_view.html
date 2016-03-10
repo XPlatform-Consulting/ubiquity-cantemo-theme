@@ -26,7 +26,8 @@
 
 {% block heading %}
 <div id="media-header">
-    <span class="mdl-layout-title {% if aclcurrentuser.hasURIWritePermission and user|has_role:"_metadata_write" %}title_editable{%endif%}" rel="{% url item_update_metadata_field item.getId 'title' %}" ref="{{ item.getId }}">{% if item.getTitle %}{{ item.getTitle }}{% else %}{{ item.getId }}{% endif %}</span>
+    <span id="media-header__title" class="mdl-layout-title {% if aclcurrentuser.hasURIWritePermission and user|has_role:"_metadata_write" %}title_editable{%endif%}" rel="{% url item_update_metadata_field item.getId 'title' %}" ref="{{ item.getId }}">{% if item.getTitle %}{{ item.getTitle }}{% else %}{{ item.getId }}{% endif %}</span>
+    <div class="mdl-tooltip mdl-tooltip--large" for="media-header__title">Click to edit</div>
 
     <div class="mdl-layout-spacer"></div>
 
@@ -99,6 +100,7 @@
 
 </div>
 <script>
+/* moves the #media-header to the main nav bar as a second row */
 var mediaHeader = document.querySelector('#media-header');
 var mdlHeader = document.querySelector('.mdl-layout__header');
 
@@ -127,12 +129,14 @@ mdlHeader.appendChild(mediaHeader);
             <div class="panel-wrap">
                 {% pluginblock "MediaViewPanelRow1" %}
 
-                <div style="display:none;" class="panel mdl-grid mdl-card mdl-shadow--2dp" id="panel_thumbnails">
+                <div id="panel_thumbnails" class="panel mdl-card mdl-shadow--2dp mdl-grid" style="display:none;">
                     {% trans "There are currently no thumbnails to show." %}
                 </div><!--#mv_thumbnails -->
 
-                <div style="display:none;" class="panel mdl-grid mdl-card mdl-shadow--2dp" id="panel_posters">
-                    {% trans "There are currently no posters to show." %}
+                <div id="panel_posters" class="panel mdl-card mdl-shadow--2dp mdl-grid" style="display:none;">
+                    <div class="mdl-card__supporting-text">
+                        <p>{% trans "There are currently no posters to show." %}</p>
+                    </div>
                 </div>
 
                 <div id="panel_preview" class="panel mdl-grid" style="display:flex">
@@ -165,12 +169,12 @@ mdlHeader.appendChild(mediaHeader);
                         </div>
                     </div>
 
-                    <div class="versionsmenu" style="display:none;">
-                        <nav>
-                            <h4>Versions</h4>
-                        </nav>
+                    <div id="versions-menu" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--5-col-desktop mdl-cell--8-col-tablet mdl-cell--4-phone" style="display:none;">
+                        <div class="mdl-card__title mdl-card--border">
+                            <h3 class="mdl-card__title-text">Versions</h3>
+                        </div>
 
-                        <div class="versions">
+                        <div class="versions mdl-card__supporting-text">
                             <img src="{{ STATIC_URL }}/img/core/loading-small.gif" class="loading-inline" alt="" />
                         </div>
                     </div>
@@ -615,7 +619,8 @@ mdlHeader.appendChild(mediaHeader);
                             {% else %}
                                 url: "{% url vs_item_get_poster item.getId %}"
                             {% endif %}
-                        }),{% endif %}
+                        }),
+                    {% endif %}
                     'MediaItemThumbnailPanel': new cntmo.prtl.Item.MediaItemThumbnailPanel({
                         el:$('#panel_thumbnails.mdl-grid'),
                         {% if item.getOriginalTag.getEssenceVersion %}

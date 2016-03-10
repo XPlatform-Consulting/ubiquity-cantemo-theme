@@ -472,7 +472,11 @@ function(Item, $, undefined) {
             return this.constructor.__super__.show.call(this), this.$el.css("display", "flex");
         }
     }),
-    Item.MediaItemPosterPanel = cntmo.prtl.ViewClassLoad.extend(),
+    Item.MediaItemPosterPanel = cntmo.prtl.ViewClassLoad.extend({
+        render: function() {
+            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex");
+        }
+    }),
     Item.MediaItemMetadataPanel = cntmo.prtl.ViewClass.extend(),
     Item.MediaItemVersionsPanel = cntmo.prtl.ViewClass.extend({
         el: "div",
@@ -485,7 +489,7 @@ function(Item, $, undefined) {
             this.collection.bind("add", this.addOne);
             this.collection.bind("reset", this.addAll);
             this.bind("render", this.render);
-            this.$el = $(".versionsmenu");
+            this.$el = $("#versions-menu");
             this.url = options.url || "versions/";
             this.currentSelectedVersion = options.currentSelectedVersion || "";
         },
