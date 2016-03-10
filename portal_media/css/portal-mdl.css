@@ -281,6 +281,216 @@ label.search-size {
     width: 100%;
     height: 100%;
 }
+.cpPlayer {
+    position: relative;
+}
+.cpPlayer .player-videodiv {
+
+}
+.cpPlayer .player-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 5px;
+}
+.cpPlayer .player-header .text_stroke {
+    font-weight: bold;
+}
+.cpPlayer .ui-slider {
+    position: relative;
+    text-align: left;
+    background: url(/sitemedia/img/player/sprite.png);
+    border: none;
+}
+.cpPlayer .ui-slider-horizontal {
+    height: 20px;
+}
+.cpPlayer .ui-slider .ui-slider-handle {
+    position: absolute;
+    margin-left: -6px;
+    border: none;
+    width: 12px;
+    height: 20px;
+    top: 0;
+    z-index: 10;
+    background: url(/sitemedia/img/player/sprite.png) 0 -80px;
+}
+.player-videodiv button {
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+.cpPlayer .player-button-holder {
+    display: table;
+    margin: 0;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    /* background-color: rgb(63,81,181); */
+}
+.cpPlayer .player-button-holder .middle{
+    display: table-cell;
+    line-height: 40px;
+    height: 35px;
+    padding-left: 40px;
+}
+.cpPlayer .player-button-holder .middle .mute {
+    background-position: 2px -178px;
+    width: 16px;
+    height: 16px;
+    margin: 13px 12px 11px 6px;
+}
+.cpPlayer .player-button-holder .cpPlayerButton {
+    float: left;
+    text-indent: -9999px;
+    overflow: hidden;
+    position: relative;
+    border: none;
+    background: url(/sitemedia/img/player/sprite.png);
+    -ms-filter: none;
+    filter: none;
+}
+.cpPlayer .player-button-holder .cpPlayerButton:active,
+.cpPlayer .player-button-holder .cpPlayerButton:focus {
+    outline: 0;
+    -moz-outline-style: none;
+}
+.cpPlayer .player-button-holder .middle .volsliderholder {
+    position: absolute;
+    z-index: 10;
+    height: 83px;
+    padding: 4px 1px;
+    background: #383d47;
+    border: 1px solid #222;
+    width: 12px;
+    border-radius: 4px;
+}
+.cpPlayer .player-button-holder .middle .volsliderholder div.volslider.ui-slider-vertical {
+    height: 76px !important;
+    width: 11px;
+    background-position: -342px -180px;
+}
+.cpPlayer .player-button-holder .middle .volsliderholder div.volslider.ui-slider-vertical a.ui-slider-handle {
+    margin-left: 0;
+    margin-bottom: -8px;
+    background: url(/sitemedia/img/player/sprite.png);
+    background-position: 0 -238px;
+    height: 12px;
+    width: 12px;
+    display: block;
+    top: inherit;
+}
+/* step backwark button */
+.cpPlayer .player-button-holder .middle .stepb {
+    background-position: 0 -300px;
+    width: 60px;
+    height: 29px;
+    top: 8px;
+}
+.cpPlayer .player-button-holder .middle .stepb:hover {
+    background-position: -80px -300px;
+}
+.cpPlayer .player-button-holder .middle .stepb:active,
+.cpPlayer .player-button-holder .middle .stepb .selected {
+    background-position: -159px -300px;
+}
+/* Play button */
+.cpPlayer .player-button-holder .middle .play {
+    background-position: 0 -340px;
+    width: 60px;
+    height: 30px;
+    margin: 0;
+    top: 7px;
+    z-index: 2;
+    margin: 0 -14px;
+}
+.cpPlayer .player-button-holder .middle .play:hover {
+    background-position: -80px -340px;
+}
+.cpPlayer .player-button-holder .middle .play:active,
+.cpPlayer .player-button-holder .middle .play.selected {
+    background-position: -159px -340px;
+}
+/* Step forward button */
+.cpPlayer .player-button-holder .middle .stepf {
+    background-position: 0 -380px;
+    width: 60px;
+    height: 30px;
+    top: 8px;
+}
+.cpPlayer .player-button-holder .middle .stepf:hover {
+    background-position: -80px -380px;
+}
+.cpPlayer .player-button-holder .middle .stepf:active,
+.cpPlayer .player-button-holder .middle .stepf .selected {
+    background-position: -159px -380px;
+}
+/* step second backward button */
+.cpPlayer .player-button-holder .middle .step-sec-back {
+    background-position: 0 -260px;
+    width: 35px;
+    height: 30px;
+    top: 8px;
+    margin-left: 8px;
+}
+.cpPlayer .player-button-holder .middle .step-sec-back:hover {
+    background-position: -80px -260px;
+}
+.cpPlayer .player-button-holder .middle .step-sec-back:active,
+.cpPlayer .player-button-holder .middle .step-sec-back .playing {
+    background-position: -159px -260px;
+}
+/* step second forward button */
+.cpPlayer .player-button-holder .middle .step-sec-fwd {
+    background-position: 0 -420px;
+    width: 35px;
+    height: 30px;
+    top: 8px;
+}
+.cpPlayer .player-button-holder .middle .step-sec-fwd:hover {
+    background-position: -80px -420px;
+}
+.cpPlayer .player-button-holder .middle .step-sec-fwd:active,
+.cpPlayer .player-button-holder .middle .step-sec-fwd .selected {
+    background-position: -159px -420px;
+}
+/* Grab stills (poster) */
+.cpPlayer .player-button-holder .middle .stills .player-grab-still {
+    position: relative;
+    margin-left: 12px;
+    background-position: 0 -199px;
+    height: 24px;
+    width: 24px;
+    top: 11px;
+    overflow: visible;
+}
+.cpPlayer .player-button-holder .middle .stills .player-grab-still:hover {
+    background-position: -80px -199px;
+}
+/* end of player controls */
+/* other player sizes */
+/* small */
+.smallPlayer .ui-slider .ui-slider-handle {
+    height: 4px;
+    width: 4px;
+    background: #888;
+    margin-left: 0;
+    border: none;
+}
+/* large */
+.largePlayer .player-timeline-div {
+    position: relative;
+    margin: 0;
+}
+.largePlayer .player-timeline-div .loader {
+    display: none;
+    position: absolute;
+    height: 20px;
+    width: 0;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: url(/sitemedia/img/player/sprite.png) 0 -580px;
+}
 #player-card .mdl-card__supporting-text {
     width: calc(100% - 48px);
     /* for aligning the content inside, in the middle,

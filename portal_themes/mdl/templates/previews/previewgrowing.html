@@ -1,0 +1,67 @@
+{% load i18n formatting vidispinetags general %}
+
+{% if not is_closed %}
+<script type="text/javascript">
+
+var numerrors = 0;
+var abortloop = false;
+
+{% if previews|getURIByMimeType:"video/mp4" and not previews|getURIByMimeType:"video/webm" %}
+jQuery(function() {
+  scheduleLoop(updateDuration, 10000);
+//  setInterval(function() {updateDuration()}, 10000);
+})
+
+function scheduleLoop(func, timeout) {
+  if(!abortloop) {
+    if (numerrors < 5) {
+      setTimeout(func, timeout)
+    } else {
+      abortloop = true;
+      $.growl("{% trans 'Too many errors updating growing video. Aborting.'%}")
+    }
+  }
+}
+
+
+function updateDuration() {
+  {% with currentPreview=previews|getObjectByMimeType:"video/mp4" %}
+  var shape_id = "{{currentPreview.shape.getId}}";
+  var item_id = "{{item.getId}}";
+  if (shape_id != "" && item_id != "") {
+    $.ajax({
+      type: 'GET',
+      url: '{% url vs_item_shape_entry slug=item.getId shape_id=currentPreview.shape.getId %}?transient=true',
+      success: function(data, textStatus, XMLHttpRequest) {
+        var duration = data.duration;
+        if (data.closed == true) {
+          abortloop = true;
+        }
+
+        if (duration === null || typeof duration == 'undefined' || duration == "") {
+          numerrors += 1;
+          return;
+        }
+
+        itemPlayer.updateGrowingDuration(duration);
+
+
+        scheduleLoop(updateDuration, 10000);
+/*
+        $.growl('Got new shape ' + data.duration)
+*/
+      },
+      error: function(XMLHttpRequest, textStatus, errorThrown) {
+        numerrors +=1;
+        scheduleLoop(updateDuration, 10000);
+      },
+    });
+ 
+  }
+  {% endwith %}
+}
+
+{% endif %}
+ 
+</script>
+{% endif %}

@@ -1,0 +1,46 @@
+{% load i18n formatting vidispinetags %}
+<div id="player" class="player">
+    <div class="loading">{% trans "Loading Sequence..." %}</div>
+    <div class="videoblock">
+    <video class="video" webkit-playsinline>
+        {% if sequence %}
+            <script type="text/javascript" charset="utf-8">
+                $(document).ready(function() {
+                    itemPlayer = PleroVideoPlayer("#player",
+                      {   
+                          dimensionClass: 'largePlayer',
+                          showFullScreen: false,
+                          frameRateNumerator: parseInt("{{ framerate_numerator }}", 10),
+                          frameRateDenominator: parseInt("{{  merate_denominator}}", 10),
+                          timeline: [
+                              {% for sequenceitem in sequence %}
+                              {
+                                url: '{{ sequenceitem.browse_url.url }}',
+                                startTC: '{{ sequenceitem.inpoint }}',
+                                durationTC: '{{ sequenceitem.duration }}',
+                                mediaStartTC: '{{ sequenceitem.start_tc }}'
+                              },
+                              {% endfor %}
+                          ],
+                          {% if not is_closed %}
+                          growing: true,
+                          {% endif %}
+                          onerror: function(msg) {$.growl("{% trans "There was an error starting the player:" %}" + " " + msg ,'error');}
+                      });
+                    cntmo.app.players.mainPlayer = itemPlayer;
+                });
+            </script>
+        {% else %}
+            {% trans "No viewable format" %}
+        {% endif %}
+
+	{% trans "HTML5 Video is not supported by your browser. " %}
+    </video>
+    </div>
+
+</div><!-- #player -->
+
+{% docstring %} 
+Used to show RCE sequences in the item page.
+{% enddocstring %}
+

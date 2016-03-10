@@ -131,7 +131,7 @@ mdlHeader.appendChild(mediaHeader);
                     {% trans "There are currently no thumbnails to show." %}
                 </div><!--#mv_thumbnails -->
 
-                <div style="display:none;" class="panel mdl-grid" id="panel_posters">
+                <div style="display:none;" class="panel mdl-grid mdl-card mdl-shadow--2dp" id="panel_posters">
                     {% trans "There are currently no posters to show." %}
                 </div>
 
@@ -440,11 +440,11 @@ mdlHeader.appendChild(mediaHeader);
                 {% endif %}
 
                 <div id="panel_related" class="mdl-card mdl-shadow--2dp panel" style="display:none;">
-                    <div class="panel-header">
-                        <h2>{% trans "Related Items" %}</h2>
+                    <div class="panel-header mdl-card__title mdl-card--border">
+                        <h3 class="mdl-card__title-text">{% trans "Related Items" %}</h2>
                     </div>
 
-                    <div class="related_wrapper"></div>
+                    <div class="related_wrapper mdl-card__supporting-text"></div>
                 </div><!--#panel_related -->
 
                 {% permissionrequired _job_read %}
