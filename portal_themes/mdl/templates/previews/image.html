@@ -31,6 +31,7 @@
 </div>
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
+    /*
     $('.imagepreview').click(function(ev){
         var shapeWidth = $(this).attr('shapeWidth'), shapeHeight = $(this).attr('shapeHeight'), newWidth = 0;
         if (shapeWidth > 320 || shapeHeight > 320 ) {
@@ -39,18 +40,19 @@ $(document).ready(function() {
                 $('.itemmenu').hide();
                 $('.largepreview').show();
             } else {
-                $('.largepreview').hide(); 
+                $('.largepreview').hide();
                 $('.itemmenu').show();
                 $('#player').show();
             }
         }
-    });    
+    });
+    */   
 });
 </script>
 {% docstring %}
     This template is for showing previews for images in the media_view.html and anywhere where we support the preview of media..
-    
+
     It has basic support for switching between a small preview and if the image file is actually larger than we are showing it, it will allow a click to preview it larger just by simply switching between the views.
-    
+
     If you want to have a different preview, simply update the template above and place the code in the large preview.
 {% enddocstring %}

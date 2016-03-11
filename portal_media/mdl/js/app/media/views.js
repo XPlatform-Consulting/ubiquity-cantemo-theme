@@ -466,10 +466,13 @@ function(Item, $, undefined) {
     }),
     Item.MediaItemPreviewPanel = cntmo.prtl.ViewClass.extend({
         render: function() {
-            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex");
+            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex"), this.$el.parent().css('padding', '0');
         },
         show: function() {
-            return this.constructor.__super__.show.call(this), this.$el.css("display", "flex");
+            return this.constructor.__super__.show.call(this), this.$el.css("display", "flex"), this.$el.parent().css('padding', '0');
+        },
+        hide: function() {
+            return this.constructor.__super__.hide.call(this), this.$el.parent().removeAttr('style');
         }
     }),
     Item.MediaItemPosterPanel = cntmo.prtl.ViewClassLoad.extend({
@@ -504,7 +507,7 @@ function(Item, $, undefined) {
                 (url += "?currentSelectedVersion=" + self.currentSelectedVersion),
                 $.ajax(url, {
                     beforeSend: function() {
-                        $(".loading-icon").show(), $(".itemmenu").hide()
+                        $(".loading-icon").show(), $("#media-info-card").hide()
                     },
                     success: function(data) {
                         $(".loading-icon").hide(), self.$el.find(".versions").html(data), self.$el.show()
@@ -517,7 +520,7 @@ function(Item, $, undefined) {
             })
         },
         closeViewPanel: function() {
-            return $("#mi_contextmenu").off("click", "a"), $(".itemmenu").show(), !0
+            return $("#mi_contextmenu").off("click", "a"), $("#media-info-card").show(), !0
         }
     }),
     Item.MediaItemFormatsPanel = cntmo.prtl.ViewClass.extend({

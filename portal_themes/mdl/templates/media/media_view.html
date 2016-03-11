@@ -125,51 +125,137 @@ mdlHeader.appendChild(mediaHeader);
             </div>
         {% endif %}
 
-        <div class="row" >
-            <div class="panel-wrap">
-                {% pluginblock "MediaViewPanelRow1" %}
+        <div class="row">
+            {% pluginblock "MediaViewPanelRow1" %}
 
-                <div id="panel_thumbnails" class="panel mdl-card mdl-shadow--2dp mdl-grid" style="display:none;">
-                    {% trans "There are currently no thumbnails to show." %}
-                </div><!--#mv_thumbnails -->
+            <div id="panel_thumbnails" class="panel mdl-card mdl-shadow--2dp mdl-grid" style="display:none;">
+                {% trans "There are currently no thumbnails to show." %}
+            </div><!--#mv_thumbnails -->
 
-                <div id="panel_posters" class="panel mdl-card mdl-shadow--2dp mdl-grid" style="display:none;">
+            <div id="panel_posters" class="panel mdl-card mdl-shadow--2dp mdl-grid" style="display:none;">
+                <div class="mdl-card__supporting-text">
+                    <p>{% trans "There are currently no posters to show." %}</p>
+                </div>
+            </div>
+
+            <div id="panel_preview" class="panel mdl-grid no-padding" style="display:flex">
+                <div id="media-card" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--7-col-desktop mdl-cell--8-col-tablet mdl-cell--4-col-phone">
                     <div class="mdl-card__supporting-text">
-                        <p>{% trans "There are currently no posters to show." %}</p>
+                        {% if previews %}
+                            {% previewplayer item %}
+                        {% else %}
+
+                            <div id="placeholderspacer" class="placeholderspacer smallPlayer {% if item.isSequence %}sequence{% endif %} {{ item.getItemType }}">
+                                {% if item.getItemType == "ppro_project" %}
+
+                                {% endif %}
+
+                                {% if item.getItemType == "fcpx_project" %}
+
+                                {% endif %}
+
+                                {% if item.isPlaceholder or item.isEmpty %}
+                                    {% if skipIngestButton == False %}
+                                        {% if aclcurrentuser.hasURIWritePermission and user|has_role:"_import" and user|has_role:"_storage_read" %}
+                                            <a href="{% url vs_storage_ingest_to_placeholder item.getId %}{% if item.isEmpty %}?version=True{% endif %}" style="color:transparent;"><button type="button" class="button" onclick="window.location=this.parentNode.href;">{% trans "Ingest to Placeholder" %}</button></a>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
-                <div id="panel_preview" class="panel mdl-grid" style="display:flex">
-                    <div id="player-wrap" class="mdl-cell mdl-cell--7-col-desktop mdl-cell--8-col-tablet mdl-cell--4-col-phone">
-                        <div id="player-card" class="mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__supporting-text">
-                                {% if previews %}
-                                    {% previewplayer item %}
-                                {% else %}
+                <div class="secondary mdl-cell mdl-cell--5-col-desktop mdl-cell--8-col-tablet mdl-cell--4-phone">
+                    {% pluginblock "MediaViewItemTechMetadataTop" %}
 
-                                    <div id="placeholderspacer" class="placeholderspacer smallPlayer {% if item.isSequence %}sequence{% endif %} {{ item.getItemType }}">
-                                        {% if item.getItemType == "ppro_project" %}
+                    {% themeinclude "media/media_search_prev_next.html" %}
 
+                    <div id="media-info-card" class="mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__supporting-text">
+                            <dl>
+                                {% if item|getMetadataFieldValueByName:"portal_archive_status" %}
+                                    <div class="archive_status"></div>
+                                    <dd>{{ item|getMetadataFieldValueByName:"portal_archive_status" }}</dd>
+                                {% endif %}
+
+                                {% if item.isToBeDeleted %}
+                                    <div class="hr-panel"></div>
+                                    <dt>{% trans 'Deleted' %}</dt>
+                                    <dd> {{ item.isToBeDeleted|datetimeobject|date:"DATETIME_FORMAT" }}</dd>
+                                {% endif %}
+
+                                {% if systemmetadata.mediaType == "video" or systemmetadata.mediaType == "audio" %}
+                                    {% if item.getDurationTimecode or systemmetadata.durationSeconds %}
+                                        <div class="hr-panel"></div>
+                                        <dt>{% trans 'Duration' %}</dt>
+                                        {% if item.getDurationTimecode and systemmetadata.mediaType == "video" %}
+                                            <dd>{{ item.getDurationTimecode.toSMPTE }} </dd>
+                                        {% else %}
+                                            <dd>{{ ""|formatToTime:systemmetadata.durationSeconds }} </dd>
                                         {% endif %}
+                                    {% endif %}
+                                {% endif %}
 
-                                        {% if item.getItemType == "fcpx_project" %}
+                                {% if startTimeCode and startTimeCode.frames > 0 %}
+                                    <div class="hr-panel"></div>
+                                    <dt>{% trans 'Start Timecode' %}</dt>
+                                    <dd>{{ startTimeCode.toSMPTE }}</dd>
+                                {% endif %}
 
-                                        {% endif %}
+                                {% if systemmetadata.user %}
+                                    <div class="hr-panel"></div>
+                                    <dt>{% trans 'User' %}</dt>
+                                    <dd>{{ systemmetadata.user }}</dd>
+                                {% endif %}
 
-                                        {% if item.isPlaceholder or item.isEmpty %}
-                                            {% if skipIngestButton == False %}
-                                                {% if aclcurrentuser.hasURIWritePermission and user|has_role:"_import" and user|has_role:"_storage_read" %}
-                                                    <a href="{% url vs_storage_ingest_to_placeholder item.getId %}{% if item.isEmpty %}?version=True{% endif %}" style="color:transparent;"><button type="button" class="button" onclick="window.location=this.parentNode.href;">{% trans "Ingest to Placeholder" %}</button></a>
-                                                {% endif %}
+                                <div class="hr-panel"></div>
+                                <dt>{% trans 'Added' %}</dt>
+                                <dd>{{ item|getMetadataFieldValueByName:"created"|datetimeobject|date:"DATETIME_FORMAT" }}{% if not item|getMetadataFieldValueByName:"created" %}unknown{% endif %}</dd>
+
+                                <div class="hr-panel"></div>
+                                <dt>{% trans "Type" %}</dt>
+                                <dd>{{ item|getItemTypeLabel }}</dd>
+
+                                {% if systemmetadata.originalFilename %}
+                                    <div class="hr-panel"></div>
+                                    <dt>{% trans "Filename" %}</dt>
+                                    {% comment %}<dd>{{ systemmetadata.originalFormat|upper }}</dd>{% endcomment %}
+                                    <dd>{{ item.getOriginalFilename }}</dd>
+                                {% endif %}
+
+                                {% if systemmetadata.originalFormat %}
+                                    <div class="hr-panel"></div>
+                                    <dt>{% trans "Format" %}</dt>
+                                    {% comment %}<dd>{{ systemmetadata.originalFormat|upper }}</dd>{% endcomment %}
+                                    <dd>
+                                        {{ item.getOriginalFilename|getBestMediaFormat:systemmetadata.originalFormat }}
+                                        {% if systemmetadata.mediaType == "video" %}
+                                            ({{ systemmetadata.originalVideoCodec }}
+                                            {% if systemmetadata.originalAudioCodec %}
+                                                : {{ systemmetadata.originalAudioCodec }})
+                                            {% else %})
                                             {% endif %}
                                         {% endif %}
-                                    </div>
+                                    </dd>
                                 {% endif %}
-                            </div>
+
+                                {% if systemmetadata.originalWidth and systemmetadata.originalHeight %}
+                                    <div class="hr-panel"></div>
+                                    <dt class="inlinedt">{% trans 'Dimension' %}</dt>
+                                    <dd>{{ systemmetadata.originalWidth }} x {{ systemmetadata.originalHeight }}
+                                        {% if aspect_ratio %}
+                                            ({{ aspect_ratio }})
+                                        {% endif %}
+                                    </dd>
+                                {% endif %}
+                            </dl>
+
+                            {% pluginblock "ItemTechMetadataPlugin" %}
                         </div>
                     </div>
 
-                    <div id="versions-menu" class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--5-col-desktop mdl-cell--8-col-tablet mdl-cell--4-phone" style="display:none;">
+                    <div id="versions-menu" class="mdl-card mdl-shadow--2dp" style="display:none;">
                         <div class="mdl-card__title mdl-card--border">
                             <h3 class="mdl-card__title-text">Versions</h3>
                         </div>
@@ -178,102 +264,12 @@ mdlHeader.appendChild(mediaHeader);
                             <img src="{{ STATIC_URL }}/img/core/loading-small.gif" class="loading-inline" alt="" />
                         </div>
                     </div>
-
-                    <div class="itemmenu mdl-cell mdl-cell--5-col-desktop mdl-cell--8-col-tablet mdl-cell--4-phone">
-                        {% pluginblock "MediaViewItemTechMetadataTop" %}
-
-                        {% themeinclude "media/media_search_prev_next.html" %}
-
-                        <div id="media-info-card" class="mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__supporting-text">
-                                <dl>
-                                    {% if item|getMetadataFieldValueByName:"portal_archive_status" %}
-                                        <div class="archive_status"></div>
-                                        <dd>{{ item|getMetadataFieldValueByName:"portal_archive_status" }}</dd>
-                                    {% endif %}
-
-                                    {% if item.isToBeDeleted %}
-                                        <div class="hr-panel"></div>
-                                        <dt>{% trans 'Deleted' %}</dt>
-                                        <dd> {{ item.isToBeDeleted|datetimeobject|date:"DATETIME_FORMAT" }}</dd>
-                                    {% endif %}
-
-                                    {% if systemmetadata.mediaType == "video" or systemmetadata.mediaType == "audio" %}
-                                        {% if item.getDurationTimecode or systemmetadata.durationSeconds %}
-                                            <div class="hr-panel"></div>
-                                            <dt>{% trans 'Duration' %}</dt>
-                                            {% if item.getDurationTimecode and systemmetadata.mediaType == "video" %}
-                                                <dd>{{ item.getDurationTimecode.toSMPTE }} </dd>
-                                            {% else %}
-                                                <dd>{{ ""|formatToTime:systemmetadata.durationSeconds }} </dd>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endif %}
-
-                                    {% if startTimeCode and startTimeCode.frames > 0 %}
-                                        <div class="hr-panel"></div>
-                                        <dt>{% trans 'Start Timecode' %}</dt>
-                                        <dd>{{ startTimeCode.toSMPTE }}</dd>
-                                    {% endif %}
-
-                                    {% if systemmetadata.user %}
-                                        <div class="hr-panel"></div>
-                                        <dt>{% trans 'User' %}</dt>
-                                        <dd>{{ systemmetadata.user }}</dd>
-                                    {% endif %}
-
-                                    <div class="hr-panel"></div>
-                                    <dt>{% trans 'Added' %}</dt>
-                                    <dd>{{ item|getMetadataFieldValueByName:"created"|datetimeobject|date:"DATETIME_FORMAT" }}{% if not item|getMetadataFieldValueByName:"created" %}unknown{% endif %}</dd>
-
-                                    <div class="hr-panel"></div>
-                                    <dt>{% trans "Type" %}</dt>
-                                    <dd>{{ item|getItemTypeLabel }}</dd>
-
-                                    {% if systemmetadata.originalFilename %}
-                                        <div class="hr-panel"></div>
-                                        <dt>{% trans "Filename" %}</dt>
-                                        {% comment %}<dd>{{ systemmetadata.originalFormat|upper }}</dd>{% endcomment %}
-                                        <dd>{{ item.getOriginalFilename }}</dd>
-                                    {% endif %}
-
-                                    {% if systemmetadata.originalFormat %}
-                                        <div class="hr-panel"></div>
-                                        <dt>{% trans "Format" %}</dt>
-                                        {% comment %}<dd>{{ systemmetadata.originalFormat|upper }}</dd>{% endcomment %}
-                                        <dd>
-                                            {{ item.getOriginalFilename|getBestMediaFormat:systemmetadata.originalFormat }}
-                                            {% if systemmetadata.mediaType == "video" %}
-                                                ({{ systemmetadata.originalVideoCodec }}
-                                                {% if systemmetadata.originalAudioCodec %}
-                                                    : {{ systemmetadata.originalAudioCodec }})
-                                                {% else %})
-                                                {% endif %}
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-
-                                    {% if systemmetadata.originalWidth and systemmetadata.originalHeight %}
-                                        <div class="hr-panel"></div>
-                                        <dt class="inlinedt">{% trans 'Dimension' %}</dt>
-                                        <dd>{{ systemmetadata.originalWidth }} x {{ systemmetadata.originalHeight }}
-                                            {% if aspect_ratio %}
-                                                ({{ aspect_ratio }})
-                                            {% endif %}
-                                        </dd>
-                                    {% endif %}
-                                </dl>
-
-                                {% pluginblock "ItemTechMetadataPlugin" %}
-                            </div>
-                        </div>
-                    </div>
-                </div><!-- .itemmenu-->
-            </div><!-- #panel_preview -->
+                </div>
+            </div>
         </div><!-- .row -->
 
         <div class="row">
-            <div id="panel-content-card" class="panel-wrap align-with-margin">
+            <div id="panel-content-card" class="">
                 {% pluginblock "MediaViewPanelRow2" %}
                 {% if aclcurrentuser.hasMetadataReadPermission %}
                     <div id="panel_metadata" class="mdl-card mdl-shadow--2dp panel">
