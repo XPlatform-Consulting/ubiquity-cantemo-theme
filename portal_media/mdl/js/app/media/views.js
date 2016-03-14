@@ -11,14 +11,19 @@ cntmo.prtl.ViewClass = Backbone.View.extend({
     isHidden: function() {
         return this.$el.hasClass("hidden")
     }
-}), cntmo.prtl.ViewClassLoad = cntmo.prtl.ViewClass.extend({
+});
+cntmo.prtl.ViewClassLoad = cntmo.prtl.ViewClass.extend({
     initialize: function(options) {
         void 0 === this.options && (this.options = options || {}), this.viewurl = this.options.url, _.bindAll(this, "render"), this.bind("render", this.render)
     },
     render: function() {
-        return this.$el.load(this.viewurl), this.$el.html(""), this
+        this.$el.load(this.viewurl);
+        this.$el.html("");
+
+        return this;
     }
-}), cntmo.prtl.views.ShapeManage = Backbone.View.extend({
+});
+cntmo.prtl.views.ShapeManage = Backbone.View.extend({
     events: function() {
         var options = {
             "click .manage": "openManageDialog"
@@ -62,8 +67,9 @@ cntmo.prtl.ViewClass = Backbone.View.extend({
     close: function() {
         void 0 !== this.$manageDialog && this.$manageDialog.dialog("close")
     }
-}),
-function(Item, $, undefined) {
+});
+
+(function(Item, $, undefined) {
     Item.MediaViewRouter = Backbone.Router.extend({
         initialize: function(options) {
             this.options = options || {}, this.parentView = options.parentView
@@ -135,7 +141,7 @@ function(Item, $, undefined) {
             }
             Backbone.history.start({
                 root: this.definedurls.this
-            })
+            });
         },
         initializePanels: function() {
             cntmo.prtl.panelviews = this.panels
@@ -461,23 +467,45 @@ function(Item, $, undefined) {
     Item.MediaItemThumbnailPanel = cntmo.prtl.ViewClassLoad.extend({
         render: function() {
             // a silly way of calling the parent methods, but whatever
-            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex");
+            this.constructor.__super__.render.call(this);
+            this.$el.css("display", "flex");
+
+            return this;
         }
     }),
     Item.MediaItemPreviewPanel = cntmo.prtl.ViewClass.extend({
+        initialize: function() {
+            this.constructor.__super__.initialize.call(this);
+            this.adjustDisplay();
+        },
         render: function() {
-            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex"), this.$el.parent().css('padding', '0');
+            this.constructor.__super__.render.call(this);
+
+            return this;
         },
         show: function() {
-            return this.constructor.__super__.show.call(this), this.$el.css("display", "flex"), this.$el.parent().css('padding', '0');
+            this.constructor.__super__.show.call(this);
+            this.adjustDisplay();
+
+            return this;
         },
         hide: function() {
-            return this.constructor.__super__.hide.call(this), this.$el.parent().removeAttr('style');
+            this.constructor.__super__.hide.call(this);
+            this.$el.parent().removeAttr('style');
+
+            return this;
+        },
+        adjustDisplay: function() {
+            this.$el.css("display", "flex");
+            this.$el.parent().css('padding', '0');
         }
     }),
     Item.MediaItemPosterPanel = cntmo.prtl.ViewClassLoad.extend({
         render: function() {
-            return this.constructor.__super__.render.call(this), this.$el.css("display", "flex");
+            this.constructor.__super__.render.call(this);
+            this.$el.css("display", "flex");
+
+            return this;
         }
     }),
     Item.MediaItemMetadataPanel = cntmo.prtl.ViewClass.extend(),
@@ -698,9 +726,9 @@ function(Item, $, undefined) {
                 url = this.options.url;
             }
 
-            console.log(this);
-            return this.$el.find(".comments_wrapper").load(url),
-                   this
+            this.$el.find(".comments_wrapper").load(url);
+
+            return this;
         },
         submitForm: function(event) {
             event.preventDefault(event);
@@ -920,4 +948,4 @@ function(Item, $, undefined) {
             return this.$el.html(this.template(this.model.toJSON())), "iPad" === navigator.platform || "iPhone" === navigator.platform || "iPod" === navigator.platform ? displayLength = 10 : this.$el.find(".hidden").removeClass("hidden"), this
         }
     })
-}(cntmo.prtl.Item = cntmo.prtl.Item || {}, jQuery);
+}(cntmo.prtl.Item = cntmo.prtl.Item || {}, jQuery));
