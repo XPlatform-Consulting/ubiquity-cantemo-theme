@@ -13,11 +13,9 @@
         if ( !instance || rebuild ) {
             instance = $('<div></div').attr("id", "growlDock").addClass("growl");
             $("body").append(instance);
-        } else {
-            instance = $(instance);
         }
 
-        return instance;
+        return $(instance);
     }
 
     function addStyleSheet() {
@@ -40,7 +38,7 @@
                     margin-bottom: 10px;
                     border-radius: 2px;
                     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-                    max-width: 300px;
+                    max-width: 300px;                    
                 }
                 #growlDock .growl-message {
                     flex-grow: 1;
@@ -71,7 +69,7 @@
         var main = document.createElement('div');
         main.innerHTML = '<div class="alert growl-message" role="alert"></div><i class="close material-icons">close</i>';
 
-        message = document.createTextNode(message); // this is a straightforward way to escapes any html tags
+        message = document.createTextNode(message); // this is a straightforward way to escape any html tags
         main.firstElementChild.appendChild(message);
 
         main.firstElementChild.classList.add(priority);
