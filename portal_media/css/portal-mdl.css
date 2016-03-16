@@ -107,8 +107,10 @@ form li:after {
 /** Navigation
 **********************************************/
 .mdl-layout__header {
+    /*
     border-top: 4px solid #3F51B5 !important;
     border-bottom: 4px solid #3F51B5 !important;
+    */
 }
 #main-row {
     height: 52px;
@@ -145,8 +147,42 @@ form li:after {
 /** Mediabin
 **********************************************/
 #mediabin-tab-show {
-    bottom: 100px;
-    right: 100px;
+    display: inline-block;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+#mediabin {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    background-color: #fff;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+#mediabin .mdl-layout__header {
+    border-top: 0;
+    border-bottom: 0;
+}
+#mediabin .mdl-layout__header,
+#mediabin .mdl-layout__header-row,
+#mediabin .mdl-navigation,
+#mediabin .mdl-navigation__link,
+#mediabin .mdl-menu__item {
+    height: 32px;
+    min-height: 0;
+    line-height: 32px;
+}
+#mediabin .mdl-navigation__link {
+    cursor: pointer;
+}
+#mediabin #mediabinholder {
+    flex-grow: 1;
+}
+#mediabin .viewport {
+    height: 100%;
 }
 
 /** Main

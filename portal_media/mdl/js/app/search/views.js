@@ -568,13 +568,17 @@
             },
             addToBin: function(event) {
                 event && event.preventDefault();
-                var prevErr, self = this,
+                var prevErr,
+                    self = this,
                     addLibraryPass = !0,
                     errors = [],
                     selectedItemIds = self.getSelectedItemIds(!0);
+
                 (self.library_selected !== undefined || self.search_id_selected !== undefined) && (addLibraryPass = confirm(gettext("Adding an entire search result to the bin is not permitted. Do you want to add the highlighted items in the current page?")), selectedItemIds = self.$el.find("#searchresultswrapper").find(".mediaitem.mediaitem-selected").map(function() {
                     return this.id
-                }).get()), cntmo.app.page.mediaBinItems !== undefined && addLibraryPass && (0 === selectedItemIds.length && self.library_selected === undefined && self.search_id_selected === undefined && (self.selectAllItems(event), selectedItemIds = self.getSelectedItemIds(!0)), _.each(selectedItemIds, function(itemid) {
+                }).get()),
+                cntmo.app.page.mediaBinItems !== undefined && addLibraryPass && (0 === selectedItemIds.length && self.library_selected === undefined && self.search_id_selected === undefined && (self.selectAllItems(event), selectedItemIds = self.getSelectedItemIds(!0)),
+                _.each(selectedItemIds, function(itemid) {
                     var $elItem = self.$el.find("#" + itemid);
                     if (cntmo.app.page.mediaBinItems.isInBin($elItem.attr("id")) === !1) try {
                         cntmo.app.page.mediaBinItems.create({

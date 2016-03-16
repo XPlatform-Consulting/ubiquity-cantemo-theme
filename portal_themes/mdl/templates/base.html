@@ -26,55 +26,61 @@
         {% block footer %}{% endblock %}
     {% endblock theme %}
 
-    <div id="loading-icon" class="loading-icon" style="display:none;"><img src="{{ STATIC_URL }}img/{{ theme  }}/loading.gif"><h2>{% trans "Loading" %}</h2></div>
-
-
-    <!-- Button currently offscreen, may need to use js to place it in the corner correctly on all page widths -->
-    <button id="mediabin-tab-show" class="mediabin-tab mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect">
-      <i class="material-icons">add</i>
-    </button>
+    <!--<div id="loading-icon" class="loading-icon" style="display:none;"><img src="{{ STATIC_URL }}img/loading.gif"><h2>{% trans "Loading" %}</h2></div>-->
 
     <div class="mediabin-tab" id="mediabin-tab-show">
         <div class="ntfwrap">
-            <div id="ntfcnttxt" class="ntfcnttxt">{{ user.mediabin_set.count }}</div>
+            <button id="mediabin-tab-show" class="mediabin-tab mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+                <div id="ntfcnttxt" class="ntfcnttxt">{{ user.mediabin_set.count }}</div>
+            </button>
         </div>
     </div>
 
-
-    {% cache 1200 basebottom theme user LANGUAGE_CODE REALTIME_ENABLED %}
-
     <div id="mediabin" class="mediabin mediabin-collapsed" style="display:none">
-        <nav>
-            <ul class="sortMenu">
-                <li>{% trans "Sort by" %}</li>
-                <li class="sortMenuItem"><a href="" id="cntmo_prtl_mediabin_srt_date">{% trans "Date added" %}</a></li>
-                <li class="sortMenuItem"><a href="" id="cntmo_prtl_mediabin_srt_name">{% trans "Name" %}</a></li>
-            </ul>
-            <div id="mediabin_cntx_menu" class="mediabin_cntx_menu">
-                <ul class="plevel-one">
-                    <li><a href="#"><span id="mediabincount"></span></a>
-                    <ul class="plevel-two">
-                        <li><a href="{% url vs_collection_add_form %}" id="cntmo_prtl_mediabin_clct_lnk">{% trans "Add to Collection" %}</a></li>
-                        <li><a href="{% url vs_items_export %}" id="cntmo_prtl_mediabin_export_lnk">{% trans "Export" %}</a></li>
-                        <li><a href="" id="cntmo_prtl_mediabin_rmv_lnk">{% trans "Remove from Bin" %}</a></li>
-                        <li><a href="" id="cntmo_prtl_mediabin_unselect_lnk">{% trans "Unselect" %}</a></li>
+        <div class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <nav class="mdl-navigation">
+                    <a id="mediabin-sort-by" class="mdl-navigation__link">{% trans "Sort by" %}</a>
+                    <div class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mediabin-sort-by">
+                        <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_srt_date">{% trans "Date added" %}</a>
+
+                        <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_srt_name">{% trans "Name" %}</a>
+                    </div>
+
+                    <span id="mediabincount" class="mdl-navigation__link"></span>
+                    <div id="mediabin_cntx_menu" class="mediabin_cntx_menu mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mediabincount">
+                        <a class="mdl-menu__item" href="{% url vs_collection_add_form %}" id="cntmo_prtl_mediabin_clct_lnk">{% trans "Add to Collection" %}</a>
+
+                        <a class="mdl-menu__item" href="{% url vs_items_export %}" id="cntmo_prtl_mediabin_export_lnk">{% trans "Export" %}</a>
+
+                        <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_rmv_lnk">{% trans "Remove from Bin" %}</a>
+
+                        <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_unselect_lnk">{% trans "Unselect" %}</a>
+
                         {% permissionrequired _item_shape_write  %}
-                        <li><a href="" id="cntmo_prtl_mediabin_dlt_lnk">{% trans "Delete" %}</a></li>
+                            <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_dlt_lnk">{% trans "Delete" %}</a>
                         {% endpermissionrequired %}
+
                         {% pluginblock "MediaBinDropdown" collection core %}
-                    </ul>
-                    </li>
-                </ul>
+                    </div>
+
+                    <div class="mediabin-tab" id="mediabin-tab-hide"></div>
+                </nav>
             </div>
-            <div class="mediabin-tab" id="mediabin-tab-hide"></div>
-        </nav>
+        </div>
+
         <div id="mediabinholder">
             <div class="viewport">
-                <div class="mediabinitems overview">
+                <div class="mediabinitems overview"></div>
+            </div>
 
+            <div class="scrollbar">
+                <div class="track">
+                    <div class="thumb">
+                        <div class="end"></div>
+                    </div>
                 </div>
             </div>
-            <div class="scrollbar"><div class="track"><div class="thumb"><div class="end"></div></div></div></div>
         </div>
     </div>
 
@@ -135,8 +141,6 @@ $(document).ready(function() {
         source: '{% url api_v2:search:suggest %}',
     });
 });
-
-{% endcache %}
 
 {% render_growl_messages messages %}
 </script>

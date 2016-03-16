@@ -38,7 +38,7 @@
                     margin-bottom: 10px;
                     border-radius: 2px;
                     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-                    max-width: 300px;                    
+                    max-width: 300px;
                 }
                 #growlDock .growl-message {
                     flex-grow: 1;
@@ -84,41 +84,48 @@
         var html = setup(message, priority);
         var notice = $(html).hide()
                             .fadeIn()
-                            .css('display', 'flex')
-                            .find(".close")
-                            .click(function () {
-                                notice.remove()
-                            }).end();
+                            .css('display', 'flex');
 
-        $.growl.settings.noticeDisplay(notice),
-        instance.append(notice),
-        persist || setTimeout(function () {
-            jQuery.growl.settings.noticeRemove(notice, function () {
-                notice.remove()
-            })
-        }, jQuery.growl.settings.displayTimeout)
+        var close = $(html).find(".close");
+        close.click(function () {
+            notice.remove()
+        });
+
+        $.growl.settings.noticeDisplay(notice);
+        instance.append(notice);
+
+        if (!persist) {
+            var noticeTimeoutId = window.setTimeout(function () {
+                jQuery.growl.settings.noticeRemove(notice, noticeTimeoutId, function () {
+                    notice.remove();
+                });
+            }, 3000);
+        }
     }
 
     $.growl = function (message, priority, persist) {
         notify(message, priority, persist)
     },
-    $.growl.version = "1.1.0",
+    $.growl.version = '1.1.0',
     $.growl.settings = {
         noticeDisplay: function (notice) {
             notice.css({
-                opacity: "0"
+                opacity: '0'
             }).fadeIn(jQuery.growl.settings.noticeFadeTimeout)
         },
-        noticeRemove: function (notice, callback) {
+        noticeRemove: function (notice, timeoutId, callback) {
             notice.animate({
-                opacity: "0",
-                height: "0px"
+                opacity: '0',
+                height: '0px'
             }, {
                 duration: jQuery.growl.settings.noticeFadeTimeout,
                 complete: callback
-            })
+            });
+
+            if (timeoutId) {
+                window.clearTimeout(timeoutId);
+            }
         },
-        noticeFadeTimeout: "slow",
-        displayTimeout: 6e3
+        noticeFadeTimeout: 'slow'
     }
 }(jQuery);
