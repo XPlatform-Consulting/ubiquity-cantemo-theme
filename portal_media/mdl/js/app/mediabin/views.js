@@ -215,7 +215,7 @@
             mediabinCount.textContent = textCount;
 
             var selectOption = document.querySelector('#cntmo_prtl_mediabin_unselect_lnk');
-            selectOption.textContent = (this.collection.getSelected().length < 1 ? 'Select All' : 'Unselect All');
+            selectOption.textContent = (this.collection.getSelected().length < 1 ? 'Select All' : 'Deselect All');
 
             if (this.collection.length < 1) {
                 $('#mediabin_cntx_menu').hide();

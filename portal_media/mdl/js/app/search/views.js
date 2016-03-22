@@ -43,13 +43,42 @@
             },
             initialize: function(options) {
                 var self = this;
-                _.bindAll(this, "startDraggable", "selectAllItems", "deselectSelectAll", "selectPrevious", "selectNext", "mediaItemChange", "enableAndDisableMenus", "disableHandler", "getItemPreviewInformation", "buildPodPreview", "bindAudioKeyBindings", "unBindAudioKeyBindings", "showPreview", "showPodPreviewEventHandler", "archiveItemEventHandler", "restoreItemEventHandler", "setupIntervalType", "cacheDOMElements"), this.views = {}, this.options = options || {}, this.search_adv_open = options.search_adv_open, this.search_adv_tog = options.search_adv_tog, this.library = options.library, this.library_selected = options.library_selected || undefined, this.search_id = options.search_id || undefined, this.search_id_selected = options.search_id_selected || undefined, this.is_collection = options.is_collection || !1, this.is_savedsearch = options.is_savedsearch || !1, this.delete_template = _.template(options.delete_template.html()), this.delete_library_confirm_template = _.template(options.deleteLibraryConfirm.html()), this.message_strings = options.message_strings, this.collection = new cntmo.prtl.Search.SearchCollection, this.selected_collection = new cntmo.prtl.Search.SearchSelectedCollection, this.ignore_list = new cntmo.prtl.Search.SearchunSelectedCollection, this.preview_list = new cntmo.prtl.Search.PodPreviewCollection, this.preview_currentitem = undefined, this.preview_error = !1, cntmo.prtl.Search.setupSearchResultsView({
+                _.bindAll(this, "startDraggable", "selectAllItems", "deselectSelectAll", "selectPrevious", "selectNext", "mediaItemChange", "enableAndDisableMenus", "disableHandler", "getItemPreviewInformation", "buildPodPreview", "bindAudioKeyBindings", "unBindAudioKeyBindings", "showPreview", "showPodPreviewEventHandler", "archiveItemEventHandler", "restoreItemEventHandler", "setupIntervalType", "cacheDOMElements"),
+                this.views = {},
+                this.options = options || {},
+                this.search_adv_open = options.search_adv_open,
+                this.search_adv_tog = options.search_adv_tog,
+                this.library = options.library,
+                this.library_selected = options.library_selected || undefined,
+                this.search_id = options.search_id || undefined,
+                this.search_id_selected = options.search_id_selected || undefined,
+                this.is_collection = options.is_collection || !1,
+                this.is_savedsearch = options.is_savedsearch || !1,
+                this.delete_template = _.template(options.delete_template.html()),
+                this.delete_library_confirm_template = _.template(options.deleteLibraryConfirm.html()),
+                this.message_strings = options.message_strings,
+                this.collection = new cntmo.prtl.Search.SearchCollection,
+                this.selected_collection = new cntmo.prtl.Search.SearchSelectedCollection,
+                this.ignore_list = new cntmo.prtl.Search.SearchunSelectedCollection,
+                this.preview_list = new cntmo.prtl.Search.PodPreviewCollection,
+                this.preview_currentitem = undefined,
+                this.preview_error = !1,
+                cntmo.prtl.Search.setupSearchResultsView({
                     searchquery: options.searchquery || ""
-                }), this.cacheDOMElements(), this.bindKeyBindings(), this.startSelectable(), this.startDraggable(), this.$el.find("ul.plevel-one").superfish("destroy").superfish({
+                }),
+                this.cacheDOMElements(),
+                this.bindKeyBindings(),
+                this.startSelectable(),
+                this.startDraggable(),
+                this.$el.find("ul.plevel-one").superfish("destroy").superfish({
                     speed: "fast"
-                }), options.search_adv_tog || self.$el.find(".sa_placeholder").hide(), $("#show_advanced").length > 0 && $.get(updateQueryStringParameter($("#show_advanced").attr("rel"), "header", "False"), function(data) {
+                }),
+                options.search_adv_tog || self.$el.find(".sa_placeholder").hide(),
+                $("#show_advanced").length > 0
+                && $.get(updateQueryStringParameter($("#show_advanced").attr("rel"), "header", "False"), function(data) {
                     self.$el.find(".sa_placeholder").html(data)
-                }), this.enableAndDisableMenus()
+                }),
+                this.enableAndDisableMenus()
             },
             cacheDOMElements: function() {
                 this.$firstvalEl = $("#first_on_page"), this.$lastvalEl = $("#last_on_page"), this.$hitstotalEl = $("#hits_total_results"), this.$viewtypebuttons = this.$el.find("a.viewtypebutton")
@@ -115,27 +144,42 @@
                     delay: 100,
                     filter: ".mediaitem",
                     helper: function() {
-                        var $myEl = "",
-                            $tempEl = "";
-                            console.log(self.selected_collection);
-                        return self.selected_collection.length > 1
-                            ? (self.selected_collection.each(function(item, index) {
-                                2 > index
-                                && ($tempEl = $('<div style="position:absolute;">').append($("#" + item.get("id")).clone()),
-                                    $tempEl.find(".mediaitemtitle").find("a").remove(), $tempEl.find(".thumbnailholder").find("a").remove(),
-                                    $tempEl.find(".mediaitemduration").remove(),
-                                    $tempEl.find(".infoholder").remove(),
-                                    $tempEl.css({
-                                        left: -2 + 8 * index + "px",
-                                        opacity: .4,
-                                        transform: "rotate(" + (-6 + 15 * index) + "deg)",
-                                        "-ms-transform": "rotate(" + (-6 + 15 * index) + "deg)",
-                                        "-webkit-transform": "rotate(" + (-6 + 15 * index) + "deg)"
-                                    }),
-                                    $myEl += $("<div></div>").append($tempEl).html())
-                                }),
-                                $myEl += $("<div>").append($(this).clone()).html())
-                            : $(this).clone()
+                        var wrap = document.createElement('div');
+
+                        var mainElement = document.createElement('div');
+                        mainElement.classList.add('smallmediapod');
+
+                        var top = 0;
+                        var left = 0;
+                        var zIndex = 12500;
+
+                        self.selected_collection.forEach(function (item) {
+                            var actualItem = document.getElementById(item.get('id'));
+                            var image = actualItem.querySelector('img.mediathumb');
+                            var imageUrl = (image ? image.src : '/sitemedia/img/collection_group.png');
+
+                            var itemPod = document.createElement('div');
+                            itemPod.classList.add('media-pod-wrap');
+                            itemPod.style.backgroundImage = 'url(\'' + imageUrl + '\')';
+                            itemPod.style.top = top + 'px';
+                            itemPod.style.left = left + 'px';
+                            itemPod.style.zIndex = zIndex;
+                            top += 30;
+                            left += 15;
+                            zIndex--; // so the first item is on top
+
+                            var title = document.createElement('div');
+                            title.classList.add('mediaitemtitle');
+                            var titleText = actualItem.querySelector('.mdl-card__title-text');
+                            title.textContent = (titleText ? titleText.textContent : '<no title>');
+
+                            itemPod.appendChild(title);
+                            mainElement.appendChild(itemPod);
+                        });
+
+                        wrap.appendChild(mainElement);
+
+                        return $(wrap);
                     },
                     start: function() {
                         self.getSelectedItemIds(!0).length > 1 && $(this).data({

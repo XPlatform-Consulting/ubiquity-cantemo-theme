@@ -47,6 +47,38 @@ form li:after {
 .content a {
     text-decoration: none;
 }
+.ui-draggable-dragging {
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+.ui-draggable-dragging .smallmediapod {
+    position: relative;
+}
+.ui-draggable-dragging .smallmediapod .media-pod-wrap {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 100%;
+    border: 1px solid #aaa;
+    border-radius: 2px;
+    width: 140px;
+    height: 140px;
+    overflow: hidden;
+}
+.ui-draggable-dragging .smallmediapod .media-pod-wrap .mediaitemtitle {
+    opacity: 0.8;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    color: #fff;
+    background-color: rgba(0,0,0, 0.5);
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 16px;
+    border-radius: 0 0 2px 2px;
+    max-height: 45%;
+    padding: 2px 4px;
+}
 
 /** Login
 **********************************************/
