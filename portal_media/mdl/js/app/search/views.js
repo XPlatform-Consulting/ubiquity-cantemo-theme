@@ -145,32 +145,40 @@
                     filter: ".mediaitem",
                     helper: function() {
                         var wrap = document.createElement('div');
-
                         var mainElement = document.createElement('div');
                         mainElement.classList.add('smallmediapod');
 
-                        var top = 0;
-                        var left = 0;
+                        var itemsToConvert = [];
+
+                        if (self.selected_collection.length) {
+                            self.selected_collection.forEach(function (item) {
+                                itemsToConvert.push(document.getElementById(item.get('id')));
+                            });
+                        } else {
+                            itemsToConvert.push(this);
+                        }
+
+                        var top    = 0;
+                        var left   = 0;
                         var zIndex = 12500;
 
-                        self.selected_collection.forEach(function (item) {
-                            var actualItem = document.getElementById(item.get('id'));
-                            var image = actualItem.querySelector('img.mediathumb');
+                        itemsToConvert.forEach(function (item) {
+                            var image = item.querySelector('img.mediathumb');
                             var imageUrl = (image ? image.src : '/sitemedia/img/collection_group.png');
 
                             var itemPod = document.createElement('div');
                             itemPod.classList.add('media-pod-wrap');
                             itemPod.style.backgroundImage = 'url(\'' + imageUrl + '\')';
-                            itemPod.style.top = top + 'px';
-                            itemPod.style.left = left + 'px';
+                            itemPod.style.top    = top + 'px';
+                            itemPod.style.left   = left + 'px';
                             itemPod.style.zIndex = zIndex;
-                            top += 30;
+                            top  += 30;
                             left += 15;
                             zIndex--; // so the first item is on top
 
                             var title = document.createElement('div');
                             title.classList.add('mediaitemtitle');
-                            var titleText = actualItem.querySelector('.mdl-card__title-text');
+                            var titleText = item.querySelector('.mdl-card__title-text');
                             title.textContent = (titleText ? titleText.textContent : '<no title>');
 
                             itemPod.appendChild(title);
