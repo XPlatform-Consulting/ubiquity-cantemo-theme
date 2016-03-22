@@ -111,20 +111,31 @@
                 this.$el.find(".mediaitem").draggable("destroy").mousedown(function(event) {
                     return event.ctrlKey ? (event.stopImmediatePropagation(), !1) : void 0
                 }).draggable({
+                    appendTo: '.mdl-layout__container',
                     delay: 100,
                     filter: ".mediaitem",
                     helper: function() {
                         var $myEl = "",
                             $tempEl = "";
-                        return self.selected_collection.length > 1 ? (self.selected_collection.each(function(item, index) {
-                            2 > index && ($tempEl = $('<div style="position:absolute;">').append($("#" + item.get("id")).clone()), $tempEl.find(".mediaitemtitle").find("a").remove(), $tempEl.find(".thumbnailholder").find("a").remove(), $tempEl.find(".mediaitemduration").remove(), $tempEl.find(".podmenu_holder").remove(), $tempEl.find(".infoholder").remove(), $tempEl.css({
-                                left: -2 + 8 * index + "px",
-                                opacity: .4,
-                                transform: "rotate(" + (-6 + 15 * index) + "deg)",
-                                "-ms-transform": "rotate(" + (-6 + 15 * index) + "deg)",
-                                "-webkit-transform": "rotate(" + (-6 + 15 * index) + "deg)"
-                            }), $myEl += $("<div></div>").append($tempEl).html())
-                        }), $myEl += $("<div>").append($(this).clone()).html()) : $myEl = $(this).clone(), $("<div style='position:absolute;'></div>").append($myEl)
+                            console.log(self.selected_collection);
+                        return self.selected_collection.length > 1
+                            ? (self.selected_collection.each(function(item, index) {
+                                2 > index
+                                && ($tempEl = $('<div style="position:absolute;">').append($("#" + item.get("id")).clone()),
+                                    $tempEl.find(".mediaitemtitle").find("a").remove(), $tempEl.find(".thumbnailholder").find("a").remove(),
+                                    $tempEl.find(".mediaitemduration").remove(),
+                                    $tempEl.find(".infoholder").remove(),
+                                    $tempEl.css({
+                                        left: -2 + 8 * index + "px",
+                                        opacity: .4,
+                                        transform: "rotate(" + (-6 + 15 * index) + "deg)",
+                                        "-ms-transform": "rotate(" + (-6 + 15 * index) + "deg)",
+                                        "-webkit-transform": "rotate(" + (-6 + 15 * index) + "deg)"
+                                    }),
+                                    $myEl += $("<div></div>").append($tempEl).html())
+                                }),
+                                $myEl += $("<div>").append($(this).clone()).html())
+                            : $(this).clone()
                     },
                     start: function() {
                         self.getSelectedItemIds(!0).length > 1 && $(this).data({
@@ -132,7 +143,7 @@
                         })
                     },
                     revert: !0,
-                    zIndex: 100,
+                    zIndex: 12000,
                     distance: 25,
                     revertDuration: 50
                 })
@@ -583,7 +594,7 @@
                     if (cntmo.app.page.mediaBinItems.isInBin($elItem.attr("id")) === !1) try {
                         cntmo.app.page.mediaBinItems.create({
                             resource_id: $elItem.attr("id"),
-                            resource_name: $elItem.find(".mediaitemtitle a").html(),
+                            resource_name: $elItem.find(".mdl-card__title .mdl-card__title-text").html(),
                             thumbnail_uri: $elItem.find("img.mediathumb").attr("src"),
                             resource_type: $elItem.data("itemtype")
                         }, {

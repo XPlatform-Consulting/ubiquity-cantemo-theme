@@ -3,7 +3,7 @@
 {% assign archive_status item|getMetadataFieldValueByName:"portal_archive_status" %}
 
 {% block card %}
-<div class="media-item-card mdl-card mdl-shadow--4dp">
+<div class="media-item-card mdl-card mdl-shadow--2dp">
     <a name="{{ item.getId }}"></a>
 
     <div class="mdl-card__title">
@@ -119,15 +119,15 @@
             {% if not item.isToBeDeleted and item.getItemType != 'SubClip' %}
                 <a href="{% url vs_collection_add_form %}" class="mdl-menu__item add_to_collection" ref="{{ item.getId }}">{% trans "Add to Collection" %}</a>
 
-                <a href="" class="mdl-menu__item pod_preview" rel="{{ item.getId }}" data-podpreviewurl="{% url pod_preview item.getId %}" data-itemtype="{{ item.getItemType }}" title="{{ item.getTitle }}">{% trans "Preview" %}</a>
+                <a class="mdl-menu__item pod_preview" rel="{{ item.getId }}" data-podpreviewurl="{% url pod_preview item.getId %}" data-itemtype="{{ item.getItemType }}" title="{{ item.getTitle }}">{% trans "Preview" %}</a>
 
-                <a href="" class="mdl-menu__item add_to_bin" ref="{{ item.getId }}" name="{{ item.getTitle }}">{% trans "Add to Bin" %}</a>
+                <a class="mdl-menu__item add_to_bin" ref="{{ item.getId }}" name="{{ item.getTitle }}">{% trans "Add to Bin" %}</a>
 
                 {% if can_archive %}
                     {% ifequal item|getMetadataFieldValueByName:"portal_archive_status"  "Archived" %}
-                        <a href="" class="mdl-menu__item restore_item" ref="{{ item.getId }}">{% trans "Restore" %}</a>
+                        <a class="mdl-menu__item restore_item" ref="{{ item.getId }}">{% trans "Restore" %}</a>
                     {% else %}
-                        <a href="" class="mdl-menu__item archive_item" ref="{{ item.getId }}">{% trans "Archive" %}</a>
+                        <a class="mdl-menu__item archive_item" ref="{{ item.getId }}">{% trans "Archive" %}</a>
                     {% endifequal %}
                 {% endif %}
 
@@ -136,8 +136,7 @@
             {% else %}
 
                 {% if item.getItemType == 'SubClip'  %}
-                    <a href=""
-                       class="mdl-menu__item pod_preview"
+                    <a class="mdl-menu__item pod_preview"
                        rel="{{ item.getId }}"
                        title="{{ item.getTitle }}"
                        data-itemtype="{{ item.getItemType }}"

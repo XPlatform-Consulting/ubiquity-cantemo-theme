@@ -160,11 +160,14 @@ form li:after {
     background-color: #fff;
     bottom: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 900;
 }
 #mediabin .mdl-layout__header {
     border-top: 0;
     border-bottom: 0;
+}
+#mediabin .mdl-navigation {
+    position: relative;
 }
 #mediabin .mdl-layout__header,
 #mediabin .mdl-layout__header-row,
@@ -178,11 +181,98 @@ form li:after {
 #mediabin .mdl-navigation__link {
     cursor: pointer;
 }
+#mediabin .mdl-navigation .mdl-navigation__link {
+    padding: 0;
+    padding-right: 48px;
+}
 #mediabin #mediabinholder {
-    flex-grow: 1;
+
 }
 #mediabin .viewport {
+
+}
+#mediabin .mediabinitems {
+    display: flex;
+    overflow-y: auto;
+}
+#mediabin .smallmediapod,
+#mediabin .smallmediapodDroppableTarget {
+    position: relative;
+    flex: none;
+    box-sizing: border-box;
+    margin: 8px;
+    border-radius: 2px;
+    width: 140px;
+    height: 140px;
+}
+#mediabin .smallmediapod.smallmediapod-selected {
+    box-shadow: 0px 0px 2px 2px rgb(255,64,129);
+}
+#mediabin .smallmediapod .media-pod-wrap {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 100%;
+    border-radius: 2px;
+    width: auto;
     height: 100%;
+    overflow: hidden;
+}
+#mediabin .mediaitemtitle {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    color: #fff;
+    background-color: rgba(0,0,0, 0.5);
+    box-sizing: border-box;
+    width: 100%;
+    line-height: 16px;
+    border-radius: 0 0 2px 2px;
+    max-height: 45%;
+    padding: 2px 4px;
+    -webkit-transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease;
+}
+#mediabin .media-pod-wrap:hover > .mediaitemtitle {
+    opacity: 1;
+}
+#mediabin .cntmo_prtl_mediabin-pod-rmv {
+    position: absolute;
+    color: #fff;
+    cursor: pointer;
+    top: 0;
+    right: 0;
+    border-radius: 0 2px;
+}
+#mediabin .cntmo_prtl_mediabin-pod-view {
+    position: absolute;
+    top: calc(50% - 20px);
+    left: calc(50% - 20px);
+    color: #fff;
+    background-color: rgba(255,64,129,0);
+    cursor: pointer;
+    border-radius: 100%;
+    padding: 8px;
+    text-decoration: none;
+}
+#mediabin .cntmo_prtl_mediabin-pod-rmv {
+    -webkit-transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease;
+}
+#mediabin .cntmo_prtl_mediabin-pod-view {
+    -webkit-transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease;
+}
+#mediabin .media-pod-wrap:hover > .cntmo_prtl_mediabin-pod-view {
+    background-color: rgb(255,64,129);
+}
+#mediabin .media-pod-wrap:hover > .cntmo_prtl_mediabin-pod-rmv {
+    background-color: rgba(0,0,0, 0.6);
+}
+#mediabin .smallmediapodDroppableTarget {
+    background-color: #aaa;
+    height: 140px;
+    width: 140px;
 }
 
 /** Main
@@ -268,7 +358,7 @@ label.search-size {
 /** Items
 **********************************************/
 .media-item-card {
-    width: 100% !important;
+    width: 100%;
     height: 300px;
 }
 .media-item-card .mdl-card__menu {

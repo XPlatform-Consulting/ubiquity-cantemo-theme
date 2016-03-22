@@ -11,7 +11,8 @@ $(function() {
         $(this).addClass("mediaitem-active")
     }, function() {
         $(this).removeClass("mediaitem-active")
-    }), $(document).on("click", ".mediaitem", function(event) {
+    }),
+    $(document).on("click", ".mediaitem", function(event) {
         $("#searchinputfield").blur();
         var selectType, input = $(this).find("input");
         if (input.is(":checked") ? ($(this).trigger("unselectitem"), selectType = "unselectitem") : (selectType = "selectitem", $(this).trigger("selectitem")), event.shiftKey && void 0 !== cntmo.app.page.lastMediaItemClicked) {
@@ -49,14 +50,14 @@ $(function() {
         })
     }), $(document).on("click", ".podmenu_holder a.deleteitem", function(e) {
         $(this).parents(".mediaitem").trigger("click"), deleteItems(e)
-    }), $(document).on("click", ".podmenu_holder a.add_to_bin", function(event) {
-        event.preventDefault(), event.stopPropagation();
+    }),
+    $(document).on("click", "a.mdl-menu__item.add_to_bin", function(event) {
         var $elMediaItem = $(this).parents(".mediaitem"),
             errors = [];
         if (cntmo.app.page.mediaBinItems.isInBin($elMediaItem.attr("id")) === !1) try {
             cntmo.app.page.mediaBinItems.create({
                 resource_id: $elMediaItem.attr("id"),
-                resource_name: $elMediaItem.find(".mediaitemtitle a").html(),
+                resource_name: $elMediaItem.find(".mdl-card__title .mdl-card__title-text").html(),
                 thumbnail_uri: $elMediaItem.find("img.mediathumb").attr("src"),
                 resource_type: $elMediaItem.data("itemtype")
             }, {
@@ -73,7 +74,7 @@ $(function() {
                 prevErr != err && ($.growl(err), prevErr = err)
             })
         } else $.publish("/cntmo/prtl/MediaBin/finishedAdding"), $.growl(gettext("Added to MediaBin"), "success");
-        $(this).trigger("updatecount")
+        $(this).trigger("updatecount");
     }), $(document).on("click", ".smallgriditem", function() {
         $(this).toggleClass("smallgriditem-selected").find(".smallgriditem-plus").toggleClass("smallgriditem-plus-selected"), $(this).removeClass("mediaitem-active").find(".smallgriditem-plus").removeClass("smallgriditem-plus-active"), $(this).hasClass("smallgriditem-selected") || ($(this).find(".sitdd-multi").hide(), $(this).find(".sitdd-single").show()), input = $(this).find("input"), input.attr("checked") ? input.attr("checked", !1) : input.attr("checked", !0), $(this).trigger("updatecount")
     }), $(".mediabox-deleteslctd").click(function(e) {

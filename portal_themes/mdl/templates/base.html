@@ -40,8 +40,8 @@
         <div class="mdl-layout__header">
             <div class="mdl-layout__header-row">
                 <nav class="mdl-navigation">
-                    <a id="mediabin-sort-by" class="mdl-navigation__link">{% trans "Sort by" %}</a>
-                    <div class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mediabin-sort-by">
+                    <span id="mediabin-sort-by" class="mdl-navigation__link">{% trans "Sort by" %}</span>
+                    <div id="mediabin_sort_menu" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mediabin-sort-by">
                         <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_srt_date">{% trans "Date added" %}</a>
 
                         <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_srt_name">{% trans "Name" %}</a>
@@ -53,7 +53,7 @@
 
                         <a class="mdl-menu__item" href="{% url vs_items_export %}" id="cntmo_prtl_mediabin_export_lnk">{% trans "Export" %}</a>
 
-                        <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_rmv_lnk">{% trans "Remove from Bin" %}</a>
+                        <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_rmv_lnk">{% trans "Remove All from Bin" %}</a>
 
                         <a class="mdl-menu__item" href="" id="cntmo_prtl_mediabin_unselect_lnk">{% trans "Unselect" %}</a>
 
@@ -72,14 +72,6 @@
         <div id="mediabinholder">
             <div class="viewport">
                 <div class="mediabinitems overview"></div>
-            </div>
-
-            <div class="scrollbar">
-                <div class="track">
-                    <div class="thumb">
-                        <div class="end"></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -153,25 +145,18 @@ $(document).ready(function() {
 </script>
 
 <script type="text/template" id="cntmo_prtl_mediabin-pod-tmpl">
-    <a href="<%= absolute_url %>">
-    <% if(thumbnail_uri) { %>
-        <div class="thumbnail" style="background-image:url(<%= thumbnail_uri %>);"></div>
-    <% } else { %>
-        <div class="nothumbnail"><img src="{{ STATIC_URL }}img/collection_group.png" width="90" class="collectionicon" /></div>
-    <% } %>
-    </a>
-        <div class="podmenu_holder">
-        <ul class="plevel-one">
-            <li><a href="#"></a>
-                <ul class="plevel-two">
-                    <li><a href="" class="cntmo_prtl_mediabin-pod-rmv">{% trans "Remove from Bin" %}</a></li>
-                    <li><a href="<%= absolute_url %>" class="cntmo_prtl_mediabin-pod-view">{% trans "View" %}</a></li>
-                </ul>
-            </li>
-        </ul>
-        </div>
-    <div class="mediaitemtitle">
-        <strong><a href="<%= absolute_url %>" title="<%= resource_name %>"><%= resource_name %></a></strong>
+<% if (thumbnail_uri) { %>
+    <div class="media-pod-wrap" style="background-image: url(<%= thumbnail_uri %>)">
+<% } else { %>
+    <div class="media-pod-wrap" style="background-image: url({{ STATIC_URL }}img/collection_group.png)">
+<% } %>
+        <i id="remove-pod-<%= resource_id %>" class="cntmo_prtl_mediabin-pod-rmv material-icons pod-action">close</i>
+        <!--<div class="mdl-tooltip" for="remove-pod-<%= resource_id %>">Remove from bin</div>-->
+
+        <a href="<%= absolute_url %>" id="view-pod-<%= resource_id %>" class="cntmo_prtl_mediabin-pod-view material-icons pod-action">visibility</a>
+        <!--<div class="mdl-tooltip" for="view-pod-<%= resource_id %>">View item</div>-->
+
+        <div class="mediaitemtitle"><%= resource_name %></div>
     </div>
 </script>
 

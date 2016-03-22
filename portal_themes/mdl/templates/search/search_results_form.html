@@ -29,7 +29,7 @@
         <ul class="mediacontextualmenu mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="media-context-menu">
             <a data-areas-available="{% if exportareas %}true{% else %}false{% endif %}" id="exportitem" class="mdl-menu__item" href="#" {% if not exportareas %}disabled{% endif %}>{% trans "Export" %}</a>
 
-            <a href="#" id="addtobinitems" class="mdl-menu__item" rel="{% url vs_collection_add_form %}">{% trans "Add to Bin" %}</a>
+            <a id="addtobinitems" class="mdl-menu__item" rel="{% url vs_collection_add_form %}">{% trans "Add to Bin" %}</a>
 
             <a href="#" rel="{% url vs_collection_add_form %}" id="addtocollection" class="mdl-menu__item" > {% trans "Add to Collection" %}</a>
 
