@@ -16,119 +16,105 @@
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
-  sfoptions = {
-     target:        '#content',
-     beforeSubmit: function(arr, $form, options){
-         // Small helper function to get a specific field
-         function _getfield(a, name) {
-             for (var iter=0; iter<a.length; iter++) {
-                 if (a[iter].name === name) {
-                     return a[iter];
-                 }
-             }
-         }
-         var fieldsToRemove = [];
-         // Clone the array since we want to modify it
-         // Loop over the array and find all fields with an empty value
-         for (var i=arr.length-1 ; i>=0; i--) {
-             var v = arr[i];
-             
-             // Find all fields with an empty value
-             var m = v.name.match("_0$");
-             if(m) {
-                 var index = m.index;
-                 var field_name = v.name.slice(0,index);
-                 if (v.value === "") {
-                     var typefield = _getfield(arr, field_name+"_1");
-                     // Remove all empty fields which which are not date or timestamp since they can be empty with has (not) passed
-                     if (typefield && (typefield.value !== "date" && typefield.value !== "timestamp" ) ) {
-                         fieldsToRemove.push(field_name);
-                     }
-                 }
-             }
-         }
-         // Finally, loop over all the fields we found above, and remove all the subfields for each
-         for (var i=0; i<fieldsToRemove.length; i++) {
-             var field_name = fieldsToRemove[i];
-             var arrclone = arr.slice(0);
-             for (var j=arrclone.length-1; j>0; j--) {
-                 var v = arrclone[j];
-                 // This is v.name.startswith()
-                 if (v.name.lastIndexOf(field_name+"_", 0) === 0) {
-                     var removed = arr.splice(j, 1);
-                 }
-             }
-         }
-         cntmo.app.timers.loading_timer = window.setTimeout(function(){
-          $('#loading-icon').fadeIn(300);
-         }, 700);
+    sfoptions = {
+        target: 'main.mdl-layout__content',
+        beforeSubmit: function(arr, $form, options) {
+            // Small helper function to get a specific field
+            function _getfield(a, name) {
+                for (var iter=0; iter<a.length; iter++) {
+                    if (a[iter].name === name) {
+                        return a[iter];
+                    }
+                }
+            }
 
+            var fieldsToRemove = [];
+            // Clone the array since we want to modify it
+            // Loop over the array and find all fields with an empty value
+            for (var i=arr.length-1 ; i>=0; i--) {
+                var v = arr[i];
 
+                // Find all fields with an empty value
+                var m = v.name.match("_0$");
+                if(m) {
+                    var index = m.index;
+                    var field_name = v.name.slice(0,index);
 
-         return true;
-     },
-     success: function(responseText, textStatus, jqXHR, $form){
-        $('ul.plevel-one').supersubs({
-            hoverClass:    'sfHover',
-            minWidth:    8,
-            maxWidth:    29,
-            extraWidth:  1
-        }).superfish({
-            speed:       'fast'
-        });
-        window.clearTimeout(cntmo.app.timers.loading_timer);
-        try {
-            cntmo.app.page.searchresults.cacheDOMElements();
-        } catch(err){
-        };
-        $('#loading-icon').fadeOut(300);
-     },
-    error: function(jqXHR, textStatus){
-       if (jqXHR.status === 401){
-            $.growl("{% trans "It seems your session has ended, please login again to search. Thank you." %}", 'error');
-        } else { 
-            $.growl("{% trans "Sorry, there was a problem with your search" %}", 'error');
+                    if (v.value === "") {
+                        var typefield = _getfield(arr, field_name+"_1");
+                        // Remove all empty fields which which are not date or timestamp since they can be empty with has (not) passed
+                        if (typefield && (typefield.value !== "date" && typefield.value !== "timestamp" ) ) {
+                            fieldsToRemove.push(field_name);
+                        }
+                    }
+                }
+            }
+
+            // Finally, loop over all the fields we found above, and remove all the subfields for each
+            for (var i=0; i<fieldsToRemove.length; i++) {
+                var field_name = fieldsToRemove[i];
+                var arrclone = arr.slice(0);
+
+                for (var j=arrclone.length-1; j>0; j--) {
+                    var v = arrclone[j];
+                    // This is v.name.startswith()
+                    if (v.name.lastIndexOf(field_name+"_", 0) === 0) {
+                        var removed = arr.splice(j, 1);
+                    }
+                }
+            }
+
+            return true;
+        },
+        success: function(responseText, textStatus, jqXHR, $form) {
+            try {
+                cntmo.app.page.searchresults.cacheDOMElements();
+            } catch(err){
+            };
+        },
+        error: function(jqXHR, textStatus) {
+           if (jqXHR.status === 401){
+                $.growl("{% trans "It seems your session has ended, please login again to search. Thank you." %}", 'error');
+            } else {
+                $.growl("{% trans "Sorry, there was a problem with your search" %}", 'error');
+            }
         }
-        window.clearTimeout(cntmo.app.timers.loading_timer);
-       $('#loading-icon').fadeOut(300);
-     }
-  };
+    };
 
-  cntmo.app.page.searchresults = new cntmo.prtl.Search.SearchResultsView({
-    el: $('#main'),
-    search_adv_open: {{ search_advanced|yesno:"true,false" }},
-    search_adv_tog: {{ search_advanced|yesno:"true,false" }},
-    delete_template: $('#cntmo_prtl_delete_warning_collections_tmpl'),
-    deleteLibraryConfirm: $('#cntmo_prtl_delete_library_confirm_tmpl'),
-    definedurls: {
-      exportallurl: '{% url vs_collection_export collection.getId %}',
-      exporturl: '{% url vs_items_export %}',
-      delete_item_url: '{% url vs_items_delete %}',
-      items_relation_url: '{% url vs_items_relation %}',
-      item_api: '/API/v1/item/',
-      sequence_api: '/API/v1/sequence/'
-    },
-    message_strings: {
-      deleteConfirm: '{% trans "Are you sure you want to delete the selected items?" %}',
-      deletedConfirmation: '{% trans "Your items have been deleted" %}',
-      deleteError: '{% trans "There was an error deleting" %}',
-      collectionAddButton: '{% trans "Add to Collection" %}',
-      collectionCancelButton: '{% trans "Cancel" %}'
-    },
-    {% if library %}
-    library: '{{ library }}',
-    {% endif %}
-    {% if search_id %}
-    search_id: '{{ search_id }}',
-    {% endif %}
-    {% if searchcollections %}
-    searchcollections: '{{ searchcollections }}',
-    {% endif %}
-    library_selected: undefined,
-    searchquery: '{{ searchquery }}',
-    sfoptions: sfoptions
-
-  });
+    cntmo.app.page.searchresults = new cntmo.prtl.Search.SearchResultsView({
+        el: $('#main'),
+        search_adv_open: {{ search_advanced|yesno:"true,false" }},
+        search_adv_tog: {{ search_advanced|yesno:"true,false" }},
+        delete_template: $('#cntmo_prtl_delete_warning_collections_tmpl'),
+        deleteLibraryConfirm: $('#cntmo_prtl_delete_library_confirm_tmpl'),
+        definedurls: {
+            exportallurl: '{% url vs_collection_export collection.getId %}',
+            exporturl: '{% url vs_items_export %}',
+            delete_item_url: '{% url vs_items_delete %}',
+            items_relation_url: '{% url vs_items_relation %}',
+            item_api: '/API/v1/item/',
+            sequence_api: '/API/v1/sequence/'
+        },
+        message_strings: {
+            deleteConfirm: '{% trans "Are you sure you want to delete the selected items?" %}',
+            deletedConfirmation: '{% trans "Your items have been deleted" %}',
+            deleteError: '{% trans "There was an error deleting" %}',
+            collectionAddButton: '{% trans "Add to Collection" %}',
+            collectionCancelButton: '{% trans "Cancel" %}'
+        },
+        {% if library %}
+            library: '{{ library }}',
+        {% endif %}
+        {% if search_id %}
+            search_id: '{{ search_id }}',
+        {% endif %}
+        {% if searchcollections %}
+            searchcollections: '{{ searchcollections }}',
+        {% endif %}
+        library_selected: undefined,
+        searchquery: '{{ searchquery }}',
+        sfoptions: sfoptions
+    });
 
 });
 </script>

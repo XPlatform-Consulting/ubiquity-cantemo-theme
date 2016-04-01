@@ -8,30 +8,37 @@
 
 {% block content %}
 <div class="fullwidthcontent">
-    {% themeinclude "search/search_results_header.html" %}
-    
-    <div id="searchresultswrapper" class="mdl-grid">
-    {% if hits %}
-        {% themeinclude "search/search_results_items_grid.html" %}
-    {% else %}
 
-        <h2>{% trans "No media found." %}</h2>
-        <p style="font-size:1.3em;">
-            {% if searchquery == "" %}
-                {% blocktrans %}We couldn't find any media matching your search query, {% endblocktrans %}
-            {% else %}
-                {% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", {% endblocktrans %}
-            {% endif %}
-            {% if suggestions and searchquery != "" %}
-                {% trans "did you mean" %}
-                {% for suggestion in suggestions %}
-             <a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion|urlencode }}">{{ suggestion }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} {% trans "or" %} {% else %},{% endif %} {% endif %}{% endfor %}?
-            {% else %}
-                {% trans "please try again." %}
-            {% endif %}
-        </p>
+    {% themeinclude "search/search_results_header.html" %}
+
+    {% if hits %}
+        <div id="searchresultswrapper" class="mdl-grid">
+            {% themeinclude "search/search_results_items_grid.html" %}
+        </div><!-- #searchresultswrapper -->
+    {% else %}
+        <div id="searchresultswrapper" >
+            <div style="padding:18px;">
+                <h4>{% trans "No media found." %}</h4>
+
+                <p>
+                    {% if searchquery == "" %}
+                        {% blocktrans %}We couldn't find any media matching your search query, {% endblocktrans %}
+                    {% else %}
+                        {% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", {% endblocktrans %}
+                    {% endif %}
+
+                    {% if suggestions and searchquery != "" %}
+                        {% trans "did you mean" %}
+                        {% for suggestion in suggestions %}
+                            <a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion|urlencode }}">{{ suggestion }}</a>
+                            {% if not forloop.last %}{% if forloop.revcounter == 2 %} {% trans "or" %} {% else %},{% endif %} {% endif %}{% endfor %}?
+                    {% else %}
+                        {% trans "please try again." %}
+                    {% endif %}
+                </p>
+            </div>
+        </div><!-- #searchresultswrapper -->
     {% endif %}
-    </div><!-- #searchresultswrapper -->
 </div><!-- .fullwidthcontent -->
 
 <div class="centerwrapper">

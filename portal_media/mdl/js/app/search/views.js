@@ -4,7 +4,9 @@
             return searchString
         },
         setupSearchResultsView: function(options) {
-            $(".infocheckbox").attr("checked", !1), options.searchquery !== undefined && $.each("{{ searchquery }}".split(" "), function(idx, val) {
+            $(".infocheckbox").prop("checked", !1),
+            options.searchquery !== undefined
+            && $.each("{{ searchquery }}".split(" "), function(idx, val) {
                 $(".mediaitemtitle").highlight(val)
             })
         },
@@ -29,8 +31,8 @@
                 "click .mediacontextualmenu #addtobinitems": "addToBin",
                 "click .mediacontextualmenu #archive_selected_items": "archiveItems",
                 "click .mediacontextualmenu #restore_selected_items": "restoreItemsFromArchive",
-                "click .paginator a": "searchQuery",
-                "click .search_ajax a": "searchQuery",
+                //"click .paginator a": "searchQuery", TODO: make a new method
+                //"click .search_ajax a": "searchQuery", TODO: make a new method
                 "submit #searchform": "searchQuery",
                 "click div.annotationtimeline": "showPodPreviewEventHandler",
                 "click a.pod_preview": "showPodPreviewEventHandler",
@@ -73,15 +75,14 @@
                 this.$el.find("ul.plevel-one").superfish("destroy").superfish({
                     speed: "fast"
                 }),
-                options.search_adv_tog || self.$el.find(".sa_placeholder").hide(),
-                $("#show_advanced").length > 0
-                && $.get(updateQueryStringParameter($("#show_advanced").attr("rel"), "header", "False"), function(data) {
-                    self.$el.find(".sa_placeholder").html(data)
-                }),
+                options.search_adv_tog,
                 this.enableAndDisableMenus()
             },
             cacheDOMElements: function() {
-                this.$firstvalEl = $("#first_on_page"), this.$lastvalEl = $("#last_on_page"), this.$hitstotalEl = $("#hits_total_results"), this.$viewtypebuttons = this.$el.find("a.viewtypebutton")
+                this.$firstvalEl = $("#first_on_page"),
+                this.$lastvalEl = $("#last_on_page"),
+                this.$hitstotalEl = $("#hits_total_results"),
+                this.$viewtypebuttons = this.$el.find("a.viewtypebutton")
             },
             bindKeyBindings: function() {
                 return $(document).bind("keydown", "ctrl+a", this.deselectSelectAll), $(document).bind("keydown", "shift+left", this.selectPrevious), $(document).bind("keydown", "shift+right", this.selectNext), $(document).bind("keydown", "left", this.selectPrevious), $(document).bind("keydown", "right", this.selectNext), $(document).bind("keydown", "space", this.showPodPreviewEventHandler), !0
@@ -165,6 +166,7 @@
                         itemsToConvert.forEach(function (item) {
                             var image = item.querySelector('img.mediathumb');
                             var imageUrl = (image ? image.src : '/sitemedia/img/collection_group.png');
+                            imageUrl = document.createTextNode(imageUrl).data;
 
                             var itemPod = document.createElement('div');
                             itemPod.classList.add('media-pod-wrap');
@@ -272,28 +274,42 @@
             },
             searchQuery: function(event) {
                 var self = this;
+
                 if ($(event.currentTarget).find("span").hasClass("paginatorbutton-disabled") === !0) return !1;
+
                 if (self.options.sfoptions == undefined) return !0;
+
                 try {
                     delete sfoptions.url
-                } catch (e) {}
-                cntmo.app.page.searchresults.library_selected = undefined, cntmo.app.page.searchresults.search_id_selected = undefined, cntmo.app.page.searchresults.ignore_list.reset(), cntmo.app.page.searchresults.selected_collection.reset(), cntmo.app.page.searchresults.search_adv_open && cntmo.app.page.searchresults.hideShowSearchAdvanced($("#show_advanced")), cntmo.app.page.lastMediaItemClicked = undefined;
+                } catch (e) {
+
+                }
+
+                cntmo.app.page.searchresults.library_selected = undefined,
+                cntmo.app.page.searchresults.search_id_selected = undefined,
+                cntmo.app.page.searchresults.ignore_list.reset(),
+                cntmo.app.page.searchresults.selected_collection.reset(),
+                cntmo.app.page.searchresults.search_adv_open && cntmo.app.page.searchresults.hideShowSearchAdvanced($("#show_advanced")),
+                cntmo.app.page.lastMediaItemClicked = undefined;
+
                 var url = $(event.currentTarget).attr("href");
-                this.options.sfoptions.url = url, event.preventDefault(), $(".sa_placeholder").hide(), $("#searchheader").data("closed") === undefined && ($("#searchform").animate({
-                    "margin-left": 0
-                }, "slow").removeClass("JqueryCentered"), $("#searchheader").animate({
-                    "padding-top": 0,
-                    height: "86px",
-                    "padding-left": 0
-                }, "slow", function() {
-                    $(this).css("height", "auto"), $("#header .mediacontextualmenu").show(), $("#header .viewtypes").show(), $("#searchinputfield").autocomplete("close")
-                }).data("closed", !0).css("position", "relative"));
+
+                this.options.sfoptions.url = url,
+                event.preventDefault();
+
                 try {
-                    $(event.currentTarget).attr("href") ? history.pushState(null, null, $(event.currentTarget).attr("href")) : history.pushState(null, null, "?" + $("#searchform").serialize())
-                } catch (err) {}
+                    $(event.currentTarget).attr("href")
+                    ? history.pushState(null, null, $(event.currentTarget).attr("href"))
+                    : history.pushState(null, null, "?" + $("#searchform").serialize())
+                } catch (err) {
+
+                }
+
                 self.$viewtypebuttons.each(function() {
                     $(this).attr("href", window.location)
-                }), $("<form/>").ajaxSubmit(self.options.sfoptions)
+                }),
+
+                $("<form/>").ajaxSubmit(self.options.sfoptions);
             },
             restoreItems: function(event) {
                 var gorestore, formdata, self = this;

@@ -170,10 +170,20 @@ form li:after {
     color: #fff !important;
 }
 .nav-group {
-    padding-bottom: 16px;
+    padding-bottom: 14px;
+}
+.nav-group h4 {
+    font-size: 18px;
+    margin: 0;
+    padding-left: 16px;
 }
 .mdl-navigation .nav-group .mdl-navigation__link {
-    padding: 4px 40px !important;
+    padding: 2px 0;
+    padding-left: 30px;
+}
+.mdl-navigation .nav-group select {
+    width: 90%;
+    padding-left: 30px;
 }
 
 /** Mediabin

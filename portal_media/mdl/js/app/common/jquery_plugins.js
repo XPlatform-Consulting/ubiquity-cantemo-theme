@@ -77,7 +77,7 @@ jQuery.fn.center = function() {
                 $(selector).remove()
             })
         })
-    }, $("html").ajaxSend(function(event, xhr, settings) {
+    }, $(document).ajaxSend(function(event, xhr, settings) {
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && "" !== document.cookie)
@@ -142,9 +142,9 @@ jQuery.fn.center = function() {
                     "margin-right": "16px"
                 }),
                 canceledit = $('<input type="reset" value ="' + gettext("Cancel") + '" class="button editinplace mdl-button js-mdl-button js-mdl-button--ripple mdl-button--raised mdl-button--accent">').click(function() {
-                    return obj.html($(this).data("original_value")).addClass("editinplace_editable"), 
-                            $.fn.editinplace.addclick(obj), 
-                            $(this).parent().find(".editinplace").remove(), 
+                    return obj.html($(this).data("original_value")).addClass("editinplace_editable"),
+                            $.fn.editinplace.addclick(obj),
+                            $(this).parent().find(".editinplace").remove(),
                             !1
                 }).data("original_value", obj.text()),
                 editobj = $('<input class="editinplaceval mdl-textfield__input">').attr("value", obj.text()).css({
@@ -156,15 +156,15 @@ jQuery.fn.center = function() {
                     "margin-right": "16px",
                     "width": "auto"
                 }).keydown(function(event) {
-                    $(this).val($(this).val().replace(/\v+/g, "")), 
-                    13 === event.keyCode ? ($(this).unbind(), 
-                                            $(this).parent().find("input:submit").click(), 
-                                            event.preventDefault()) 
+                    $(this).val($(this).val().replace(/\v+/g, "")),
+                    13 === event.keyCode ? ($(this).unbind(),
+                                            $(this).parent().find("input:submit").click(),
+                                            event.preventDefault())
                                          : 27 === event.keyCode && ($(this).parent().find("input:reset").click(), event.preventDefault())
                 });
-            return $(editinplacehldr).append(editobj).append(saveedit).append(canceledit), 
-                    obj.unbind(".editinplace").html(editinplacehldr), 
-                    editobj.focus(), 
+            return $(editinplacehldr).append(editobj).append(saveedit).append(canceledit),
+                    obj.unbind(".editinplace").html(editinplacehldr),
+                    editobj.focus(),
                     !1
         }), !0
     }, jQuery.fn.tablerowcheckbox = function(callbck) {

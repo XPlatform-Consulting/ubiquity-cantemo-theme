@@ -1,4 +1,4 @@
-{% themeextends "base.html" %}
+{% themeextends theme %}
 {% load i18n compress %}
 
 {% block extra_script %}
@@ -38,6 +38,8 @@
         </main>
     <!-- base_search.html body end -->
     {% endblock body %}
+
+    {% block footer %}{% endblock %}
 
 </div>
 <!-- base_search.html theme end -->

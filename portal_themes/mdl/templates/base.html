@@ -1,4 +1,3 @@
-
 {% load i18n cache messages compress %}
 
 <!DOCTYPE html>
@@ -99,31 +98,34 @@
     $("#ntfcnt").click(function(){
         if (ntfcnt > 0) {
             $(this).addClass('ntfcnt-active');
-             $(this).after('<div id="ntfdd" style"position: absolute;float:left;"><h5>{% trans "Notifications" %}: '+notifications.length+' {% trans "of" %} '+ ntfcnt +'</h5></div>');
-             //$("#ntfdd").css( { "left": (pos.left + width) + "px", "top":pos.top + "px" } );
-             $.each(notifications, function(index, value){
-                 if (value.currentStepStatus == 'FINISHED') {
+            $(this).after('<div id="ntfdd" style"position: absolute;float:left;"><h5>{% trans "Notifications" %}: '+notifications.length+' {% trans "of" %} '+ ntfcnt +'</h5></div>');
+            //$("#ntfdd").css( { "left": (pos.left + width) + "px", "top":pos.top + "px" } );
+            $.each(notifications, function(index, value){
+                if (value.currentStepStatus == 'FINISHED') {
                     jbState='Finished';
-                 } else if (value.currentStepStatus == 'FAILED_TOTAL'){
+                } else if (value.currentStepStatus == 'FAILED_TOTAL'){
                     jbState='Failed';
-                 } else {
+                } else {
                     jbState = value.currentStepStatus;
-                 }
-                 $('#ntfdd').append('<a href="/vs/job/'+ value.jobId +'/"><div class="ntfel ntfel-'+ value.currentStepStatus +'">'+value.type+' '+ value.jobId +' '+ jbState +'</div></a>')
-             })
-             if (ntfcnt > notifications.length){
+                }
+
+                $('#ntfdd').append('<a href="/vs/job/'+ value.jobId +'/"><div class="ntfel ntfel-'+ value.currentStepStatus +'">'+value.type+' '+ value.jobId +' '+ jbState +'</div></a>')
+            })
+
+            if (ntfcnt > notifications.length){
                 $('#ntfdd').append('<div class="ntfel">{% trans "View more" %}</div>');
-             }
-             $(document).click(function(e) {
-             	if ($(e.target).is('#ntfdd,#ntfdd, #ntfcnt, #ntfcnt *')){
-             	    return false;
-             	} else {
-             	    $('#ntfdd').fadeOut();
-             	    $(document).unbind("click");
-             	    $("#ntfcnt").removeClass('ntfcnt-active');
-             	    $("#ntfcnttxt").html("");
-             	}
-             });
+            }
+
+            $(document).click(function(e) {
+            	if ($(e.target).is('#ntfdd,#ntfdd, #ntfcnt, #ntfcnt *')){
+            	    return false;
+            	} else {
+            	    $('#ntfdd').fadeOut();
+            	    $(document).unbind("click");
+            	    $("#ntfcnt").removeClass('ntfcnt-active');
+            	    $("#ntfcnttxt").html("");
+            	}
+            });
         }
     });
     {% endif %}
