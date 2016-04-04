@@ -45,7 +45,7 @@
             },
             initialize: function(options) {
                 var self = this;
-                _.bindAll(this, "startDraggable", "selectAllItems", "deselectSelectAll", "selectPrevious", "selectNext", "mediaItemChange", "enableAndDisableMenus", "disableHandler", "getItemPreviewInformation", "buildPodPreview", "bindAudioKeyBindings", "unBindAudioKeyBindings", "showPreview", "showPodPreviewEventHandler", "archiveItemEventHandler", "restoreItemEventHandler", "setupIntervalType", "cacheDOMElements"),
+                _.bindAll(this, "startDraggable", "selectAllItems", "deselectSelectAll", "changeSelectedLabels", "selectPrevious", "selectNext", "mediaItemChange", "enableAndDisableMenus", "disableHandler", "getItemPreviewInformation", "buildPodPreview", "bindAudioKeyBindings", "unBindAudioKeyBindings", "showPreview", "showPodPreviewEventHandler", "archiveItemEventHandler", "restoreItemEventHandler", "setupIntervalType", "cacheDOMElements"),
                 this.views = {},
                 this.options = options || {},
                 this.search_adv_open = options.search_adv_open,
@@ -203,9 +203,14 @@
                 })
             },
             deselectSelectAll: function() {
-                this.library_selected = undefined, this.search_id_selected = undefined, this.$el.find(".selectedLibraryLabelChanges").each(function(index, el) {
-                    $(el).html($(el).attr("noLibrarySelectedStateLabel"))
-                }), this.ignore_list.reset(), deselectAllItems(event), selectAllItems(event)
+                this.library_selected = undefined,
+                this.search_id_selected = undefined,
+                this.$el.find(".selectedLibraryLabelChanges").each(function(index, el) {
+                    self.changeSelectedLabels(el, false); // make labels 'select'
+                }),
+                this.ignore_list.reset(),
+                deselectAllItems(event),
+                selectAllItems(event)
             },
             selectAllCurrentPage: function(event) {
                 event.preventDefault(), selectAllUnselectedItems(event)
@@ -214,16 +219,53 @@
                 event.preventDefault(), deselectAllItems()
             },
             selectAllItems: function(event) {
-                return event.preventDefault(), this.selected_collection && 0 == this.selected_collection.length ? selectAllItems(event) : (this.library_selected = undefined, this.search_id_selected = undefined, this.$el.find(".selectedLibraryLabelChanges").each(function(index, el) {
-                    $(el).html($(el).attr("noLibrarySelectedStateLabel"))
-                }), this.ignore_list.reset(), deselectAllItems(event), this.selected_collection.reset(), this.labelsSelectedChange(), this.updateCount()), !1
+                // whoever originally wrote this, why?! D=
+                var self = this;
+                return event.preventDefault(),
+                       this.selected_collection && 0 == this.selected_collection.length
+                       ? selectAllItems(event)
+                       : ( this.library_selected = undefined,
+                           this.search_id_selected = undefined, this.$el.find(".selectedLibraryLabelChanges").each(function(index, el) {
+                               self.changeSelectedLabels(el, true); // make labels 'deselect'
+                           }),
+                           this.ignore_list.reset(),
+                           deselectAllItems(event),
+                           this.selected_collection.reset(),
+                           this.labelsSelectedChange(),
+                           this.updateCount()
+                        ),
+                       !1
             },
             selectAllResults: function(event) {
-                return event.preventDefault(), $(event.target).hasClass("disabled") ? !1 : (this.library_selected !== undefined || this.search_id_selected !== undefined ? (this.library_selected = undefined, this.search_id_selected = undefined, deselectAllItems(event), this.$el.find(".selectedLibraryLabelChanges").each(function(index, el) {
-                    $(el).html($(el).attr("noLibrarySelectedStateLabel"))
-                }), this.ignore_list.reset([]), this.selected_collection.reset([]), this.search_id_selected = undefined, this.library_selected = undefined) : (0 !== this.selected_collection.length && deselectAllItems(event), selectAllItems(event), this.$el.find(".selectedLibraryLabelChanges").each(function(index, el) {
-                    $(el).html($(el).attr("librarySelectedStateLabel"))
-                }), this.ignore_list.reset([]), this.selected_collection.reset([]), this.search_id ? this.search_id_selected = this.search_id : this.library_selected = this.library), this.labelsSelectedChange(), this.updateCount(), !1)
+                // *cries*
+                var self = this;
+                return event.preventDefault(),
+                       $(event.target).hasClass("disabled")
+                       ? !1
+                       : (this.library_selected !== undefined || this.search_id_selected !== undefined
+                            ? (this.library_selected = undefined,
+                               this.search_id_selected = undefined,
+                               deselectAllItems(event),
+                               this.$el.find(".selectedLibraryLabelChanges").each(function (index, el) {
+                                   self.changeSelectedLabels(el, false); //make labels 'select'
+                               }),
+                               this.ignore_list.reset([]),
+                               this.selected_collection.reset([]),
+                               this.search_id_selected = undefined,
+                               this.library_selected = undefined)
+                            : (0 !== this.selected_collection.length && deselectAllItems(event),
+                                selectAllItems(event),
+                                this.$el.find(".selectedLibraryLabelChanges").each(function(index, el) {
+                                    self.changeSelectedLabels(el, true); // make labels 'deselect'
+                                }),
+                                this.ignore_list.reset([]),
+                                this.selected_collection.reset([]),
+                                this.search_id
+                                    ? this.search_id_selected = this.search_id
+                                    : this.library_selected = this.library),
+                        this.labelsSelectedChange(),
+                        this.updateCount(),
+                        !1)
             },
             getSelectedItemIds: function(includeAll) {
                 return ids = _.pluck(this.selected_collection.reject(function(data) {
@@ -232,6 +274,15 @@
             },
             getIgnoredItemIds: function() {
                 return this.ignore_list.pluck("id")
+            },
+            changeSelectedLabels: function(el, state) {
+                // if state is true, labels change to deselect state
+
+                // icon
+                el.textContent = (state ? 'check_box_outline_blank' : 'select_all' );
+
+                // label text
+                el.nextElementSibling.textContent = (state ? el.getAttribute('deselectresultslabel') : el.getAttribute('selectresultslabel'));
             },
             changeSortDirection: function(event) {
                 var sortcookiename;

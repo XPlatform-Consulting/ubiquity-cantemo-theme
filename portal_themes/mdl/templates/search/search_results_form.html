@@ -1,28 +1,49 @@
-{% load i18n %}
+{% load i18n getstring %}
+{% qstring as current_qstring %}
 
 {% if not hidesearchform %}
-<div id="header" class="header">
-    <div class="title-bar">
-        <h3>{% trans "Search" %} {{ searchquery }}</h3>
+<div id="search-header" class="mdl-layout__header-row">
 
-        {% comment %}
-        <div class="viewtypes" {% if not current_qstring %} style="display:none"{% endif %}>
-            <a refs="grid" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-grid-enabled">Grid</a>
-            <a refs="list" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-list">List</a>
-        </div><!-- .viewtypes -->
-        {% endcomment %}
+    <!--<span class="mdl-layout-title">{{ searchquery }}</span>-->
 
-        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" href="" librarySelectedStateLabel="{% trans "Deselect from all Pages" %}" noLibrarySelectedStateLabel="{% trans "Select On All Pages" %}" id="selectallresults" class="selectedLibraryLabelChanges">{% trans "Select All" %}</button>
+    {% comment %}
+    <div class="viewtypes" {% if not current_qstring %} style="display:none"{% endif %}>
+        <a refs="grid" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-grid-enabled">Grid</a>
+        <a refs="list" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-list">List</a>
+    </div><!-- .viewtypes -->
+    {% endcomment %}
 
-        <div style="padding: 0 16px">
-            <span id="selectionmsg" itemsSelectedStateLabel="{% trans " Selected: " %}" noItemsSelectedStateLabel="" class="selectedStateLabelChanges"></span>
-            <span class="selectioncount"></span>
+    {# {% if not recyclebin %} #}
+    {% if hits %}
+        <div class="srinfo">
+          	{% if not current_qstring|qstring_get:"display_podType" == "SubClip" %}
+				{% trans 'Displaying' %} <span id="first_on_page">{{first_on_page}}</span> {% trans "to" %} <span id="last_on_page">{{ last_on_page }}</span> {% trans "of" %} <span id="hits_total_results">{{ hits }}</span> {% trans 'hits' %} {% trans "for" %} "{{ searchquery }}"
+          	{% endif %}
+            {% if suggestions and searchquery != "" %}. {% trans "Did you mean" %}
+                {% for suggestion in suggestions %}
+                	<a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion }}">{{ suggestion }}</a>
+                	{% if not forloop.last %}, {% endif %}
+            	{% endfor %}?
+            {% endif %}
         </div>
+    {% endif %}
+    {# {% endif %} #}
 
-        <div class="mdl-layout-spacer"></div>
+    <div>
+        <button id="selectallresults" class="mdl-button mdl-js-button mdl-button--icon material-icons selectedLibraryLabelChanges" deselectresultslabel="{% trans "Deselect All Results" %}" selectresultslabel="{% trans "Select All Results" %}">select_all</button>
+        <label class="mdl-tooltip" for="selectallresults">{% trans "Select All Results" %}</label>
+    </div>
 
-        {% themeinclude "search/search_component.html" %}
+    <div>
+        <span id="selectionmsg" itemsSelectedStateLabel="{% trans "Selected: " %}" noItemsSelectedStateLabel="" class="selectedStateLabelChanges"></span>
+        <span class="selectioncount"></span>
+    </div>
 
+    <div class="mdl-layout-spacer"></div>
+
+    {% themeinclude "search/search_component.html" %}
+
+    <div>
         <button id="media-context-menu" class="mdl-button mdl-js-button mdl-button--icon">
             <i class="material-icons">settings</i>
         </button>

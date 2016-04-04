@@ -7,7 +7,9 @@
 <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
 
     {% block navigation %}
-        {% themeinclude 'includes/navigation.html' %}
+        <header class="mdl-layout__header">
+            {% themeinclude 'includes/navigation.html' %}
+        </header>
     {% endblock navigation %}
 
     {% block drawer %}{% endblock %}

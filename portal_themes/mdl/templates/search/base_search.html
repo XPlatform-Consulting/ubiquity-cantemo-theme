@@ -16,9 +16,14 @@
 {% block theme %}
 <!-- base_search.html theme start -->
 <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-
     {% block navigation %}
-        {% themeinclude 'includes/navigation.html' %}
+        <header class="mdl-layout__header">
+            {% themeinclude 'includes/navigation.html' %}
+
+            {% block heading %}
+                {% themeinclude "search/search_results_form.html" %}
+            {% endblock heading %}
+        </header>
     {% endblock navigation %}
 
     {% block drawer %}{% endblock %}
@@ -26,12 +31,6 @@
     {% block body %}
     <!-- base_search.html body start -->
         <main class="mdl-layout__content">
-            <div id="searchheader" class="searchheader">
-                {% block heading %}
-                    {% themeinclude "search/search_results_form.html" %}
-                {% endblock %}
-            </div>
-
             <div id="content" class="content searchcontent">
                 {% block content %}{% endblock %}
             </div>
