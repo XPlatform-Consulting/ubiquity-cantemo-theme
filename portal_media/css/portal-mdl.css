@@ -332,7 +332,6 @@ form li:after {
 /** Search
 **********************************************/
 #search-header {
-    justify-content: space-between;
     height: 48px;
 }
 #search-header > * {
@@ -393,25 +392,35 @@ label.search-size {
 
 /** Items
 **********************************************/
+/* Ok, there's something funny going on in chrome when using a fixed height with cards, happens in safari too,
+firefox is the only one that renders it correctly,
+however, for the work around, elements inside the card will have to have a set height (min/max)
+for all the cards in the results to be the same height, ugh */
 .media-item-card {
     width: 100%;
-    height: 300px;
+    /* height: 300px; */
 }
 .media-item-card .mdl-card__menu {
-    background-color: #fff;
-    position: absolute;
-    right: 12px;
-    top: 10px;
+    right: 14px;
+    top: 11px; /* firefox wants 10px, chrome/safari wants 12px */
 }
 .media-item-card .mdl-menu__item {
     line-height: 32px;
     height: 32px;
     padding: 0 8px;
 }
+.media-item-card .mdl-card__title h2 {
+    white-space: nowrap;
+}
+.media-item-card .mdl-card__title svg {
+    padding-right: 6px;
+}
+.media-item-card .mdl-card__media {
+    min-height: 170px;
+}
 .media-item-card .mdl-card__supporting-text {
     width: auto;
-    height: 100%;
-    box-sizing: padding-box;
+    min-height: 75px;
 }
 .media-item-card .mdl-card__supporting-text {
     display: flex;
@@ -423,6 +432,9 @@ label.search-size {
 }
 .media-item-card .mdl-card__supporting-text .info.added {
 
+}
+.media-item-card .mdl-card__menu .mdl-button {
+    background-color: #fff;
 }
 
 /** Media View
