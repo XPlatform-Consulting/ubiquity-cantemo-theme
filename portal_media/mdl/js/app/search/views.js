@@ -40,6 +40,7 @@
                 "click a.restore_item": "restoreItemEventHandler",
                 "click .display_podType": "setupIntervalType",
                 "click .sortselector": "changeSortDirection",
+                "click a.copy_title": "copyTitleToClipboard",
                 "change select.airdate": "changeSortField",
                 "updatecount .mediaitem": "mediaItemChange"
             },
@@ -843,6 +844,11 @@
                     itemID = event.target.id,
                     itemType = $(event.target).attr("data-itemtype"),
                     itemWasSelected = !1;
+
+                /* OK, who the fuck originally designed this, this is truely awful.
+                multiple method calls for a single item? very ineffecient.
+                Im not going to reformat this, the shorthand if-else statements make if difficult to tell
+                what and when is executed */
                 this.getSelectedItemsOnCurrentPage().filter("#" + itemID).length > 0 && (itemWasSelected = !0), this.library_selected !== undefined || this.search_id_selected !== undefined ? (itemWasSelected ? this.ignore_list.remove({
                     id: itemID
                 }) : this.ignore_list.add({
@@ -1123,6 +1129,19 @@
             },
             setupIntervalType: function() {
                 return !0
+            },
+            copyTitleToClipboard: function(event) {
+                var title = event.target.getAttribute('name');
+                var copyAction = function(e) {
+                    e.clipboardData.setData('text/plain', title);
+                    e.preventDefault();
+                };
+
+                document.addEventListener('copy', copyAction);
+                document.execCommand('copy');
+                document.removeEventListener('copy', copyAction);
+
+                $.growl('Title copied to clipboard.', 'success');
             }
         })
     }

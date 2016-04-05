@@ -116,6 +116,8 @@
         </span>
 
         <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="{{ item.getId }}-menu">
+            <a name="{{ item.getTitle }}" class="mdl-menu__item copy_title" href="#">Copy Title</a>
+
             {% if not item.isToBeDeleted and item.getItemType != 'SubClip' %}
                 <a href="{% url vs_collection_add_form %}" class="mdl-menu__item add_to_collection" ref="{{ item.getId }}">{% trans "Add to Collection" %}</a>
 
