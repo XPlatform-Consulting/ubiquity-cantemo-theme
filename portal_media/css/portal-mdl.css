@@ -325,6 +325,23 @@ form li:after {
 #content {
 
 }
+.paginator {
+    display: flex;
+    margin: 16px;
+    margin-top: 0;
+}
+.paginator .mdl-button {
+    margin-right: 12px;
+    min-width: 48px;
+    padding: 0;
+    box-shadow: 0 1px 1.5px 1px rgba(0, 0, 0, 0.12), 0 1px 1px 0 rgba(0, 0, 0, 0.24);
+}
+.paginator .mdl-button:last-child {
+    margin-right: 0;
+}
+.paginator .page-number {
+    min-width: 32px;
+}
 
 /** Admin
 **********************************************/

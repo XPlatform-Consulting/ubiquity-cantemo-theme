@@ -1,0 +1,54 @@
+{% load i18n %}
+{% load getstring %}
+{% qstring as current_qstring %}
+
+<div class="paginator">
+    {% ifnotequal page 1 %}
+        <a class="mdl-button js-mdl-button mdl-button--primary" href="{{ request.path }}{{ querystring }}&amp;page=1" title="{% trans "First Page" %}" rel="page=1">
+            <span class="paginatorbutton material-icons">skip_previous</span>
+        </a>
+    {% else %}
+        <a class="mdl-button js-mdl-button mdl-button--primary" disabled><span class="paginatorbutton-disabled material-icons">skip_previous</span></a>
+    {% endifnotequal %}
+
+    {% if has_previous %}
+        <a class="mdl-button js-mdl-button mdl-button--primary" href="{{ request.path }}{{ querystring }}&amp;page={{ previous }}" title="{% trans "Previous Page" %}" rel="page={{ previous }}">
+            <span class="paginatorbutton material-icons">fast_rewind</span>
+        </a>
+    {% else %}
+        <a class="mdl-button js-mdl-button mdl-button--primary" disabled><span class="paginatorbutton-disabled material-icons">fast_rewind</span></a>
+    {% endif %}
+
+    {% for num in page_numbers %}
+        {% ifequal num page %}
+            <span class="paginatorbutton-selected mdl-button js-mdl-button mdl-button--accent page-number" title="{% trans "Current Page" %}">{{ num }}</span>
+        {% else %}
+            <a class="mdl-button js-mdl-button mdl-button--primary page-number" href="{{ request.path }}{{ querystring }}&amp;page={{ num }}" title="{% trans "Page" %} {{ num }}" rel="page={{ num }}">
+                <span class="paginatorbutton">{{ num }}</span>
+            </a>
+        {% endifequal %}
+    {% endfor %}
+
+    {% if has_next %}
+        <a class="mdl-button js-mdl-button mdl-button--primary" href="{{ request.path }}{{ querystring }}&amp;page={{ next }}" title="{% trans "Next Page" %}" rel="page={{ next }}">
+            <span class="paginatorbutton material-icons">fast_forward</span>
+        </a>
+    {% else %}
+        <a class="mdl-button js-mdl-button mdl-button--primary" disabled><span class="paginatorbutton-disabled material-icons">fast_forward</span></a>
+    {% endif %}
+
+    {% if not librarysettings %}
+        {% if collection %}
+            {% ifnotequal page pages %}
+                <a class="mdl-button js-mdl-button mdl-button--primary" href="{{ request.path }}{{ querystring }}&amp;page={{ pages }}" title="{% trans "Last Page" %}" rel="page={{ pages }}">
+                    <span class="paginatorbutton material-icons">skip_next</span>
+                </a>
+            {% else %}
+                <a class="mdl-button js-mdl-button mdl-button--primary" disabled><span class="paginatorbutton-disabled material-icons">skip_next</span></a>
+            {% endifnotequal %}
+        {% endif %}
+    {% endif %}
+</div><!-- .paginator -->
+{% docstring %}
+    Showing {{ first_this_page }}-{{ last_this_page }} of {{ hits }} hits on page {{ page }} of {{ pages }}
+{% enddocstring %}
