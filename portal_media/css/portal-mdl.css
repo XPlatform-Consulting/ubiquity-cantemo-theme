@@ -418,6 +418,7 @@ for all the cards in the results to be the same height, ugh */
     /* height: 300px; */
     -webkit-transition: background-color 150ms ease-in-out;
     transition: background-color 150ms ease-in-out;
+    overflow: visible;
 }
 .media-item-card .mdl-card__menu {
     right: 11px;
@@ -430,6 +431,7 @@ for all the cards in the results to be the same height, ugh */
 }
 .media-item-card .mdl-card__title h2 {
     white-space: nowrap;
+    font-size: 20px;
 }
 .media-item-card .mdl-card__title .mdl-tooltip.mdl-tooltip--large {
     word-wrap: break-word;
@@ -438,11 +440,51 @@ for all the cards in the results to be the same height, ugh */
     padding-right: 6px;
 }
 .media-item-card .mdl-card__media {
-    min-height: 170px;
+    position: relative;
+    box-sizing: border-box;
+    border-left: 16px solid;
+    border-right: 16px solid;
+    border-color: #fff;
+    height: 180px;
+    background-color: inherit;
+    overflow: hidden;
+}
+.media-item-card .mdl-card__media .time-overlay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 2px 10px;
+    background-color: rgba(0,0,0,0.5);
+    color: #eee;
+}
+.media-item-card .mdl-card__media .time-overlay h5 {
+    margin: 0;
+    margin-top: 3px;
+}
+.media-item-card .mdl-card__media .thumbnailholder,
+.media-item-card .mdl-card__media .thumbnailholderblank {
+    display: flex !important;
+    justify-content: center;
+    width: auto !important;
+    height: inherit !important;
+    max-width: none !important;
+}
+.media-item-card .mdl-card__media .thumbnailholder a,
+.media-item-card .mdl-card__media .thumbnailholder img,
+.media-item-card .mdl-card__media .thumbnailholderblank a,
+.media-item-card .mdl-card__media .thumbnailholderblank img {
+    width: inherit !important;
+    height: inherit !important;
+    max-width: none !important;
+}
+.media-item-card .mdl-card__media .thumbnailholder map {
+    display: none;
 }
 .media-item-card .mdl-card__supporting-text {
     width: auto;
-    min-height: 75px;
+    min-height: 36px;
 }
 .media-item-card .mdl-card__supporting-text {
     display: flex;
@@ -451,9 +493,6 @@ for all the cards in the results to be the same height, ugh */
 }
 .media-item-card .mdl-card__supporting-text input {
     display: none;
-}
-.media-item-card .mdl-card__supporting-text h5 {
-    margin: 0;
 }
 .media-item-card .mdl-card__supporting-text .info.added {
 
@@ -469,6 +508,10 @@ for all the cards in the results to be the same height, ugh */
     -webkit-transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
     transition: background-color 100ms ease-in-out, color 100ms ease-in-out;
 }
+.media-item-card .mdl-card__media {
+    -webkit-transition: border-color 100ms ease-in-out;
+    transition: border-color 100ms ease-in-out;
+}
 /* Selected */
 .mediaitem-selected .media-item-card {
     background-color: #3F51B5;
@@ -477,6 +520,9 @@ for all the cards in the results to be the same height, ugh */
 .mediaitem-selected .media-item-card .mdl-card__supporting-text,
 .mediaitem-selected .media-item-card .mdl-card__menu .mdl-button {
     color: #fff;
+}
+.mediaitem-selected .media-item-card .mdl-card__media {
+    border-color: #3F51B5;
 }
 .mediaitem-selected .media-item-card .mdl-card__menu .mdl-button {
     background-color: #3F51B5;

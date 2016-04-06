@@ -7,7 +7,7 @@
     <a name="{{ item.getId }}"></a>
 
     <div class="mdl-card__title mdl-card--expand">
-        {% block title %}{% endblock %}
+        {% block icon %}{% endblock %}
 
         <h2 id="{{ item.getId }}-title" class="mdl-card__title-text">{{ item.getTitle }}</h2>
         <div class="mdl-tooltip mdl-tooltip--large" for="{{ item.getId }}-title">
@@ -16,7 +16,12 @@
     </div>
 
     <div class="mdl-card__media">
-        {% block media %}{% endblock %}
+        {% block media %}
+            {% create_thumbnails item item_URL %}
+        {% endblock media %}
+
+
+        {% block timeoverlay %}{% endblock %}
     </div>
 
     <div class="mdl-card__supporting-text">
@@ -38,9 +43,6 @@
                 {% endif %}
             </span>
         {% endif %}
-
-        <!-- this works because parent '.mdl-card__supporting-text' is using flexbox -->
-        <div class="mdl-layout-spacer"></div>
 
         <div class="item-info">
             {% if not item.isToBeDeleted %}

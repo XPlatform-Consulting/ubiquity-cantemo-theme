@@ -2,31 +2,25 @@
 
 {% load thumbnailer datetimeformatting i18n general vidispinetags %}
 
-
-{% block title %}
-    {% pluginblock "MediaPreviewIcon" core %}
-
-    {% if item.getItemType == 'SubClip' %}
-        <svg class="media_type media_type_icon" width="16px" height="16px" viewBox="0 0 310 310">
-            <use xlink:href="#Icon-MediaType-SubClip" >
-        </svg>
-
-    {% else %}
-        <svg class="media_type media_type_icon" width="16px" height="16px" viewBox="0 0 310 310">
-            <use xlink:href="#Icon-MediaType-Video" >
-        </svg>
-    {% endif %}
-{% endblock title %}
+{% block icon %}
+    <i class="material-icons">
+        {% if item.getItemType == 'SubClip' %}
+            art_track
+        {% else %}
+            videocam
+        {% endif %}
+    </i>
+{% endblock icon %}
 
 {% block media %}
     {% create_thumbnails item item_URL %}
 {% endblock media %}
 
-{% block supporttext %}
+{% block timeoverlay %}
     {% if item.getDurationSeconds %}
-        <h5>{{ ""|formatToTime:item.getDurationSeconds }}</h5>
-    {% else %}
-        <h5>{{ ""|formatToTime:item.getDurationSeconds }}</h5>
+        <div class="time-overlay">
+            <h5>{{ ""|formatToTime:item.getDurationSeconds }}</h5>
+        </div>
     {% endif %}
     {% comment %}
     <div class="infoholder">
@@ -37,4 +31,4 @@
     	</span>
     </div>
     {% endcomment %}
-{% endblock supporttext %}
+{% endblock timeoverlay %}

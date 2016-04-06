@@ -1,9 +1,5 @@
+{% themeextends "media/media_inc_item_base.html" %}
 
-<div class="mediaitemtitle">
-    <svg class="media_type media_type_icon" viewBox="0 0 310 310">
-        <use xlink:href="#Icon-MediaType-Audio" >
-    </svg>
-{% pluginblock "MediaPreviewIcon" core %}
-<a href="{{ item_URL }}" title="{{ item.getTitle }}" class="ellipsis">{{ item.getTitle }}</a></div>
-{% load thumbnailer datetimeformatting i18n general vidispinetags %}
-{% create_thumbnails item item_URL %}
+{% block icon %}
+    <i class="material-icons">audiotrack</i>
+{% endblock icon %}
