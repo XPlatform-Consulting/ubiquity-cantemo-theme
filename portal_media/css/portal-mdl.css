@@ -1315,7 +1315,14 @@ img {
 }
 
 
-
+.podPreview .iteminfo {
+    flex-grow: 0;
+    flex-shrink: 1;
+}
+.opdPreview .preview {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
 .ui-widget-overlay {
     background: rgba(0,0,0, 0.4);
 }
@@ -1354,9 +1361,9 @@ img {
 }
 .ui-dialog-title {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    font-size: 36px;
+    font-size: 24px;
     font-weight: 400;
-    line-height: 36px;
+    line-height: 24px;
 }
 .ui-dialog-titlebar-close {
     position: absolute;
@@ -1375,6 +1382,8 @@ img {
     background-position: -96px -128px;
 }
 .ui-dialog .ui-dialog-content {
+    align-items: center;
+    justify-content: space-around;
     padding: 20px;
 }
 .ui-dialog .dataTables_wrapper .dataTables_filter input {

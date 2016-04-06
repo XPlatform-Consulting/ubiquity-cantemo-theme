@@ -955,16 +955,23 @@
                         url: podURL,
                         success: function(data) {
                             self.podPreview = $('<div class="podPreview">').html(data).dialog({
-                                modal: !0,
+                                modal: true,
                                 title: title,
-                                draggable: !1,
-                                resizable: !1,
-                                width: 910,
+                                draggable: false,
+                                resizable: false,
+                                position: { my: 'center', at: 'center', of: window },
+                                width: '75vw',
                                 dialogClass: "ui-dialog-podpreview",
                                 open: function(event) {
+                                    $('.ui-dialog-content').css('display', 'flex');
+                                    $('.podPreview footer').css('display', 'none');
+
                                     $(".ui-widget-overlay").addClass("ui-widget-overlay-podpreview").on("click", function() {
                                         self.podPreview.dialog("close")
-                                    }), self.unBindKeyBindings(), self.showPreview();
+                                    }),
+                                    self.unBindKeyBindings(),
+                                    self.showPreview();
+
                                     $(event.target).find("nav.tabs ul").tabs("section.panes", {
                                         initialIndex: parseInt($(event.target).find("nav.tabs").attr("data-tabIndex"), 10)
                                     });
