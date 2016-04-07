@@ -844,11 +844,6 @@
                     itemID = event.target.id,
                     itemType = $(event.target).attr("data-itemtype"),
                     itemWasSelected = !1;
-
-                /* OK, who the fuck originally designed this, this is truely awful.
-                multiple method calls for a single item? very ineffecient.
-                Im not going to reformat this, the shorthand if-else statements make if difficult to tell
-                what and when is executed */
                 this.getSelectedItemsOnCurrentPage().filter("#" + itemID).length > 0 && (itemWasSelected = !0), this.library_selected !== undefined || this.search_id_selected !== undefined ? (itemWasSelected ? this.ignore_list.remove({
                     id: itemID
                 }) : this.ignore_list.add({
@@ -972,12 +967,11 @@
                                     self.unBindKeyBindings(),
                                     self.showPreview();
 
-                                    $(event.target).find("nav.tabs ul").tabs("section.panes", {
-                                        initialIndex: parseInt($(event.target).find("nav.tabs").attr("data-tabIndex"), 10)
-                                    });
                                     $(event.target).parent().find(".ui-dialog-title").on("click", function() {
                                         window.location.href = "/vs/item/" + self.preview_currentitem.get("id") + "/"
-                                    })
+                                    });
+
+                                    componentHandler.upgradeDom();
                                 },
                                 beforeClose: function() {
                                     if (cntmo.app.players.mainPlayer !== undefined) try {
@@ -1012,21 +1006,23 @@
                     model = new cntmo.vs.VSItem({
                         resource_uri: self.options.definedurls.item_api + itemID + "/"
                     });
-                return model.fetch({
-                    success: function() {
-                        starttimecode !== undefined && endtimecode !== undefined && (startTC = new Timecode({
-                            smpte: starttimecode
-                        }), endTC = new Timecode({
-                            smpte: endtimecode
-                        }), mediaStartTC = model.get("start_tc"), duration = endTC.minus(startTC), model.set({
-                            start_tc: starttimecode,
-                            duration: duration.toSMPTE(),
-                            mediaStartTC: mediaStartTC
-                        })), "sequence" === model.get("resource_type") && self.getSequenceInformation(model), self.preview_currentitem = model
-                    },
-                    error: function() {
-                        $.growl(gettext("Error getting item information"), "error"), self.preview_error = !0
-                    }
+                return $LAB.script(cntmo.loadLocations.player).wait(function () {
+                    model.fetch({
+                        success: function() {
+                            starttimecode !== undefined && endtimecode !== undefined && (startTC = new Timecode({
+                                smpte: starttimecode
+                            }), endTC = new Timecode({
+                                smpte: endtimecode
+                            }), mediaStartTC = model.get("start_tc"), duration = endTC.minus(startTC), model.set({
+                                start_tc: starttimecode,
+                                duration: duration.toSMPTE(),
+                                mediaStartTC: mediaStartTC
+                            })), "sequence" === model.get("resource_type") && self.getSequenceInformation(model), self.preview_currentitem = model
+                        },
+                        error: function() {
+                            $.growl(gettext("Error getting item information"), "error"), self.preview_error = !0
+                        }
+                    })
                 }), !0
             },
             getSequenceInformation: function(model) {

@@ -36,8 +36,8 @@ cntmo.prtl.views.ShapeManage = Backbone.View.extend({
     openManageDialog: function() {
         var self = this;
         self.$manageDialog = $("<div></div>"), self.$manageDialog.load(this.remote_url).dialog({
-            width: 700,
-            modal: !0,
+            width: '80vw',
+            modal: true,
             resizable: !1,
             dialogClass: "exportView",
             title: this.title,
