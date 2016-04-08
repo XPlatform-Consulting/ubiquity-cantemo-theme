@@ -419,15 +419,16 @@ for all the cards in the results to be the same height, ugh */
     -webkit-transition: background-color 150ms ease-in-out;
     transition: background-color 150ms ease-in-out;
     overflow: visible;
+    z-index: auto;
 }
 .media-item-card .mdl-card__menu {
     right: 11px;
     top: 11px; /* firefox wants 10px, chrome/safari wants 12px */
 }
 .media-item-card .mdl-menu__item {
-    line-height: 32px;
-    height: 32px;
-    padding: 0 8px;
+    line-height: 28px;
+    height: 28px;
+    padding: 0 12px;
 }
 .media-item-card .mdl-card__title h2 {
     white-space: nowrap;
