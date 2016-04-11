@@ -44,6 +44,15 @@ form li:after {
     clear: both;
     visibility: hidden;
 }
+.mdl-layout__header .mdl-radio.is-checked .mdl-radio__outer-circle {
+    border: 2px solid rgb(255,255,255);
+}
+.mdl-layout__header .mdl-radio__inner-circle {
+    background: rgb(255,255,255);
+}
+.mdl-layout__header .mdl-radio__outer-circle {
+    border: 2px solid rgba(255,255,255, 0.85);
+}
 .content a {
     text-decoration: none;
 }
@@ -348,6 +357,86 @@ form li:after {
 
 /** Search
 **********************************************/
+#react-search-form {
+
+}
+#react-search-form form li {
+    margin: 0;
+    padding: 0 8px;
+}
+#react-search-form .searchform {
+    position: relative;
+}
+/* Bad, bad, bad, but i don't have another solution atm */
+.mdl-layout__header #react-search-form .searchform div[data-reactid=".0.1.$=14:0"] {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    width: 800px;
+    /* for max-heigth, viewport minus header height minus 16px for bottom margin content */
+    max-height: calc(100vh - 116px - 16px);
+    background-color: rgb(63,81,181);
+    padding: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    overflow-y: scroll;
+}
+#react-search-form .searchform .searchcritera {
+    display: flex;
+    align-items: center;
+}
+#react-search-form .searchform .searchcritera p,
+#react-search-form .searchform .criteria_container .collapsible span {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin: 0;
+    padding-right: 4px;
+}
+#react-search-form .searchform .searchcritera ul {
+    display: flex;
+}
+#react-search-form .searchform .advancedsearchform {
+    padding: 10px;
+}
+#react-search-form .searchform .advancedsearchform > fieldset {
+    padding: 0;
+}
+#react-search-form .searchform .advancedsearchform .criteria_field {
+    padding: 8px;
+}
+#react-search-form .searchform .advancedsearchform .criteria_field .field_container {
+    display: flex;
+    align-items: center;
+}
+#react-search-form .searchform .advancedsearchform .criteria_field.amount_field .field_container input {
+    width: 75px;
+}
+#react-search-form .searchform .advancedsearchform .criteria_field .field_container label,
+#react-search-form .searchform .advancedsearchform .criteria_field div label {
+    width: 124px;
+}
+#react-search-form .searchform .advancedsearchform .criteria_field .field_container label span,
+#react-search-form .searchform .advancedsearchform .criteria_field div label span {
+    font-weight: 600;
+}
+#react-search-form #largesearchformwrapper {
+    display: flex;
+}
+#react-search-form #largesearchform {
+    order: 2;
+}
+#react-search-form .show_advanced #show_advanced {
+    transition: transform 200ms linear;
+    transform: rotate(270deg);
+}
+#react-search-form #searchinputbutton {
+    display: none;
+}
+
+
+/*
 #search-header {
     height: 48px;
 }
@@ -395,6 +484,9 @@ label.search-size {
     align-items: center;
     align-content: center;
 }
+*/
+
+
 /** Criteria
 **********************/
 .form-group {
