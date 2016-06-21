@@ -1,6 +1,17 @@
 {% load compress getstring %}
+{% load render_bundle from webpack_loader %}
 {% qstring as current_qstring %}
 
+{% render_bundle 'vendors' %}
+{% render_bundle 'newmetadataform' %}
+
+<div id="react-search-form"
+     data-metadata-group="{{user.get_profile.default_metadata_group}}"
+     class="{% if current_qstring or search_last %}left_searchform{% else %}centered_searchform"{% endif %}
+     data-show-fields="{% if search_advanced %}true{% else %}false{% endif %}">
+</div>
+
+{% comment %}
 {% compress js inline %}
 <script type="text/javascript" src="{{ STATIC_URL }}js/dist/vendors.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}js/dist/search.js"></script>
@@ -11,6 +22,7 @@
      class="{% if not current_qstring %}centered_searchform{% else %}left_searchform{% endif %}"
      data-show-fields="{% if search_advanced %}true{% else %}false{% endif %}"></div>
 
+{% endcomment %}
 <script>
 $(document).ready(function() {
     $('#searchform').submit(function(){

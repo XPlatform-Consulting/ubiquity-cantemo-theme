@@ -229,9 +229,11 @@
                 <a class="mdl-menu__item" href="{% url docs:view 'UserDocumentation' %}" title="{% trans "User Documentation" %}">{% trans "User Documentation" %}</a>
             </li>
 
+            {% comment %}
             <li class="mdl-menu__item">
                 <a class="mdl-menu__item" href="{% url agent_download %}" title="{% trans "Download Agent" %}">{% trans "Download Agent" %}</a>
             </li>
+            {% endcomment %}
 
             {% if user|has_role:"_administrator" %}
             <li class="mdl-menu__item">
