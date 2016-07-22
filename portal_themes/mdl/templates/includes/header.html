@@ -1,4 +1,5 @@
-{% load compress jsi18n %}<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+{% load compress jsi18n %}
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=9; IE=EDGE" />
 
 <script type="text/javascript" charset="utf-8">
@@ -53,14 +54,18 @@ Need to get material icons to store locally
 {% comment %}
 Modified from core theme resources
 {% endcomment %}
-<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/portal/eyecandy.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/portal/initialize.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/media/models.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}mdl_plugin.min.js"></script>
+<link rel="stylesheet" href="{{ STATIC_URL }}mdl_plugin.min.css" type="text/css" />
+
+
+<!-- <script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/portal/eyecandy.js"></script> -->
+<!-- <script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/portal/initialize.js"></script> -->
+<!-- <script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/media/models.js"></script> -->
 <!--<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/mediabin/app.js"></script>-->
 <!--<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/mediabin/collection.js"></script>-->
 <!--<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/mediabin/views.js"></script>-->
-<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/common/jquery_plugins.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}mdl/js/libs/jquery-growl/jquery.growl.js"></script>
+<!-- <script type="text/javascript" src="{{ STATIC_URL }}mdl/js/app/common/jquery_plugins.js"></script> -->
+<!-- <script type="text/javascript" src="{{ STATIC_URL }}mdl/js/libs/jquery-growl/jquery.growl.js"></script> -->
 
 {% pluginblock "header_css_js" core %}
 

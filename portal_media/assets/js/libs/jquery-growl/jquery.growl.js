@@ -18,52 +18,15 @@
         return $(instance);
     }
 
-    function addStyleSheet() {
-        if ( !document.querySelector('#growl-style') ) {
-            var style = document.createElement('style');
-            style.id = 'growl-style';
-            var css = `
-                #growlDock {
-                    position: fixed;
-                    top: 56px;
-                    right: 10px;
-                    z-index: 11000;
-                }
-                #growlDock > div {
-                    display: flex;
-                    align-content: stretch;
-                    align-items: center;
-                    justify-content: space-between;
-                    background-color: #fff;
-                    margin-bottom: 10px;
-                    border-radius: 2px;
-                    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-                    max-width: 300px;
-                }
-                #growlDock .growl-message {
-                    flex-grow: 1;
-                    border-top-left-radius: 2px;
-                    border-bottom-left-radius: 2px;
-                    padding: 10px;
-                }
-                #growlDock .growl-message.error {
-                    background-color: rgb(244, 67, 54);
-                    color: #fff;
-                }
-                #growlDock .growl-message.success {
-                    background-color: rgb(139, 195, 74);
-                    color: #fff;
-                }
-                #growlDock .close {
-                    cursor: pointer;
-                    padding: 0 10px;
-                }
-            `;
-            style.type = 'text/css';
-            style.appendChild(document.createTextNode(css));
-            document.head.appendChild(style);
-        }
-    }
+    // function addStyleSheet() {
+    //     if ( !document.querySelector('#growl-style') ) {
+    //         var style = document.createElement('style');
+    //         style.id = 'growl-style';
+    //         style.type = 'text/css';
+    //         style.appendChild(document.createTextNode(css));
+    //         document.head.appendChild(style);
+    //     }
+    // }
 
     function setup(message, priority) {
         var main = document.createElement('div');
@@ -79,7 +42,6 @@
 
     function notify(message, priority, persist) {
         var instance = create();
-        addStyleSheet();
 
         var html = setup(message, priority);
         var notice = $(html).hide()
