@@ -1,4 +1,7 @@
 *.DS_Store
-portal_media/node_modules/*
-portal_media/.sass-cache/*
-portal_media/build/*
+portal_media/mdl/node_modules/*
+portal_media/mdl/.sass-cache/*
+portal_media/mdl/build/*
+portal_media/mdl/Gemfile
+portal_media/mdl/Gemfile.lock
+portal_media/mdl/config/deploy.rb

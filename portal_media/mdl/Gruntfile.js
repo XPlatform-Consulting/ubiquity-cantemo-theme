@@ -25,7 +25,7 @@ module.exports = function(grunt){
         files: 'assets/sass/**/*.scss',
         tasks: ['default']
       },
-
+ 
       scripts: {
         files: ['assets/js/**/*.js', '!assets/js/**/*.min.js'],
         tasks: ['default']
@@ -39,7 +39,7 @@ module.exports = function(grunt){
     uglify:{
       my_target: {
         files: {
-          'mdl_plugin.min.js': ['assets/js/**/*.js','node_modules/material-design-lite/utils/material.js']
+          'mdl_plugin.min.js': ['assets/js/libs/**/*.js','node_modules/material-design-lite/material.js']
         }
       }
     },
