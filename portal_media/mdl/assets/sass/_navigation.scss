@@ -1,35 +1,89 @@
-#growlDock {
-  position: fixed;
-  top: 56px;
-  right: 10px;
-  z-index: 11000;
-  > div {
-    display: flex;
-    align-content: stretch;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #fff;
-    margin-bottom: 10px;
+#main-row{
+  .cantemo-head-spacer{
+    flex:1 1 auto;
+    transition:all 0.2s;
+  }
+
+  &.search-active {
+
+    .cantemo-head-spacer{
+      flex:0 0 auto;
+      transition:all 0.2s;
+    }
+
+    .cantemo-search-bar{
+      flex:1 1 auto;
+      background-color:white;
+      transition:all 0.2s;
+
+      input.cantemo-search-input{
+        width:100%;
+        color:black;
+        &::-webkit-input-placeholder,
+        &:-input-placeholder{
+          @include base-font;
+          color:black;
+        }
+      }
+
+      &:hover{
+        background-color:white;
+      }
+
+      .cantemo-search-icon{
+        color:black;
+      }
+    }
+  }
+  
+  .cantemo-search-bar{
+    position:relative;
+    flex:0 0 auto;
+    margin:6px 24px;
     border-radius: 2px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    max-width: 300px;
-  }
-  .growl-message {
-    flex-grow: 1;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-    padding: 10px;
-    &.error {
-      background-color: rgb(244, 67, 54);
-      color: #fff;
+    background-color:$primary-300;
+    transition:all 0.2s;
+
+    &:hover{
+      background-color:$primary-200;
+      transition:all 0.2s;
     }
-    &.success {
-      background-color: rgb(139, 195, 74);
-      color: #fff;
+
+    &.search-active{
+    
     }
-  }
-  .close {
-    cursor: pointer;
-    padding: 0 10px;
+    .cantemo-search-input-container{
+      width:100%;
+      display:flex;
+    }
+
+    input.cantemo-search-input{
+      @include base-font;
+      background: 0;
+      border: 0;
+      color: #fff;
+      padding: 8px 8px 8px 72px;
+      transition: all .2s;
+      width: auto;
+      &:focus{
+        outline:none;
+      }
+
+      &::-webkit-input-placeholder,
+      &:-input-placeholder{
+        @include base-font;
+      }
+
+    }
+    .cantemo-search-icon {
+      position:absolute;
+      top:50%;
+      left:20px;
+      transform:-webkit-translateY(-50%);
+      transform:-moz-translateY(-50%);
+      transform:-ms-translateY(-50%);
+      transform:-o-translateY(-50%);
+      transform:translateY(-50%);
+    }
   }
 }

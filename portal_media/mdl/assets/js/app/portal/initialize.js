@@ -14,9 +14,9 @@ $(document).ready(function () {
         })
 
         if (window.$LAB) {
-            $LAB.script(gblStaticURL + "mdl/js/app/mediabin/collection.js")
+            $LAB.script(gblStaticURL + "mdl/assets/js/app/mediabin/collection.js")
                 .wait()
-                .script(gblStaticURL + "mdl/js/app/mediabin/views.js")
+                .script(gblStaticURL + "mdl/assets/js/app/mediabin/views.js")
                 .wait(function () {
                     cntmo.app.page.mediaBinItems = new cntmo.prtl.MediaBin.MediaBinCollection,
                     window.MediaBinItems = cntmo.app.page.mediaBinItems,

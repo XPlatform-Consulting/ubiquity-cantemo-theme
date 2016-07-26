@@ -50,7 +50,7 @@
 
         var close = $(html).find(".close");
         close.click(function () {
-            notice.remove()
+            notice.remove();
         });
 
         $.growl.settings.noticeDisplay(notice);
@@ -66,14 +66,14 @@
     }
 
     $.growl = function (message, priority, persist) {
-        notify(message, priority, persist)
+        notify(message, priority, persist);
     },
     $.growl.version = '1.1.0',
     $.growl.settings = {
         noticeDisplay: function (notice) {
             notice.css({
                 opacity: '0'
-            }).fadeIn(jQuery.growl.settings.noticeFadeTimeout)
+            }).fadeIn(jQuery.growl.settings.noticeFadeTimeout);
         },
         noticeRemove: function (notice, timeoutId, callback) {
             notice.animate({

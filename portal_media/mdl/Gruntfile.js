@@ -33,7 +33,7 @@ module.exports = function(grunt){
     },
 
     jshint: {
-      all: ['assets/js/**/*.js', '!assets/js/**/*.min.js']
+      all: ['assets/js/libs/**/*.js', '!assets/js/libs/**/*.min.js', '!assets/js/libs/jquery-growl/**/*.js']
     },
 
     uglify:{
@@ -63,7 +63,7 @@ module.exports = function(grunt){
 
 
   // js framework not compatible with jshint? to many hints occure.
-  grunt.registerTask('default', ['compass', 'cssmin', 'uglify']);
-  grunt.registerTask('watch', ['compass', 'cssmin', 'uglify']);
+  grunt.registerTask('default', ['jshint', 'compass', 'cssmin', 'uglify']);
+  grunt.registerTask('watch', [ 'compass', 'cssmin',  'uglify']);
 
 };

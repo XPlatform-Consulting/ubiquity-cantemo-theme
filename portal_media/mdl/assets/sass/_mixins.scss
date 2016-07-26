@@ -1,3 +1,6 @@
-html{
-	background-color:black;
+@mixin base-font{
+	font-size:14px;
+	font-family: Helvetica, Arial, sans-serif;
+	line-height:1.2em;
+	color:black;
 }

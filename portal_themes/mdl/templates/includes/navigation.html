@@ -42,18 +42,63 @@
 <div id="main-row" class="mdl-layout__header-row">
     <span class="mdl-layout-title" title="{% trans "Home" %}">Cantemo</span>
 
+    <div class="cantemo-head-spacer"></div>
+
+    {% comment %}
+    TODO: add in the actual search functionality
+    {% endcomment %}
+    <form action="#" class="cantemo-search-bar">
+        <div class="cantemo-search-input-container">
+            <input id="cantemo-search-exp" placeholder="Search" class="cantemo-search-input" type="text">
+        </div>
+        <div class="cantemo-search-icon mdl-button--icon"><i class="material-icons">search</i></div>
+    </form>
+
+    {% if REALTIME_ENABLED %}
+    <div>
+        <a id="ntfcnt" class="{% if notice_unseen_count > 0 %}inboxpop{% else %}inboxempty{% endif %}" href="#">
+            <div class="ntfwrap">
+                <div id="ntfcnttxt">
+                    {% if notice_unseen_count > 0 %}
+                    {{ notice_unseen_count }}
+                    {% endif %}
+                </div>
+            </div>
+        </a>
+    </div>
+    {% endif %}
+
+
+    <button id="Account" class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">account_box</i>
+        <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
+    </button>
+    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="Account">
+      <li class="mdl-menu__item">
+          <a class="mdl-menu__item" href="{% url user_settings %}">
+              {% trans "Settings" %}
+          </a>
+      </li>
+      <li class="mdl-menu__item">
+          <a class="mdl-menu__item" href="/authentication/logout/">
+              {% trans "Logout" %}
+          </a>
+      </li>
+    </ul>
+
+    {% cache 500 navigationuserinfo request.user.username %}
+    <span class="mdl-layout__title">{{ request.user.username }}</span>
+    {% endcache %}
+
+</div>
+
+<div id="nav-row" class="mdl-layout__header-row">
     <nav id="main-nav" class="mdl-navigation mdl-layout--large-screen-only">
-        <a class="mdl-navigation__link" href="{% url homepage %}" {% current_nav search %} title="{% trans "Home" %}">
-            {% trans "Home" %}
-        </a>
+        <a class="mdl-navigation__link" href="{% url homepage %}" {% current_nav search %} title="{% trans "Home" %}"> {% trans "Home" %}</a>
 
-        <a class="mdl-navigation__link" href="{% url dashboard:dashboard %}" {% current_nav dashboard %} title="{% trans "Dashboard" %}">
-            {% trans "Dashboard" %}
-        </a>
+        <a class="mdl-navigation__link" href="{% url dashboard:dashboard %}" {% current_nav dashboard %} title="{% trans "Dashboard" %}"> {% trans "Dashboard" %}</a>
 
-        <a id="{% trans "Find" %}" class="mdl-navigation__link" href="#" {% current_nav search %} title="{% trans "Find" %}">
-            {% trans "Find" %}
-        </a>
+        <a id="{% trans "Find" %}" class="mdl-navigation__link" href="#" {% current_nav search %} title="{% trans "Find" %}"> {% trans "Find" %}</a>
         <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Find" %}">
             {% permissionrequired _item_search %}
             <li class="mdl-menu__item">
@@ -78,9 +123,7 @@
             {% pluginblock "NavigationFindPlugin" core %}
         </ul>
 
-        <a id="{% trans "Ingest" %}" class="mdl-navigation__link" href="#" {% current_nav vs_upload %} title="{% trans "Upload" %}">
-            {% trans "Ingest" %}
-        </a>
+        <a id="{% trans "Ingest" %}" class="mdl-navigation__link" href="#" {% current_nav vs_upload %} title="{% trans "Upload" %}">{% trans "Ingest" %}</a>
         {% permissionrequired _import %}
         <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Ingest" %}">
             <li class="mdl-menu__item">
@@ -88,10 +131,10 @@
             </li>
 
             {% permissionrequired _storage_read %}
-        	<li class="mdl-menu__item">
+            <li class="mdl-menu__item">
                 <a class="mdl-menu__item" href="{% url files:import %}" {% current_nav vs_storage_item_simple %} title="{% trans "Import From Storage" %}">{% trans "Import From Storage" %}</a>
             </li>
-			{% endpermissionrequired %}
+            {% endpermissionrequired %}
 
             <li class="mdl-menu__item">
                 <a class="mdl-menu__item" href="{% url vs_item_new %}" {% current_nav vs_item_new %} title="{% trans "Create Placeholder" %}">{% trans "Create Placeholder" %}</a>
@@ -100,9 +143,7 @@
         </ul>
         {% endpermissionrequired %}
 
-        <a id="{% trans "Manage" %}" class="mdl-navigation__link" href="#" title="{% trans "Manage" %}">
-            {% trans "Manage" %}
-        </a>
+        <a id="{% trans "Manage" %}" class="mdl-navigation__link" href="#" title="{% trans "Manage" %}">{% trans "Manage" %}</a>
         <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Manage" %}">
             {% permissionrequired _collection_read %}
             <li class="mdl-menu__item">
@@ -137,9 +178,7 @@
         </ul>
 
         {% if user|has_role:"_administrator" or user.is_staff %}
-        <a id="{% trans "Admin" %}" class="mdl-navigation__link" href="#" title="{% trans "Admin" %}">
-            {% trans "Admin" %}
-        </a>
+        <a id="{% trans "Admin" %}" class="mdl-navigation__link" href="#" title="{% trans "Admin" %}">{% trans "Admin" %}</a>
         <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Admin" %}">
             <li class="mdl-menu__item">
                 <a class="mdl-menu__item" href="{% url admin_index %}" {% current_nav admin_index %} title="{% trans "System Overview" %}">{% trans "System Overview" %}</a>
@@ -161,7 +200,7 @@
                     <li><a href="{% url vs_groups_all %}" {% current_nav vs_groups_all %} title="">{% trans "All Groups" %}</a></li>
                 </ul>
             </li>
-	        {% endif %}
+            {% endif %}
             {% endcomment %}
 
             <li class="mdl-menu__item">
@@ -221,9 +260,7 @@
         </ul>
         {% endif %}
 
-        <a id="{% trans "Help" %}" class="mdl-navigation__link" href="#" {% current_nav cntmo_projects %} title="{% trans "Help" %}">
-            {% trans "Help" %}
-        </a>
+        <a id="{% trans "Help" %}" class="mdl-navigation__link" href="#" {% current_nav cntmo_projects %} title="{% trans "Help" %}">{% trans "Help" %}</a>
         <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Help" %}">
             <li class="mdl-menu__item">
                 <a class="mdl-menu__item" href="{% url docs:view 'UserDocumentation' %}" title="{% trans "User Documentation" %}">{% trans "User Documentation" %}</a>
@@ -252,59 +289,6 @@
         </ul>
         {% pluginblock "NavigationSectionPlugin" core %}
     </nav>
-
-    <div class="mdl-layout-spacer"></div>
-
-    {% comment %}
-    TODO: add in the actual search functionality
-    {% endcomment %}
-    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-          mdl-textfield--floating-label mdl-textfield--align-right">
-        <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
-        </label>
-        <div class="mdl-textfield__expandable-holder">
-            <input class="mdl-textfield__input" type="text" name="sample" id="fixed-header-drawer-exp">
-        </div>
-    </div>
-
-
-    {% if REALTIME_ENABLED %}
-    <div>
-        <a id="ntfcnt" class="{% if notice_unseen_count > 0 %}inboxpop{% else %}inboxempty{% endif %}" href="#">
-            <div class="ntfwrap">
-                <div id="ntfcnttxt">
-                    {% if notice_unseen_count > 0 %}
-                    {{ notice_unseen_count }}
-                    {% endif %}
-                </div>
-            </div>
-        </a>
-    </div>
-    {% endif %}
-
-
-    <button id="Account" class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">account_box</i>
-        <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
-    </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="Account">
-      <li class="mdl-menu__item">
-          <a class="mdl-menu__item" href="{% url user_settings %}">
-              {% trans "Settings" %}
-          </a>
-      </li>
-      <li class="mdl-menu__item">
-          <a class="mdl-menu__item" href="/authentication/logout/">
-              {% trans "Logout" %}
-          </a>
-      </li>
-    </ul>
-
-    {% cache 500 navigationuserinfo request.user.username %}
-    <span class="mdl-layout__title">{{ request.user.username }}</span>
-    {% endcache %}
-
 </div>
 <!-- mdl includes/navigation.html end -->
 {% endif %}
