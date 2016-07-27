@@ -39,7 +39,7 @@ module.exports = function(grunt){
     uglify:{
       my_target: {
         files: {
-          'mdl_plugin.min.js': ['portal_media/mdl/assets/js/libs/**/*.js','node_modules/material-design-lite/material.js']
+          'portal_media/mdl/mdl_plugin.min.js': ['portal_media/mdl/assets/js/libs/**/*.js','node_modules/material-design-lite/material.js']
         }
       }
     },
@@ -50,7 +50,7 @@ module.exports = function(grunt){
       },
       app: {
         src: ['portal_media/mdl/build/css/**/*.css', '!portal_media/mdl/build/css/**/*.min.css', 'node_modules/material-design-lite/material.css'],
-        dest: 'mdl_plugin.min.css'
+        dest: 'portal_media/mdl/mdl_plugin.min.css'
       }
     },
 

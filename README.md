@@ -1,5 +1,5 @@
 # MDL based Cantemo theme
-Author: Jared Smith <jared@highwaythreesolutions.com>
+Authors: Garrett Culos & Jared Smith <jared@highwaythreesolutions.com>
 
 # Requirements
 * Tested with Cantemo Portal: `2.3.0-devel-101`
@@ -7,39 +7,18 @@ Author: Jared Smith <jared@highwaythreesolutions.com>
 
 # Setup
 ## Install mdl
-```
-cd portal_media/mdl
-bower install material-design-lite#1.1.1 --save
-ln -s bower_components/material-design-lite/material.js material.js
-ln -s bower_components/material-design-lite/material.css material.css
-```
+``` npm install ```
+``` bower install ```
 
-If Cantemo isn't serving the material files, try without the symlinks
-```
-cp bower_components/material-design-lite/material.js material.js
-cp bower_components/material-design-lite/material.css material.css
-```
+# Compile scss for dev
+``` grunt compass ```
 
-## Cantemo
-### Installing
-Upload mdl root to the server
-```
-# Use the cmds below to install the theme
-sudo cp -rp ~/mdl/portal_media/mdl /opt/cantemo/portal/portal_media/
-sudo cp -p ~/mdl/portal_media/css/portal-mdl.css /opt/cantemo/portal/portal_media/css/
-sudo cp -pr ~/mdl/portal_themes/mdl /opt/cantemo/portal/portal_themes
+## Cantemo Deployment
+You'll need to have your ssh key set in ~/.ssh
+### H3Staging
+```cap h3stage deploy```
 
-## For cantemo to use the theme, permissions must be corrected
-sudo chown -R www-data:www-data ~/mdl/portal_media/mdl /opt/cantemo/portal/portal_media/
-sudo chown www-data:www-data ~/mdl/portal_media/css/portal-mdl.css /opt/cantemo/portal/portal_media/css/
-sudo chown -R www-data:www-data ~/mdl/portal_themes/mdl /opt/cantemo/portal/portal_themes
-```
-### Removing
-```
-sudo rm -rf /opt/cantemo/portal/portal_media/mdl
-sudo rm -f /opt/cantemo/portal/portal_media/css/portal-mdl.css
-sudo rm -rf /opt/cantemo/portal/portal_themes/mdl
-```
 
-# License
-TBD
+# To do
+* add grunt watch
+* set up cap deploy for production
