@@ -22,24 +22,24 @@ module.exports = function(grunt){
 
     watch: {
       css: {
-        files: 'assets/sass/**/*.scss',
+        files: 'portal_media/mdl/assets/sass/**/*.scss',
         tasks: ['default']
       },
  
       scripts: {
-        files: ['assets/js/**/*.js', '!assets/js/**/*.min.js'],
+        files: ['portal_media/mdl/assets/js/**/*.js', '!portal_media/mdl/assets/js/**/*.min.js'],
         tasks: ['default']
       }
     },
 
     jshint: {
-      all: ['assets/js/libs/**/*.js', '!assets/js/libs/**/*.min.js', '!assets/js/libs/jquery-growl/**/*.js']
+      all: ['portal_media/mdl/assets/js/libs/**/*.js', '!portal_media/mdl/assets/js/libs/**/*.min.js', '!portal_media/mdl/assets/js/libs/jquery-growl/**/*.js']
     },
 
     uglify:{
       my_target: {
         files: {
-          'mdl_plugin.min.js': ['assets/js/libs/**/*.js','node_modules/material-design-lite/material.js']
+          'mdl_plugin.min.js': ['portal_media/mdl/assets/js/libs/**/*.js','node_modules/material-design-lite/material.js']
         }
       }
     },
@@ -49,7 +49,7 @@ module.exports = function(grunt){
         sourceMap: true,
       },
       app: {
-        src: ['build/css/**/*.css', '!build/css/**/*.min.css', 'node_modules/material-design-lite/material.css'],
+        src: ['portal_media/mdl/build/css/**/*.css', '!portal_media/mdl/build/css/**/*.min.css', 'node_modules/material-design-lite/material.css'],
         dest: 'mdl_plugin.min.css'
       }
     },
