@@ -79,7 +79,7 @@
         <div class="cantemo-notifications-card-popup mdl-card mdl-shadow--2dp">
             {% if notice_unseen_count > 0 %}
                 <div class="mdl-card__supporting-text mdl-card--expand">
-                    Load {{ notice_unseen_count }} Notifications
+                    {{ notice_unseen_count }} Notifications
                 </div>
             {% else %}
             <div class="mdl-card__supporting-text mdl-card--expand">
@@ -96,6 +96,8 @@
             <div class="mdl-card__title">
                 {% cache 500 navigationuserinfo request.user.username %}
                 <span class="card__supporting-text">{{ request.user.username }}</span>
+                {{request.user.avatar}}
+                {{request.user.roles}}
                 {% endcache %}
             </div>
             <div class="mdl-card__supporting-text mdl-card--expand">

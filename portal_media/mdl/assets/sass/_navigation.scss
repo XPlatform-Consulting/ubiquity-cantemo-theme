@@ -38,6 +38,8 @@
   #notifications,
   #account{
     position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
 
     .cantemo-notifications-card-popup,
     .cantemo-settings-card-popup {
@@ -49,7 +51,7 @@
       &.active-popup{
         opacity:1;
         display:block;
-        transition: opacity 0.1s
+        transition: opacity 0.2s
       }
     }
   }
