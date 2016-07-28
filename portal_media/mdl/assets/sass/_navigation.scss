@@ -46,12 +46,13 @@
           color:$background-color-600-alt;
           font-size: 0.9em;
         }
+        &.triangle{
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 10px solid $background-color-600;
+        }
       }
-      .triangle{
-        border-left: 10px solid transparent;
-        border-right: 10px solid transparent;
-        border-bottom: 10px solid $background-color-600;
-      }
+      
   }
 
   #notifications,
@@ -60,23 +61,6 @@
     margin-left: 10px;
     margin-right: 10px;
 
-    .triangle{
-      position:absolute;
-      top:100%;
-      right:50%;
-      transform:-webkit-trnaslateX(-50%);
-      transform:-moz-trnaslateX(-50%);
-      transform:-ms-trnaslateX(-50%);
-      transform:-o-trnaslateX(-50%);
-      transform:trnaslateX(-50%);
-
-      width: 0; 
-      height: 0; 
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 10px solid white;
-    }
-    
     .cantemo-nav-avatar{
       max-width: 45px;
       max-height: 45px;
@@ -97,6 +81,23 @@
         opacity:1;
         display:block;
         transition: opacity 0.2s
+      }
+      &.triangle{
+        position:absolute;
+        background-color:transparent;
+        top:100%;
+        right:50%;
+        transform:-webkit-translateX(-50%);
+        transform:-moz-translateX(-50%);
+        transform:-ms-translateX(-50%);
+        transform:-o-translateX(-50%);
+        transform:translateX(-50%);
+
+        width: 0; 
+        height: 0; 
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid white;
       }
     }
     .mdl-card__actions{
