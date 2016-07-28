@@ -18,7 +18,7 @@
     });
     
     $('button.cantemo-settings-button').on('click',function(){
-        $('.cantemo-setting-card-popup').toggleClass('active-popup');
+        $('.cantemo-settings-card-popup').toggleClass('active-popup');
     });
     
 })(jQuery);
