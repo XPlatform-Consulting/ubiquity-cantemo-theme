@@ -11,11 +11,12 @@ Authors: Garrett Culos & Jared Smith <jared@highwaythreesolutions.com>
 ``` bower install ```
 
 # Compile scss for dev
-``` grunt compass ```
+``` grunt ```
 
 ## Cantemo Deployment
 You'll need to have your ssh key set in ~/.ssh
 ### H3Staging
+This command will run 'grunt dev' so you dont need to run grunt before deploying
 ```cap h3stage deploy```
 
 

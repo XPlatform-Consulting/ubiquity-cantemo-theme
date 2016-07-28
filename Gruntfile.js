@@ -49,7 +49,10 @@ module.exports = function(grunt){
         sourceMap: true,
       },
       app: {
-        src: ['portal_media/mdl/build/css/**/*.css', '!portal_media/mdl/build/css/**/*.min.css', 'node_modules/material-design-lite/material.css'],
+        src: [  'portal_media/mdl/build/css/**/*.css', 
+                '!portal_media/mdl/build/css/**/*.min.css', 
+                'node_modules/material-design-lite/material.css' ,
+                'node_modules/flexboxgrid/css/flexboxgrid.css'],
         dest: 'portal_media/mdl/mdl_plugin.min.css'
       }
     },
@@ -65,5 +68,6 @@ module.exports = function(grunt){
   // js framework not compatible with jshint? to many hints occure.
   grunt.registerTask('default', ['jshint', 'compass', 'cssmin', 'uglify']);
   grunt.registerTask('watch', [ 'compass', 'cssmin',  'uglify']);
+  grunt.registerTask('dev', ['jshint', 'compass', 'cssmin',  'uglify']);
 
 };

@@ -39,57 +39,60 @@
 {% url archive_framework:jobs as archive_jobs %}
 
 <!-- mdl includes/navigation.html start -->
-<div id="main-row" class="mdl-layout__header-row">
-    <span class="mdl-layout-title" title="{% trans "Home" %}">Cantemo</span>
+<div id="main-row" class="mdl-layout__header-row row center-xs">
+    <div class="col-xs-12 col-lg-8">
+            
+        
+        <span class="mdl-layout-title" title="{% trans "Home" %}">Cantemo</span>
 
-    <div class="cantemo-head-spacer"></div>
+        <div class="cantemo-head-spacer"></div>
 
-    {% comment %}
-    TODO: add in the actual search functionality
-    {% endcomment %}
-    <form action="#" class="cantemo-search-bar">
-        <div class="cantemo-search-input-container">
-            <input id="cantemo-search-exp" placeholder="Search" class="cantemo-search-input" type="text">
-        </div>
-        <div class="cantemo-search-icon mdl-button--icon"><i class="material-icons">search</i></div>
-    </form>
-
-    {% if REALTIME_ENABLED %}
-    <div>
-        <a id="ntfcnt" class="{% if notice_unseen_count > 0 %}inboxpop{% else %}inboxempty{% endif %}" href="#">
-            <div class="ntfwrap">
-                <div id="ntfcnttxt">
-                    {% if notice_unseen_count > 0 %}
-                    {{ notice_unseen_count }}
-                    {% endif %}
-                </div>
+        {% comment %}
+        TODO: add in the actual search functionality
+        {% endcomment %}
+        <form action="#" class="cantemo-search-bar">
+            <div class="cantemo-search-input-container">
+                <input id="cantemo-search-exp" placeholder="Search" class="cantemo-search-input" type="text">
             </div>
-        </a>
+            <div class="cantemo-search-icon mdl-button--icon"><i class="material-icons">search</i></div>
+        </form>
+
+        {% if REALTIME_ENABLED %}
+        <div>
+            <a id="ntfcnt" class="{% if notice_unseen_count > 0 %}inboxpop{% else %}inboxempty{% endif %}" href="#">
+                <div class="ntfwrap">
+                    <div id="ntfcnttxt">
+                        {% if notice_unseen_count > 0 %}
+                        {{ notice_unseen_count }}
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endif %}
+
+
+        <button id="Account" class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">account_box</i>
+            <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
+        </button>
+        <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="Account">
+          <li class="mdl-menu__item">
+              <a class="mdl-menu__item" href="{% url user_settings %}">
+                  {% trans "Settings" %}
+              </a>
+          </li>
+          <li class="mdl-menu__item">
+              <a class="mdl-menu__item" href="/authentication/logout/">
+                  {% trans "Logout" %}
+              </a>
+          </li>
+        </ul>
+
+        {% cache 500 navigationuserinfo request.user.username %}
+        <span class="mdl-layout__title">{{ request.user.username }}</span>
+        {% endcache %}
     </div>
-    {% endif %}
-
-
-    <button id="Account" class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">account_box</i>
-        <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
-    </button>
-    <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="Account">
-      <li class="mdl-menu__item">
-          <a class="mdl-menu__item" href="{% url user_settings %}">
-              {% trans "Settings" %}
-          </a>
-      </li>
-      <li class="mdl-menu__item">
-          <a class="mdl-menu__item" href="/authentication/logout/">
-              {% trans "Logout" %}
-          </a>
-      </li>
-    </ul>
-
-    {% cache 500 navigationuserinfo request.user.username %}
-    <span class="mdl-layout__title">{{ request.user.username }}</span>
-    {% endcache %}
-
 </div>
 
 <div id="nav-row" class="mdl-layout__header-row">

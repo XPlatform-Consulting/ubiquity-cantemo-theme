@@ -1,6 +1,6 @@
 *.DS_Store
 node_modules/*
-portal_media/mdl/.sass-cache/*
+sass-cache/*
 portal_media/mdl/build/*
 Gemfile
 Gemfile.lock
