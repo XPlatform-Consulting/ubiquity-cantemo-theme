@@ -72,13 +72,13 @@
         <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
     </div>
     <div id="account" class="">
-        <button class="mdl-button mdl-js-button mdl-button--icon">
+        <button class="cantemo-settings-button mdl-button mdl-js-button mdl-button--icon">
             <i class="material-icons">account_box</i>  
         </button>    
 
     </div>
     
-    <div class="mdl-card mdl-shadow--2dp mdl-menu--bottom-right " for="account">
+    <div class="cantemo-settings-card-popup mdl-card mdl-shadow--2dp mdl-menu--bottom-right " for="account">
         <div class="mdl-card__title">
             {% cache 500 navigationuserinfo request.user.username %}
             <span class="card__supporting-text">{{ request.user.username }}</span>

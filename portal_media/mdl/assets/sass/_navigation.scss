@@ -36,12 +36,27 @@
     }
   }
   #account{
-    position: static;
+    position: relative;
+    
     .mdl-badge{
       margin:0;
       margin-top:5px;
     }
+
+    .cantemo-setting-card-popup{
+      display:none;
+      opacity:0;
+      position: absolute;
+      right: -10px;
+      top: 115%;
+      &.active-popup{
+        opacity:1;
+        display:block;
+        transition: opacity 0.1s
+      }
+    }
   }
+
   .cantemo-search-bar{
     position:relative;
     flex:0 0 auto;
@@ -55,9 +70,8 @@
       transition:all 0.2s;
     }
 
-    &.search-active{
-    
-    }
+    &.search-active{    }
+
     .cantemo-search-input-container{
       width:100%;
       display:flex;
