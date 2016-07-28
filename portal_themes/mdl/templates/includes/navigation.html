@@ -75,21 +75,17 @@
         <button class="cantemo-settings-button mdl-button mdl-button--icon">
             <i class="material-icons">account_box</i>  
         </button>    
-        <div class="cantemo-settings-card-popup mdl-card mdl-shadow--2dp" for="account">
+        <div class="cantemo-settings-card-popup mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
                 {% cache 500 navigationuserinfo request.user.username %}
                 <span class="card__supporting-text">{{ request.user.username }}</span>
                 {% endcache %}
             </div>
-
-            <div class="mdl-card__actions">
-                <a href="{% url user_settings %}">
-                    <button class="mdl-button mdl-js-button mdl-button--raised">{% trans "Settings" %}</button>
-                </a>
-
-                <a href="/authentication/logout/">
-                    <button class="mdl-button mdl-js-button mdl-button--raised">{% trans "Logout" %}</button>
-                </a>
+            <div class="mdl-card__supporting-text">
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <button class="mdl-button mdl-js-button mdl-button--raised"><a href="{% url user_settings %}">{% trans "Settings" %}</a></button>
+                <button class="mdl-button mdl-js-button mdl-button--raised"><a href="/authentication/logout/">{% trans "Logout" %}</a></button>               
             </div>
         </div>
     </div>
