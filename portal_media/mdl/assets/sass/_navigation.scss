@@ -47,6 +47,11 @@
           font-size: 0.9em;
         }
       }
+      .triangle{
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-bottom: 10px solid $background-color-600;
+      }
   }
 
   #notifications,
@@ -65,10 +70,11 @@
       transform:-o-trnaslateX(-50%);
       transform:trnaslateX(-50%);
 
-      width:0;
-      height:0;
-      border-left:5px solid white;
-      border-right:5px solid white;
+      width: 0; 
+      height: 0; 
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-bottom: 10px solid white;
     }
     
     .cantemo-nav-avatar{
