@@ -51,8 +51,7 @@ module.exports = function(grunt){
       app: {
         src: [  'portal_media/mdl/build/css/**/*.css', 
                 '!portal_media/mdl/build/css/**/*.min.css', 
-                'node_modules/material-design-lite/material.css' ,
-                'node_modules/flexboxgrid/css/flexboxgrid.css'],
+                'node_modules/material-design-lite/material.css'],
         dest: 'portal_media/mdl/mdl_plugin.min.css'
       }
     },

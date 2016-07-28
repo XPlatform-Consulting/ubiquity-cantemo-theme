@@ -5,3 +5,4 @@ portal_media/mdl/build/*
 Gemfile
 Gemfile.lock
 config/deploy.rb
+log/*
