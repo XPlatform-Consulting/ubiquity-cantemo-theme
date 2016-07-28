@@ -12,8 +12,8 @@
             // remove search content too
         }
         // close accout settigns popup 
-        if (!$('.cantemo-setting-card-popup').is(e.target) && $('.cantemo-setting-card-popup').has(e.target).length === 0 ){ // if the target of the click isn't the container nor a descendant of the container
-            $('.cantemo-setting-card-popup').removeClass('active-popup');
+        if (!$('.cantemo-settings-card-popup').is(e.target) && $('.cantemo-setting-card-popup').has(e.target).length === 0 ){ // if the target of the click isn't the container nor a descendant of the container
+            $('.cantemo-settings-card-popup').removeClass('active-popup');
         }
     });
     
