@@ -55,6 +55,14 @@
       
   }
 
+  #account{
+    .cantemo-settings-card-popup.triangle{
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 8px solid white;
+    }   
+  }
+
   #notifications,
   #account{
     position: relative;
@@ -96,7 +104,7 @@
         display:block;
         transition: opacity 0.2s
       }
-      
+
       &.triangle{
         position:absolute;
         background-color:transparent;
@@ -111,12 +119,6 @@
         width: 0; 
         height: 0; 
       }
-    }
-    
-    .cantemo-settings-card-popup.triangle{
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-bottom: 8px solid white;
     }
 
     .mdl-card__actions{
