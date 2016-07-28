@@ -3964,3 +3964,112 @@ e9b0fe47d9975877b6439bec9dcce14540100018	refs/heads/h3-dev
  DEBUG [157cd524] 	portal: stopped
 portal: started
   INFO [157cd524] Finished in 12.535 seconds with exit status 0 (successful).
+  INFO ---------------------------------------------------------------------------
+  INFO START 2016-07-28 11:20:18 -0700 cap h3staging deploy
+  INFO ---------------------------------------------------------------------------
+  INFO [6e1453dd] Running /usr/bin/env mkdir -p /tmp/md-theme/ as root@54.152.56.81
+ DEBUG [6e1453dd] Command: /usr/bin/env mkdir -p /tmp/md-theme/
+  INFO [6e1453dd] Finished in 1.349 seconds with exit status 0 (successful).
+ DEBUG Uploading /tmp/md-theme/git-ssh.sh 0.0%
+  INFO Uploading /tmp/md-theme/git-ssh.sh 100.0%
+  INFO [4caf2744] Running /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh as root@54.152.56.81
+ DEBUG [4caf2744] Command: /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh
+  INFO [4caf2744] Finished in 0.206 seconds with exit status 0 (successful).
+  INFO [b6c31853] Running /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git as root@54.152.56.81
+ DEBUG [b6c31853] Command: ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git )
+ DEBUG [b6c31853] 	4c916bf1b59c8261ac7b954d0f7d11e871f2442f	refs/heads/grunt-compass-install
+e9b0fe47d9975877b6439bec9dcce14540100018	refs/heads/h3-dev
+1f8783424d216254dbfc7381be7fbb4a12cedb28	refs/heads/master
+1f8783424d216254dbfc7381be7fbb4a12cedb28	refs/heads/mdl
+557918508dfa3f407cac091d242363d531bf4a31	refs/heads/old-ubiquity
+  INFO [b6c31853] Finished in 0.693 seconds with exit status 0 (successful).
+  INFO [af18d97e] Running /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/shared /opt/cantemo/portal/ubiquity-cantemo-theme/releases as root@54.152.56.81
+ DEBUG [af18d97e] Command: /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/shared /opt/cantemo/portal/ubiquity-cantemo-theme/releases
+  INFO [af18d97e] Finished in 0.219 seconds with exit status 0 (successful).
+ DEBUG [69944d40] Running [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION ] as root@54.152.56.81
+ DEBUG [69944d40] Command: [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION ]
+ DEBUG [69944d40] Finished in 0.210 seconds with exit status 0 (successful).
+ DEBUG [62926d43] Running /usr/bin/env cat /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION 2>/dev/null as root@54.152.56.81
+ DEBUG [62926d43] Command: /usr/bin/env cat /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION 2>/dev/null
+ DEBUG [62926d43] 	e9b0fe47d9975877b6439bec9dcce14540100018
+ DEBUG [62926d43] Finished in 0.208 seconds with exit status 0 (successful).
+ DEBUG [241a1141] Running [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/repo/HEAD ] as root@54.152.56.81
+ DEBUG [241a1141] Command: [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/repo/HEAD ]
+ DEBUG [241a1141] Finished in 0.248 seconds with exit status 0 (successful).
+  INFO The repository mirror is at /opt/cantemo/portal/ubiquity-cantemo-theme/repo
+ DEBUG [87d57c3d] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [87d57c3d] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi
+ DEBUG [87d57c3d] Finished in 0.210 seconds with exit status 0 (successful).
+  INFO [6cf052d9] Running /usr/bin/env git remote update --prune as root@54.152.56.81
+ DEBUG [6cf052d9] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git remote update --prune )
+ DEBUG [6cf052d9] 	Fetching origin
+  INFO [6cf052d9] Finished in 0.702 seconds with exit status 0 (successful).
+ DEBUG [cc5dbf4d] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [cc5dbf4d] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi
+ DEBUG [cc5dbf4d] Finished in 0.221 seconds with exit status 0 (successful).
+  INFO [76888117] Running /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023 as root@54.152.56.81
+ DEBUG [76888117] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023 )
+  INFO [76888117] Finished in 0.210 seconds with exit status 0 (successful).
+  INFO [b0ac29d6] Running /usr/bin/env git archive h3-dev | tar -x -f - -C /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023 as root@54.152.56.81
+ DEBUG [b0ac29d6] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git archive h3-dev | tar -x -f - -C /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023 )
+  INFO [b0ac29d6] Finished in 0.227 seconds with exit status 0 (successful).
+ DEBUG [e1b39d81] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [e1b39d81] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi
+ DEBUG [e1b39d81] Finished in 0.207 seconds with exit status 0 (successful).
+ DEBUG [b7b92b68] Running /usr/bin/env git rev-list --max-count=1 h3-dev as root@54.152.56.81
+ DEBUG [b7b92b68] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git rev-list --max-count=1 h3-dev )
+ DEBUG [b7b92b68] 	e9b0fe47d9975877b6439bec9dcce14540100018
+ DEBUG [b7b92b68] Finished in 0.235 seconds with exit status 0 (successful).
+ DEBUG [d4a5b958] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [d4a5b958] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023'" 1>&2; false; fi
+ DEBUG [d4a5b958] Finished in 0.211 seconds with exit status 0 (successful).
+  INFO [1ec0285f] Running /usr/bin/env echo "e9b0fe47d9975877b6439bec9dcce14540100018" >> REVISION as root@54.152.56.81
+ DEBUG [1ec0285f] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023 && /usr/bin/env echo "e9b0fe47d9975877b6439bec9dcce14540100018" >> REVISION
+  INFO [1ec0285f] Finished in 0.385 seconds with exit status 0 (successful).
+  INFO [39ad6b7f] Running /usr/bin/env ln -s /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023 /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current as root@54.152.56.81
+ DEBUG [39ad6b7f] Command: /usr/bin/env ln -s /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728182023 /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current
+  INFO [39ad6b7f] Finished in 0.407 seconds with exit status 0 (successful).
+  INFO [476b2823] Running /usr/bin/env mv /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current /opt/cantemo/portal/ubiquity-cantemo-theme as root@54.152.56.81
+ DEBUG [476b2823] Command: /usr/bin/env mv /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current /opt/cantemo/portal/ubiquity-cantemo-theme
+  INFO [476b2823] Finished in 0.335 seconds with exit status 0 (successful).
+ DEBUG [e899b989] Running /usr/bin/env ls -xtr /opt/cantemo/portal/ubiquity-cantemo-theme/releases as root@54.152.56.81
+ DEBUG [e899b989] Command: /usr/bin/env ls -xtr /opt/cantemo/portal/ubiquity-cantemo-theme/releases
+ DEBUG [e899b989] 	20160728000013	20160728000107	20160728180119	20160728181325	20160728181627
+20160728182023
+ DEBUG [e899b989] Finished in 0.294 seconds with exit status 0 (successful).
+  INFO Keeping 5 of 6 deployed releases on 54.152.56.81
+  INFO [61ed12aa] Running /usr/bin/env rm -rf /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728000013 as root@54.152.56.81
+ DEBUG [61ed12aa] Command: /usr/bin/env rm -rf /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160728000013
+  INFO [61ed12aa] Finished in 0.334 seconds with exit status 0 (successful).
+ DEBUG [b032c37e] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [b032c37e] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases'" 1>&2; false; fi
+ DEBUG [b032c37e] Finished in 0.336 seconds with exit status 0 (successful).
+  INFO [ec416e28] Running /usr/bin/env echo "Branch h3-dev (at e9b0fe47d9975877b6439bec9dcce14540100018) deployed as release 20160728182023 by garrettc" >> /opt/cantemo/portal/ubiquity-cantemo-theme/revisions.log as root@54.152.56.81
+ DEBUG [ec416e28] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/releases && /usr/bin/env echo "Branch h3-dev (at e9b0fe47d9975877b6439bec9dcce14540100018) deployed as release 20160728182023 by garrettc" >> /opt/cantemo/portal/ubiquity-cantemo-theme/revisions.log
+  INFO [ec416e28] Finished in 0.294 seconds with exit status 0 (successful).
+  INFO [abd950c7] Running rm -rf -R /opt/cantemo/portal/portal_themes/mdl/ as root@54.152.56.81
+ DEBUG [abd950c7] Command: rm -rf -R /opt/cantemo/portal/portal_themes/mdl/
+  INFO [abd950c7] Finished in 0.335 seconds with exit status 0 (successful).
+  INFO [3e21970a] Running rm -rf -R /opt/cantemo/portal/portal_media/mdl/ as root@54.152.56.81
+ DEBUG [3e21970a] Command: rm -rf -R /opt/cantemo/portal/portal_media/mdl/
+  INFO [3e21970a] Finished in 0.338 seconds with exit status 0 (successful).
+  INFO [411c937e] Running cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_themes/mdl /opt/cantemo/portal/portal_themes/ as root@54.152.56.81
+ DEBUG [411c937e] Command: cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_themes/mdl /opt/cantemo/portal/portal_themes/
+  INFO [411c937e] Finished in 0.211 seconds with exit status 0 (successful).
+  INFO [55b3bdbf] Running cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_media/mdl /opt/cantemo/portal/portal_media/ as root@54.152.56.81
+ DEBUG [55b3bdbf] Command: cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_media/mdl /opt/cantemo/portal/portal_media/
+  INFO [55b3bdbf] Finished in 0.210 seconds with exit status 0 (successful).
+  INFO [bc7ffb11] Running chown -R www-data:www-data /opt/cantemo/portal/portal_themes/mdl as root@54.152.56.81
+ DEBUG [bc7ffb11] Command: chown -R www-data:www-data /opt/cantemo/portal/portal_themes/mdl
+  INFO [bc7ffb11] Finished in 0.241 seconds with exit status 0 (successful).
+  INFO [c16513d8] Running chown -R www-data:www-data /opt/cantemo/portal/portal_media/mdl as root@54.152.56.81
+ DEBUG [c16513d8] Command: chown -R www-data:www-data /opt/cantemo/portal/portal_media/mdl
+  INFO [c16513d8] Finished in 0.206 seconds with exit status 0 (successful).
+  INFO [dab53005] Running cd /opt/cantemo/portal/ as root@54.152.56.81
+ DEBUG [dab53005] Command: cd /opt/cantemo/portal/
+  INFO [dab53005] Finished in 0.206 seconds with exit status 0 (successful).
+  INFO [ba88bdde] Running supervisorctl restart portal as root@54.152.56.81
+ DEBUG [ba88bdde] Command: supervisorctl restart portal
+ DEBUG [ba88bdde] 	portal: stopped
+portal: started
+  INFO [ba88bdde] Finished in 12.831 seconds with exit status 0 (successful).

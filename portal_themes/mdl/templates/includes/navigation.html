@@ -68,11 +68,14 @@
     </div>
     {% endif %}
 
-
-    <button id="Account" class="mdl-button mdl-js-button mdl-button--icon">
-        <i class="material-icons">account_box</i>
+    
+    <div id="Account">
+        <button  class="mdl-button mdl-js-button mdl-button--icon">
+            <i class="material-icons">account_box</i>  
+        </button>    
         <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
-    </button>
+    </div>
+    
     <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="Account">
       <li class="mdl-menu__item">
           <a class="mdl-menu__item" href="{% url user_settings %}">
@@ -87,7 +90,8 @@
     </ul>
 
     {% cache 500 navigationuserinfo request.user.username %}
-    <span class="mdl-layout__title">{{ request.user.username }}</span>
+    <span class="cantemo-user-name">{{ request.user.username }}</span>
+    {{request.user}}
     {% endcache %}
 </div>
 
