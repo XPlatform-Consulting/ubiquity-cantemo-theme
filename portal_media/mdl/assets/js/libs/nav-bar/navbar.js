@@ -6,7 +6,7 @@
             $('#main-row').addClass('search-active');
         }
 
-        if($('.cantemo-settings-button').is(e.target)){
+        if($('button.cantemo-settings-button').is(e.target) || $('button.cantemo-settings-button').has(e.target).length > 0 ){
             $('.cantemo-settings-card-popup').toggleClass('active-popup');            
         }
 
