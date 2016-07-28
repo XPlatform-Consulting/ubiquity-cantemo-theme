@@ -35,14 +35,11 @@
       }
     }
   }
+  #notifications,
   #account{
     position: relative;
-    
-    .mdl-badge{
-      margin:0;
-      margin-top:5px;
-    }
 
+    .cantemo-notifications-card-popup,
     .cantemo-settings-card-popup {
       display:none;
       opacity:0;

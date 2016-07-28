@@ -69,10 +69,24 @@
     {% endif %}
 
     <div id="notifications">
-        <button class="cantemo-settings-button mdl-button mdl-button--icon">
-            <i class="material-icons">sms</i>  
-        </button>    
-        <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
+        <button class="cantemo-notifications-button mdl-button mdl-button--icon">
+            {% if notice_unseen_count > 0 %}
+                <i class="material-icons">notifications</i>  
+            {% else %}
+                <i class="material-icons">notifications_none</i>
+            {% endif %}
+        </button>
+        <div class="cantemo-notifications-card-popup mdl-card mdl-shadow--2dp">
+            {% if notice_unseen_count > 0 %}
+                <div class="mdl-card__supporting-text mdl-card--expand">
+                    Load {{ notice_unseen_count }} Notifications
+                </div>
+            {% else %}
+            <div class="mdl-card__supporting-text mdl-card--expand">
+                No Notifications
+            </div>
+            {% endif %}
+        </div>  
     </div>
     <div id="account" class="">
         <button class="cantemo-settings-button mdl-button mdl-button--icon">
