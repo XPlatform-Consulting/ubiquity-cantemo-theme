@@ -12,12 +12,13 @@
             // remove search content too
         }
         // close accout settigns popup 
-        if (!$('.cantemo-settings-card-popup').is(e.target) && $('.cantemo-settings-card-popup').has(e.target).length === 0 ){ // if the target of the click isn't the container nor a descendant of the container
+        if (!$('button.cantemo-settings-button').is(e.target) && !$('.cantemo-settings-card-popup').is(e.target) && $('.cantemo-settings-card-popup').has(e.target).length === 0 ){ // if the target of the click isn't the container nor a descendant of the container
             $('.cantemo-settings-card-popup').removeClass('active-popup');
         }
     });
     
     $('button.cantemo-settings-button').on('click',function(){
+        console.log("trigger");
         $('.cantemo-settings-card-popup').toggleClass('active-popup');
     });
     
