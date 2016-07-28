@@ -73,6 +73,7 @@
     ::-webkit-input-placeholder,
     :-input-placeholder{
       @include base-font;
+      color:black;
     }
 
     .cantemo-search-icon {
