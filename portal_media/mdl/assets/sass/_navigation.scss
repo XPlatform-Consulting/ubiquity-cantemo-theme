@@ -35,7 +35,13 @@
       }
     }
   }
-  
+  #account{
+    position: static;
+    .mdl-badge{
+      margin:0;
+      margin-top:5px;
+    }
+  }
   .cantemo-search-bar{
     position:relative;
     flex:0 0 auto;
