@@ -35,11 +35,41 @@
       }
     }
   }
+  
+  #notifications{
+      .cantemo-notifications-card-popup{
+        background-color:$background-color-600;
+        .cantemo-card-top{
+          padding:20px;
+          flex:1 1 auto;
+          text-align:center;
+          color:$background-color-600-alt;
+          font-size: 0.9em;
+        }
+      }
+  }
+
   #notifications,
   #account{
     position: relative;
     margin-left: 10px;
     margin-right: 10px;
+
+    .triangle{
+      position:absolute;
+      top:100%;
+      right:50%;
+      transform:-webkit-trnaslateX(-50%);
+      transform:-moz-trnaslateX(-50%);
+      transform:-ms-trnaslateX(-50%);
+      transform:-o-trnaslateX(-50%);
+      transform:trnaslateX(-50%);
+
+      width:0;
+      height:0;
+      border-left:5px solid white;
+      border-right:5px solid white;
+    }
     
     .cantemo-nav-avatar{
       max-width: 45px;
@@ -64,6 +94,7 @@
       }
     }
     .mdl-card__actions{
+      display:flex;
       background-color: $background-color-300;
     }
   }
