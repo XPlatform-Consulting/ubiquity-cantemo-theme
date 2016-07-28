@@ -8327,3 +8327,24 @@ ec01acc9de3567a6a1893eeed83aa9bfcb24a3b3	refs/heads/h3-dev
  DEBUG [042061d9] 	portal: stopped
 portal: started
   INFO [042061d9] Finished in 11.916 seconds with exit status 0 (successful).
+  INFO ---------------------------------------------------------------------------
+  INFO START 2016-07-28 15:43:16 -0700 cap h3staging deploy
+  INFO ---------------------------------------------------------------------------
+  INFO [8e024388] Running /usr/bin/env mkdir -p /tmp/md-theme/ as root@54.152.56.81
+ DEBUG [8e024388] Command: /usr/bin/env mkdir -p /tmp/md-theme/
+  INFO [8e024388] Finished in 1.346 seconds with exit status 0 (successful).
+ DEBUG Uploading /tmp/md-theme/git-ssh.sh 0.0%
+  INFO Uploading /tmp/md-theme/git-ssh.sh 100.0%
+  INFO [093aad8d] Running /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh as root@54.152.56.81
+ DEBUG [093aad8d] Command: /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh
+  INFO [093aad8d] Finished in 0.338 seconds with exit status 0 (successful).
+  INFO [5e7d7a4c] Running /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git as root@54.152.56.81
+ DEBUG [5e7d7a4c] Command: ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git )
+ DEBUG [5e7d7a4c] 	4c916bf1b59c8261ac7b954d0f7d11e871f2442f	refs/heads/grunt-compass-install
+ec01acc9de3567a6a1893eeed83aa9bfcb24a3b3	refs/heads/h3-dev
+1f8783424d216254dbfc7381be7fbb4a12cedb28	refs/heads/master
+1f8783424d216254dbfc7381be7fbb4a12cedb28	refs/heads/mdl
+557918508dfa3f407cac091d242363d531bf4a31	refs/heads/old-ubiquity
+  INFO [5e7d7a4c] Finished in 0.983 seconds with exit status 0 (successful).
+  INFO [5295da74] Running /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/shared /opt/cantemo/portal/ubiquity-cantemo-theme/releases as root@54.152.56.81
+ DEBUG [5295da74] Command: /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/shared /opt/cantemo/portal/ubiquity-cantemo-theme/releases
