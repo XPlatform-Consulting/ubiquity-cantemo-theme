@@ -69,6 +69,9 @@
     {% endif %}
 
     <div id="notifications">
+        <button class="cantemo-settings-button mdl-button mdl-button--icon">
+            <i class="material-icons">sms</i>  
+        </button>    
         <span class="mdl-badge mdl-badge--overlap" data-badge="1"></span>
     </div>
     <div id="account" class="">
@@ -84,8 +87,8 @@
             <div class="mdl-card__supporting-text mdl-card--expand">
             </div>
             <div class="mdl-card__actions mdl-card--border">
-                <button class="mdl-button mdl-js-button mdl-button--raised"><a href="{% url user_settings %}">{% trans "Settings" %}</a></button>
-                <button class="mdl-button mdl-js-button mdl-button--raised"><a href="/authentication/logout/">{% trans "Logout" %}</a></button>               
+                <a class="mdl-button mdl-js-button mdl-button--raised" href="{% url user_settings %}">{% trans "Settings" %}</a>
+                <a class="mdl-button mdl-js-button mdl-button--raised" href="/authentication/logout/">{% trans "Logout" %}</a>
             </div>
         </div>
     </div>
