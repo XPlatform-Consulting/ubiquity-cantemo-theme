@@ -15,15 +15,17 @@
       flex:1 1 auto;
       background-color:white;
       transition:all 0.2s;
+      
+      ::-webkit-input-placeholder,
+      :-input-placeholder{
+        @include base-font;
+        color:black;
+      }
 
       input.cantemo-search-input{
         width:100%;
         color:black;
-        &::-webkit-input-placeholder,
-        &:-input-placeholder{
-          @include base-font;
-          color:black;
-        }
+        
       }
 
       &:hover{
@@ -36,23 +38,72 @@
     }
   }
   
-  #notifications{
-      .cantemo-notifications-card-popup{
-        background-color:$background-color-600;
-        .cantemo-card-top{
-          padding:20px;
-          flex:1 1 auto;
-          text-align:center;
-          color:$background-color-600-alt;
-          font-size: 0.9em;
-        }
-        &.triangle{
-          border-left: 8px solid transparent;
-          border-right: 8px solid transparent;
-          border-bottom: 8px solid $background-color-600;
-        }
+  .cantemo-search-bar{
+    position:relative;
+    flex:0 0 auto;
+    margin:6px 24px;
+    border-radius: 2px;
+    background-color:$primary-300;
+    transition:all 0.2s;
+
+    &:hover{
+      background-color:$primary-200;
+      transition:all 0.2s;
+    }
+
+
+    .cantemo-search-input-container{
+      width:100%;
+      display:flex;
+    }
+
+    input.cantemo-search-input{
+      @include base-font;
+      background: 0;
+      border: 0;
+      color: #fff;
+      padding: 8px 8px 8px 72px;
+      transition: all .2s;
+      width: auto;
+      &:focus{
+        outline:none;
       }
-      
+    }
+    
+    ::-webkit-input-placeholder,
+    :-input-placeholder{
+      @include base-font;
+    }
+
+    .cantemo-search-icon {
+      position:absolute;
+      top:50%;
+      left:20px;
+      transform:-webkit-translateY(-50%);
+      transform:-moz-translateY(-50%);
+      transform:-ms-translateY(-50%);
+      transform:-o-translateY(-50%);
+      transform:translateY(-50%);
+    }
+  }
+
+
+  #notifications{
+    .cantemo-notifications-card-popup{
+      background-color:$background-color-600;
+      .cantemo-card-top{
+        padding:20px;
+        flex:1 1 auto;
+        text-align:center;
+        color:$background-color-600-alt;
+        font-size: 0.9em;
+      }
+      &.triangle{
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 8px solid $background-color-600;
+      }
+    }
   }
 
   #account{
@@ -124,56 +175,6 @@
     .mdl-card__actions{
       display:flex;
       background-color: $background-color-300;
-    }
-  }
-
-  .cantemo-search-bar{
-    position:relative;
-    flex:0 0 auto;
-    margin:6px 24px;
-    border-radius: 2px;
-    background-color:$primary-300;
-    transition:all 0.2s;
-
-    &:hover{
-      background-color:$primary-200;
-      transition:all 0.2s;
-    }
-
-    &.search-active{    }
-
-    .cantemo-search-input-container{
-      width:100%;
-      display:flex;
-    }
-
-    input.cantemo-search-input{
-      @include base-font;
-      background: 0;
-      border: 0;
-      color: #fff;
-      padding: 8px 8px 8px 72px;
-      transition: all .2s;
-      width: auto;
-      &:focus{
-        outline:none;
-      }
-
-      &::-webkit-input-placeholder,
-      &:-input-placeholder{
-        @include base-font;
-      }
-
-    }
-    .cantemo-search-icon {
-      position:absolute;
-      top:50%;
-      left:20px;
-      transform:-webkit-translateY(-50%);
-      transform:-moz-translateY(-50%);
-      transform:-ms-translateY(-50%);
-      transform:-o-translateY(-50%);
-      transform:translateY(-50%);
     }
   }
 }
