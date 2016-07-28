@@ -78,22 +78,20 @@
 
     </div>
     
-    <div class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="account">
-        {% cache 500 navigationuserinfo request.user.username %}
-        <span class="cantemo-user-name">{{ request.user.username }}</span>
-        {% endcache %}
-        
-        <div class="cantemo-accout-button-panel">
+    <div class="mdl-card mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="account">
+        <div class="mdl-card__title">
+            {% cache 500 navigationuserinfo request.user.username %}
+            <span class="card__supporting-text">{{ request.user.username }}</span>
+            {% endcache %}
+        </div>
+
+        <div class="mdl-card__actions">
             <a href="{% url user_settings %}">
-                <button class="mdl-button mdl-js-button mdl-button--fab">
-                    <i class="material-icons"> {% trans "Settings" %}</i>
-                </button>
+                <button class="mdl-button mdl-js-button mdl-button--raised">{% trans "Settings" %}</button>
             </a>
 
             <a href="/authentication/logout/">
-                <button class="mdl-button mdl-js-button mdl-button--fab">
-                    <i class="material-icons">{% trans "Logout" %}</i>
-                </button>
+                <button class="mdl-button mdl-js-button mdl-button--raised">{% trans "Logout" %}</button>
             </a>
         </div>
         
