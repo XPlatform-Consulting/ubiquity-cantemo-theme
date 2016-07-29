@@ -105,6 +105,18 @@
         border-right: 8px solid transparent;
         border-bottom: 8px solid $background-color-600;
       }
+    }
+  }
+
+  #account{
+    .cantemo-settings-card-popup{
+      color:black;
+      .navigation-account-img{
+        display:inline-block;
+      }
+      .navigation-account-info{
+        display:inline-block;
+      }
       organization,
       groups,
       user{
@@ -118,18 +130,6 @@
         flex: 1 1 auto;
         font-size:1.3em;
         line-height:1.5em;
-      }
-    }
-  }
-
-  #account{
-    .cantemo-settings-card-popup{
-      color:black;
-      .navigation-account-img{
-        display:inline-block;
-      }
-      .navigation-account-info{
-        display:inline-block;
       }
     }
     
