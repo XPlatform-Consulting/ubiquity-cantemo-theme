@@ -320,8 +320,22 @@
 
                     {% cache 500 navigationuserinfo request.user.username %}
                         <div class="navigation-account-info">
-                            <div><b> {{ request.user.first_name }}{{ request.user.last_name }} </b></div>
-                            <div><span class="card__supporting-text">{{ request.user.username }}</span> </div>  
+                            <div><b> {{ request.user.first_name }}</b> <b>{{ request.user.last_name }} </b></div>
+                            <div><span class="card__supporting-text">{{ request.user.username }}</span> </div>
+                            {% if request.user.get_profile.organisation %}
+                                <div class="org-name"><b> {% trans "Organisation" %}</b>: {{ request.user.get_profile.organisation }}</div>
+                            {% endif %}
+                            <div class="org-name"><b> {% trans "Organisation" %}</b>: {{ request.user.get_profile.organisation }}</div>
+                            <div class="groups">
+                                <b>{% trans "Groups" %}</b> : 
+                                    <span>
+                                    {% for g in user.groups.all  %}
+                                        {% if not g|stringformat:"s" == '_special_all' %}
+                                            {{ g }}
+                                        {% endif %}
+                                    {% endfor %}
+                                    </span>
+                            </div>
                         </div>
                         
                     {% endcache %}
