@@ -320,7 +320,7 @@
 
                     {% cache 500 navigationuserinfo request.user.username %}
                         <div class="navigation-account-info">
-                            <user><b> {{ request.user.first_name }}</b> <b>{{ request.user.last_name }} </b></user>
+                            <user><b> {{ request.user.first_name | capfirst }}</b> <b>{{ request.user.last_name | capfirst }} </b></user>
                             <user-name><span class="card__supporting-text">{{ request.user.username }}</span> </user-name>
                         </div>
                     {% endcache %}
