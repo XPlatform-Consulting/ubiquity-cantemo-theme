@@ -118,20 +118,22 @@
                     {% endcache %}
                 </div>
                 <div class="mdl-card__supporting-text mdl-card--expand">
-                    {% for field in form %}
-                        {% if field.is_hidden %}
-                            {{ field }}
-                        {% else %}
-                            <li {% if field.errors %}class="error"{% endif %}>
-                                {{ field.label_tag }}
+                    <form action="." method="post" accept-charset="utf-8" class="formmain" enctype="multipart/form-data">{% csrf_token %}
+                        {% for field in form %}
+                            {% if field.is_hidden %}
                                 {{ field }}
-                                {% if field.errors %}<p>{% for error in field.errors %}{{ error }}{% endfor %}</p>{% endif %}
-                                {% if field.help_text %}
-                                    <p class="help" style="display:inline;"><em>{{ field.field.help_text|safe }}</em></p>
-                                {% endif %}
-                            </li>
-                        {% endif %}
-                    {% endfor %}
+                            {% else %}
+                                <li {% if field.errors %}class="error"{% endif %}>
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    {% if field.errors %}<p>{% for error in field.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                                    {% if field.help_text %}
+                                        <p class="help" style="display:inline;"><em>{{ field.field.help_text|safe }}</em></p>
+                                    {% endif %}
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </form>
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                     <a class="mdl-button mdl-js-button mdl-button--primary" href="{% url user_settings %}">{% trans "Settings" %}</a>
