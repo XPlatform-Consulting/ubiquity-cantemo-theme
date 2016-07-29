@@ -14,10 +14,17 @@
 </head>
 
 <body class="{% block bodyclass %}base{% endblock %}" id="body">
+    {% block navigation %}
+        <header class="mdl-layout__header">
+            {% themeinclude 'includes/navigation.html' %}
+
+            {% block heading %}
+                {% themeinclude "search/search_results_form.html" %}
+            {% endblock heading %}
+        </header>
+    {% endblock navigation %}
 
     {% block theme %}
-        {% block navigation %}{% endblock %}
-
         {% block drawer %}{% endblock %}
 
         {% block body %}{% endblock %}
