@@ -1,0 +1,14 @@
+{% for message in messages%}
+    {{message}}
+{% endfor %}
+
+{% if notice_unseen_count > 0 %}
+    <div class="mdl-card__supporting-text mdl-card--expand">
+        {{ notice_unseen_count }} Notifications
+        {{ request.user.messages}}
+    </div>
+{% else %}
+    <div class="cantemo-card-top">
+        {% trans "No Notifications" %}
+    </div>
+{% endif %}

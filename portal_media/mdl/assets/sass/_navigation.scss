@@ -110,13 +110,19 @@
   #account{
     .cantemo-settings-card-popup{
       color:black;
+      .navigation-account-img{
+        display:inline-block;
+      }
+      .navigation-account-info{
+        display:inline-block;
+      }
     }
     
     .cantemo-settings-card-popup.triangle{
       border-left: 8px solid transparent;
       border-right: 8px solid transparent;
       border-bottom: 8px solid white;
-    }   
+    } 
   }
 
   #notifications,
@@ -133,10 +139,10 @@
     }
 
     .cantemo-nav-avatar{
-      max-width: 45px;
-      width:45px;
-      max-height: 45px;
-      height:45px;
+      max-width: 40px;
+      width:40px;
+      max-height: 40px;
+      height:40px;
     }
 
     .cantemo-nav-avatar-lg{
