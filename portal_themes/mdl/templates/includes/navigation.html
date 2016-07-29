@@ -43,9 +43,6 @@
     <div id="main-row" class="mdl-layout__header-row">
         <span class="mdl-layout-title" title="{% trans "Home" %}">Cantemo</span>
 
-        <div class="cantemo-head-spacer"></div>
-
-
         <nav id="main-nav" class="mdl-navigation mdl-layout--large-screen-only">
             <a class="mdl-navigation__link" href="{% url homepage %}" {% current_nav search %} title="{% trans 'Home' %}"> {% trans "Home" %}</a>
 
@@ -243,6 +240,8 @@
             {% pluginblock "NavigationSectionPlugin" core %}
         </nav>
 
+        <div class="cantemo-head-spacer"></div>
+
         {% comment %}
         TODO: add in the actual search functionality
         {% endcomment %}
@@ -304,10 +303,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="nav-row" class="mdl-layout__header-row">
-        
     </div>
 </header>
 <!-- mdl includes/navigation.html end -->
