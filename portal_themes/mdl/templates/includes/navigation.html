@@ -320,15 +320,15 @@
 
                     {% cache 500 navigationuserinfo request.user.username %}
                         <div class="navigation-account-info">
-                            <user><b> {{ request.user.first_name | capfirst }}</b> <b>{{ request.user.last_name | capfirst }} </b></user>
-                            <user-name><span class="card__supporting-text">{{ request.user.username }}</span> </user-name>
+                            <user><b> {{ capfirst request.user.first_name }}</b> <b>{{ capfirst request.user.last_name }} </b></user>
+                            <user-name>{{ request.user.username }}</span> </user-name>
                         </div>
                     {% endcache %}
                 </div>
 
                 <div class="mdl-card__supporting-text mdl-card--border">
                     {% if request.user.get_profile.organisation %}
-                        <organization><b> {% trans "Organisation" %}</b>: {{ request.user.get_profile.organisation }}</organization>
+                        <organization>{% trans "Organisation" %}: {{ request.user.get_profile.organisation }}</organization>
                     {% endif %}
                     <groups>
                         {% trans "Groups" %}: 
