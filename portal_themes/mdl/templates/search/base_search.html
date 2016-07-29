@@ -15,6 +15,9 @@
 {% block theme %}
 <!-- base_search.html theme start -->
 <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    {% block drawer %}
+    {% endblock drawer%}
+
     {% block navigation %}
         {% themeinclude 'includes/navigation.html' %}
 
@@ -23,9 +26,6 @@
         {% endblock heading %}
 
     {% endblock navigation %}
-
-    {% block drawer %}
-    {% endblock drawer%}
 
     {% block body %}
     <!-- base_search.html body start -->

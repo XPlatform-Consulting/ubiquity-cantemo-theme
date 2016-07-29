@@ -2,82 +2,84 @@
 {% qstring as current_qstring %}
 
 {% if not hidesearchform %}
-<div id="search-header" class="mdl-layout__header-row">
+<div id="search-header" class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
 
-    <!--<span class="mdl-layout-title">{{ searchquery }}</span>-->
+        <!--<span class="mdl-layout-title">{{ searchquery }}</span>-->
 
-    {% comment %}
-    <div class="viewtypes" {% if not current_qstring %} style="display:none"{% endif %}>
-        <a refs="grid" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-grid-enabled">Grid</a>
-        <a refs="list" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-list">List</a>
-    </div><!-- .viewtypes -->
-    {% endcomment %}
+        {% comment %}
+        <div class="viewtypes" {% if not current_qstring %} style="display:none"{% endif %}>
+            <a refs="grid" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-grid-enabled">Grid</a>
+            <a refs="list" href="{% url search:index %}?{{ request.META.QUERY_STRING }}" class="viewtypebutton" id="icon-viewtype-list">List</a>
+        </div><!-- .viewtypes -->
+        {% endcomment %}
 
-    {# {% if not recyclebin %} #}
-    {% if hits %}
-        <div class="srinfo">
-          	{% if not current_qstring|qstring_get:"display_podType" == "SubClip" %}
-				{% trans 'Displaying' %} <span id="first_on_page">{{first_on_page}}</span> {% trans "to" %} <span id="last_on_page">{{ last_on_page }}</span> {% trans "of" %} <span id="hits_total_results">{{ hits }}</span> {% trans 'hits' %} {% trans "for" %} "{{ searchquery }}"
-          	{% endif %}
-            {% if suggestions and searchquery != "" %}. {% trans "Did you mean" %}
-                {% for suggestion in suggestions %}
-                	<a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion }}">{{ suggestion }}</a>
-                	{% if not forloop.last %}, {% endif %}
-            	{% endfor %}?
-            {% endif %}
+        {# {% if not recyclebin %} #}
+        {% if hits %}
+            <div class="srinfo">
+              	{% if not current_qstring|qstring_get:"display_podType" == "SubClip" %}
+    				{% trans 'Displaying' %} <span id="first_on_page">{{first_on_page}}</span> {% trans "to" %} <span id="last_on_page">{{ last_on_page }}</span> {% trans "of" %} <span id="hits_total_results">{{ hits }}</span> {% trans 'hits' %} {% trans "for" %} "{{ searchquery }}"
+              	{% endif %}
+                {% if suggestions and searchquery != "" %}. {% trans "Did you mean" %}
+                    {% for suggestion in suggestions %}
+                    	<a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion }}">{{ suggestion }}</a>
+                    	{% if not forloop.last %}, {% endif %}
+                	{% endfor %}?
+                {% endif %}
+            </div>
+        {% endif %}
+        {# {% endif %} #}
+
+        <div calss="select-all-button">
+            <button id="selectallresults" class="mdl-button mdl-js-button mdl-button--icon selectedLibraryLabelChanges" deselectresultslabel="{% trans "Deselect All Results" %}" selectresultslabel="{% trans "Select All Results" %}"><i class="material-icons">select_all</i></button>
+            <label class="mdl-tooltip" for="selectallresults">{% trans "Select All Results" %}</label>
         </div>
-    {% endif %}
-    {# {% endif %} #}
 
-    <div>
-        <button id="selectallresults" class="mdl-button mdl-js-button mdl-button--icon material-icons selectedLibraryLabelChanges" deselectresultslabel="{% trans "Deselect All Results" %}" selectresultslabel="{% trans "Select All Results" %}">select_all</button>
-        <label class="mdl-tooltip" for="selectallresults">{% trans "Select All Results" %}</label>
-    </div>
+        <div id="selectionmsg">
+            <span  itemsSelectedStateLabel="{% trans "Selected: " %}" noItemsSelectedStateLabel="" class="selectedStateLabelChanges"></span>
+            <span class="selectioncount"></span>
+        </div>
 
-    <div>
-        <span id="selectionmsg" itemsSelectedStateLabel="{% trans "Selected: " %}" noItemsSelectedStateLabel="" class="selectedStateLabelChanges"></span>
-        <span class="selectioncount"></span>
-    </div>
+        <div class="mdl-layout-spacer"></div>
 
-    <div class="mdl-layout-spacer"></div>
+        {% themeinclude "search/search_component.html" %}
 
-    {% themeinclude "search/search_component.html" %}
+        <div>
+            <button id="media-context-menu" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">settings</i>
+            </button>
+            <ul class="mediacontextualmenu mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="media-context-menu">
+                <a data-areas-available="{% if exportareas %}true{% else %}false{% endif %}" id="exportitem" class="mdl-menu__item" href="#" {% if not exportareas %}disabled{% endif %}>{% trans "Export" %}</a>
 
-    <div>
-        <button id="media-context-menu" class="mdl-button mdl-js-button mdl-button--icon">
-            <i class="material-icons">settings</i>
-        </button>
-        <ul class="mediacontextualmenu mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="media-context-menu">
-            <a data-areas-available="{% if exportareas %}true{% else %}false{% endif %}" id="exportitem" class="mdl-menu__item" href="#" {% if not exportareas %}disabled{% endif %}>{% trans "Export" %}</a>
+                <a id="addtobinitems" class="mdl-menu__item" rel="{% url vs_collection_add_form %}">{% trans "Add to Bin" %}</a>
 
-            <a id="addtobinitems" class="mdl-menu__item" rel="{% url vs_collection_add_form %}">{% trans "Add to Bin" %}</a>
+                <a href="#" rel="{% url vs_collection_add_form %}" id="addtocollection" class="mdl-menu__item" > {% trans "Add to Collection" %}</a>
 
-            <a href="#" rel="{% url vs_collection_add_form %}" id="addtocollection" class="mdl-menu__item" > {% trans "Add to Collection" %}</a>
+                {% if can_archive %}
+                    <a class="mdl-menu__item" href="" id="archive_selected_items">{% trans "Archive" %}</a>
+                    <a class="mdl-menu__item" href="" id="restore_selected_items">{% trans "Restore" %}</a>
+                {% endif %}
 
-            {% if can_archive %}
-                <a class="mdl-menu__item" href="" id="archive_selected_items">{% trans "Archive" %}</a>
-                <a class="mdl-menu__item" href="" id="restore_selected_items">{% trans "Restore" %}</a>
-            {% endif %}
+                {% permissionrequired _job_write %}
+                    <a href="#" rel="{% url vs_items_transcode %}" id="transcodeitems" class="mdl-menu__item" > {% trans "Transcode" %}</a>
+                {% endpermissionrequired %}
 
-            {% permissionrequired _job_write %}
-                <a href="#" rel="{% url vs_items_transcode %}" id="transcodeitems" class="mdl-menu__item" > {% trans "Transcode" %}</a>
-            {% endpermissionrequired %}
+                {% permissionrequired _item_shape_write  %}
+                    <a class="mdl-menu__item" href="#" id="deleteitems">{% trans "Delete" %}</a>
+                    <a class="mdl-menu__item" href="" id="search_metadata_batch_update">{% trans "Metadata Batch Update" %}</a>
+                {% endpermissionrequired %}
 
-            {% permissionrequired _item_shape_write  %}
-                <a class="mdl-menu__item" href="#" id="deleteitems">{% trans "Delete" %}</a>
-                <a class="mdl-menu__item" href="" id="search_metadata_batch_update">{% trans "Metadata Batch Update" %}</a>
-            {% endpermissionrequired %}
+                <a id="exportitem" class="mdl-menu__item" href="#" {% if not exportareas %}class="disabled"{% endif %} data-areas-available="{% if exportareas %}true{% else %}false{% endif %}">{% trans "Export" %}</a>
 
-            <a id="exportitem" class="mdl-menu__item" href="#" {% if not exportareas %}class="disabled"{% endif %} data-areas-available="{% if exportareas %}true{% else %}false{% endif %}">{% trans "Export" %}</a>
+                {% pluginblock "SearchViewGearBoxSelected" core %}
 
-            {% pluginblock "SearchViewGearBoxSelected" core %}
+                {% pluginblock "SearchViewGearBoxCurrentPage" core %}
 
-            {% pluginblock "SearchViewGearBoxCurrentPage" core %}
+                <a class="mdl-menu__item" href="{% url vs_saved_search_add_form_no_library %}?{{current_qstring}}" id="savesearch">{% trans "Save Search" %}</a>
 
-            <a class="mdl-menu__item" href="{% url vs_saved_search_add_form_no_library %}?{{current_qstring}}" id="savesearch">{% trans "Save Search" %}</a>
-
-            {% pluginblock "SearchViewDropdown" core %}
-        </ul>
+                {% pluginblock "SearchViewDropdown" core %}
+            </ul>
+        </div>
     </div>
 </div><!-- #header -->
 {% endif %}
