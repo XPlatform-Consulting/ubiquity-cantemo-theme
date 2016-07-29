@@ -79,10 +79,11 @@
             </button>
             <div class="cantemo-notifications-card-popup triangle"></div>
             <div class="cantemo-notifications-card-popup mdl-card mdl-shadow--2dp">
+                {{ messages}}
                 {% if notice_unseen_count > 0 %}
                     <div class="mdl-card__supporting-text mdl-card--expand">
                         {{ notice_unseen_count }} Notifications
-                        {{ request.user.messages }}
+                        {{ request.user.messages}}
                     </div>
                 {% else %}
                 <div class="cantemo-card-top">
@@ -92,8 +93,7 @@
             </div>  
         </div>
         <div id="account" class="">
-            <button class="cantemo-settings-button mdl-button mdl-button--icon">
-                {{ user }}
+            <button class="cantemo-nav-avatar cantemo-settings-button mdl-button mdl-button--icon">
                 {% get_avatar_image user %}
     
                 {% if avatarurl %}
@@ -107,6 +107,7 @@
             <div class="cantemo-settings-card-popup triangle"></div>
             <div class="cantemo-settings-card-popup mdl-card mdl-shadow--2dp">
                 <div class="cantemo-card-top">
+
                     {% if avatarurl %}
                         <img src="{{ avatarurl }}" alt="{{ avataruser }}" width="{{ avatarwidth }}" height="{{ avatarheight }}"  class="cantemo-nav-avatar-lg user-avatar-image user-avatar-set">
                     {% else %}
@@ -114,29 +115,13 @@
                             <path {% if avataruser %} class="user-avatar-userknown" {% else %} class="user-avatar-userunknown" {% endif %} id="user-avatar-icon" d="M407.448,360.474c-59.036-13.617-113.989-25.541-87.375-75.717 c81.01-152.729,21.473-234.406-64.072-234.406c-87.231,0-145.303,84.812-64.072,234.406c27.412,50.482-29.608,62.393-87.375,75.717 c-59.012,13.609-54.473,44.723-54.473,101.176h411.838C461.919,405.196,466.458,374.083,407.448,360.474z"/> 
                         </svg>
                     {% endif %}
-                    {{ request.user.metadata }}
 
                     {% cache 500 navigationuserinfo request.user.username %}
                         <span class="card__supporting-text">{{ request.user.username }}</span>
                     {% endcache %}
                 </div>
                 <div class="mdl-card__supporting-text mdl-card--expand">
-                    <form action="." method="post" accept-charset="utf-8" class="formmain" enctype="multipart/form-data">{% csrf_token %}
-                        {% for field in form %}
-                            {% if field.is_hidden %}
-                                {{ field }}
-                            {% else %}
-                                <li {% if field.errors %}class="error"{% endif %}>
-                                    {{ field.label_tag }}
-                                    {{ field }}
-                                    {% if field.errors %}<p>{% for error in field.errors %}{{ error }}{% endfor %}</p>{% endif %}
-                                    {% if field.help_text %}
-                                        <p class="help" style="display:inline;"><em>{{ field.field.help_text|safe }}</em></p>
-                                    {% endif %}
-                                </li>
-                            {% endif %}
-                        {% endfor %}
-                    </form>
+                    {{ users }}
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                     <a class="mdl-button mdl-js-button mdl-button--primary" href="{% url user_settings %}">{% trans "Settings" %}</a>
