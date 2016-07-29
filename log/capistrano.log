@@ -8859,3 +8859,18 @@ portal: started
   INFO ---------------------------------------------------------------------------
   INFO START 2016-07-29 09:15:43 -0700 cap h3dev deploy
   INFO ---------------------------------------------------------------------------
+  INFO [d7b07b0f] Running /usr/bin/env mkdir -p /tmp/md-theme/ as root@54.152.56.81
+ DEBUG [d7b07b0f] Command: /usr/bin/env mkdir -p /tmp/md-theme/
+  INFO [d7b07b0f] Finished in 2.265 seconds with exit status 0 (successful).
+ DEBUG Uploading /tmp/md-theme/git-ssh.sh 0.0%
+  INFO Uploading /tmp/md-theme/git-ssh.sh 100.0%
+  INFO [0c622a9a] Running /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh as root@54.152.56.81
+ DEBUG [0c622a9a] Command: /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh
+  INFO [0c622a9a] Finished in 0.203 seconds with exit status 0 (successful).
+  INFO [b319ff66] Running /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git as root@54.152.56.81
+ DEBUG [b319ff66] Command: ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git )
+ DEBUG [b319ff66] 	Permission denied (publickey).
+ DEBUG [b319ff66] 	fatal: The remote end hung up unexpectedly
+  INFO ---------------------------------------------------------------------------
+  INFO START 2016-07-29 09:16:16 -0700 cap h3dev deploy
+  INFO ---------------------------------------------------------------------------
