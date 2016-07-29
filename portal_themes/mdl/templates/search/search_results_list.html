@@ -1,0 +1,78 @@
+{% themeextends "search/base_search_results.html" %}
+{% load i18n paginator getstring cache %}
+{% load url_for %}
+{% qstring as current_qstring %}
+{% block title %}{% trans "Search" %} {{ searchquery }}{% endblock title %}
+{% block heading %}
+	{% themeinclude "search/search_results_form.html" %}
+{% endblock heading %}
+{% block content %}
+
+<div class="fullwidthcontent">
+  {% themeinclude "search/search_results_header.html" %}
+  {% themeinclude "search/search_results_sidebar.html" %}
+	<div id="searchresultswrapper" class="searchresultsrow">
+	{% if hits %}
+      {% for item in items  %}
+          {% with index=forloop.counter0|add:first_on_page|add:"-1" %}
+          {% if item.getItemType == 'SubClip' %}
+            {% url_for item_subclip item.parent_id '0' item.getId index=index search_id=search_id sortfield=sortfield sortdirection=sortdirection as item_URL %}
+            {% with item.item as parentitem %}
+              {% with item as annotation %}
+                {% themeinclude 'media/media_inc_preview_row.html' %}
+              {% endwith %}
+            {% endwith %}
+          {% else %}
+            {% url_for vs_item item.getId index=index search_id=search_id sortfield=sortfield sortdirection=sortdirection as item_URL %}
+            {% with item.item as parentitem %}
+              {% themeinclude 'media/media_inc_preview_row.html' %}
+            {% endwith %}
+          {% endif %}
+          {% endwith %}
+
+        {% endfor %}
+    {% else %}
+        <h2>{% trans "No media found." %}</h2>
+        <p style="font-size:1.3em;">
+        {% if searchquery == "" %}
+            {% blocktrans %}We couldn't find any media matching your search query, {% endblocktrans %}
+        {% else %}
+            {% blocktrans %}We couldn't find any media matching the query term "{{ searchquery }}", {% endblocktrans %}
+        {% endif %}
+        {% if suggestions and searchquery != "" %}
+            {% trans "did you mean" %}
+            {% for suggestion in suggestions %}
+         <a href="{{ request.path }}{{ current_qstring|qstring_del:'searchquery' }}&amp;searchquery={{ suggestion }}">{{ suggestion }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %} {% trans "or" %} {% else %},{% endif %} {% endif %}{% endfor %}?
+        {% else %}
+            {% trans "please try again." %}
+        {% endif %}</p>
+    {% endif %}
+    </div><!-- #testtest -->
+</div><!-- .fullwidthcontent -->
+<div class="" style="width:100%;clear:both;height:1px;">&nbsp;</div>
+<div class="centerwrapper">
+{% if hits %}
+        {% paginator 2 %}
+{% endif %}
+    </div><!-- .centerwrapper -->
+{% endblock content %}
+{% docstring %}
+search_results_list.html is shown for general search results. Has a list of items.
+
+The list of items is normal items unless the user has search for SubClips - timed annotation metadata, then the individual pods are annotations.
+
+Context:
+ * items - list of search result items.
+ * hits - Amount of search results in total.
+ * searchquery - search query in the system.
+ * history - Search history
+ * first_on_page - number from 0 of the first item on page
+ * has_next - has a next page
+ * has_other_pages - has other pages
+ * last_on_page - last on page
+ * library - Vidispine library ID
+ * next - Next page number
+ * page - Current page
+ * pages - Total number of pages
+ * results_per_page - Results to show on page.
+{% enddocstring %}

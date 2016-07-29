@@ -1,0 +1,13 @@
+.cantemo-mdl-cell{
+	.mdl-card{
+		width:auto;
+		.mdl-card__title h2{
+			font-size: 1.1em;
+			padding-left:10px;
+			margin-right:25px;
+			&:focus{
+				outline:none;
+			}
+		}
+	}
+}
