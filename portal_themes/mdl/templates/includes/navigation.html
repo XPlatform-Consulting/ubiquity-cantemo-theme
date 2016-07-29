@@ -326,7 +326,7 @@
                     {% endcache %}
                 </div>
 
-                <div class="mdl-card__supporting-text mdl-card--border">
+                <div class="mdl-card__actions mdl-card__supporting-text mdl-card--border">
                     {% if request.user.get_profile.organisation %}
                         <organization>{% trans "Organisation" %}: {{ request.user.get_profile.organisation }}</organization>
                     {% endif %}
