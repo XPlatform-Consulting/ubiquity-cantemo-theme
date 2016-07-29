@@ -93,7 +93,6 @@
         </div>
         <div id="account" class="">
             <button class="cantemo-settings-button mdl-button mdl-button--icon">
-               {{ avatar }}
                 {% if avatarurl %}
                     <img src="{{ avatarurl }}" alt="{{ avataruser }}" class="cantemo-nav-avatar user-avatar-image user-avatar-set">
                 {% else %}
@@ -119,6 +118,20 @@
                     {% endcache %}
                 </div>
                 <div class="mdl-card__supporting-text mdl-card--expand">
+                    {% for field in form %}
+                        {% if field.is_hidden %}
+                            {{ field }}
+                        {% else %}
+                            <li {% if field.errors %}class="error"{% endif %}>
+                                {{ field.label_tag }}
+                                {{ field }}
+                                {% if field.errors %}<p>{% for error in field.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                                {% if field.help_text %}
+                                    <p class="help" style="display:inline;"><em>{{ field.field.help_text|safe }}</em></p>
+                                {% endif %}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 </div>
                 <div class="mdl-card__actions mdl-card--border">
                     <a class="mdl-button mdl-js-button mdl-button--primary" href="{% url user_settings %}">{% trans "Settings" %}</a>
