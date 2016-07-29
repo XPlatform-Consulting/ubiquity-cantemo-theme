@@ -82,7 +82,7 @@
                 {% if notice_unseen_count > 0 %}
                     <div class="mdl-card__supporting-text mdl-card--expand">
                         {{ notice_unseen_count }} Notifications
-                        {{request.user.messages}}
+                        {{ request.user.messages }}
                     </div>
                 {% else %}
                 <div class="cantemo-card-top">
@@ -93,6 +93,9 @@
         </div>
         <div id="account" class="">
             <button class="cantemo-settings-button mdl-button mdl-button--icon">
+                {{ user }}
+                {% get_avatar_image user %}
+    
                 {% if avatarurl %}
                     <img src="{{ avatarurl }}" alt="{{ avataruser }}" class="cantemo-nav-avatar user-avatar-image user-avatar-set">
                 {% else %}
