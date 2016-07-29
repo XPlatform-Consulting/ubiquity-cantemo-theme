@@ -23850,3 +23850,354 @@ portal: started
   INFO ---------------------------------------------------------------------------
   INFO START 2016-07-29 13:48:37 -0700 cap h3dev deploy
   INFO ---------------------------------------------------------------------------
+  INFO [b2467154] Running /usr/bin/env mkdir -p /tmp/md-theme/ as root@54.152.56.81
+ DEBUG [b2467154] Command: /usr/bin/env mkdir -p /tmp/md-theme/
+  INFO [b2467154] Finished in 1.432 seconds with exit status 0 (successful).
+ DEBUG Uploading /tmp/md-theme/git-ssh.sh 0.0%
+  INFO Uploading /tmp/md-theme/git-ssh.sh 100.0%
+  INFO [5d22d403] Running /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh as root@54.152.56.81
+ DEBUG [5d22d403] Command: /usr/bin/env chmod +rx /tmp/md-theme/git-ssh.sh
+  INFO [5d22d403] Finished in 0.219 seconds with exit status 0 (successful).
+  INFO [43fca89f] Running /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git as root@54.152.56.81
+ DEBUG [43fca89f] Command: ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git ls-remote --heads git@github.com:XPlatform-Consulting/ubiquity-cantemo-theme.git )
+ DEBUG [43fca89f] 	4c916bf1b59c8261ac7b954d0f7d11e871f2442f	refs/heads/grunt-compass-install
+22632f677b6744d1d051866239b5b0056073ba71	refs/heads/h3-dev
+1f8783424d216254dbfc7381be7fbb4a12cedb28	refs/heads/master
+1f8783424d216254dbfc7381be7fbb4a12cedb28	refs/heads/mdl
+557918508dfa3f407cac091d242363d531bf4a31	refs/heads/old-ubiquity
+  INFO [43fca89f] Finished in 0.806 seconds with exit status 0 (successful).
+  INFO [cd07b2c5] Running /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/shared /opt/cantemo/portal/ubiquity-cantemo-theme/releases as root@54.152.56.81
+ DEBUG [cd07b2c5] Command: /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/shared /opt/cantemo/portal/ubiquity-cantemo-theme/releases
+  INFO [cd07b2c5] Finished in 0.819 seconds with exit status 0 (successful).
+ DEBUG [bee9fb62] Running [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION ] as root@54.152.56.81
+ DEBUG [bee9fb62] Command: [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION ]
+ DEBUG [bee9fb62] Finished in 0.517 seconds with exit status 0 (successful).
+ DEBUG [c00aabdb] Running /usr/bin/env cat /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION 2>/dev/null as root@54.152.56.81
+ DEBUG [c00aabdb] Command: /usr/bin/env cat /opt/cantemo/portal/ubiquity-cantemo-theme/current/REVISION 2>/dev/null
+ DEBUG [c00aabdb] 	cd610fb54db6061137aca63e65dd037d5987f693
+ DEBUG [c00aabdb] Finished in 0.428 seconds with exit status 0 (successful).
+ DEBUG [6211e946] Running [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/repo/HEAD ] as root@54.152.56.81
+ DEBUG [6211e946] Command: [ -f /opt/cantemo/portal/ubiquity-cantemo-theme/repo/HEAD ]
+ DEBUG [6211e946] Finished in 0.277 seconds with exit status 0 (successful).
+  INFO The repository mirror is at /opt/cantemo/portal/ubiquity-cantemo-theme/repo
+ DEBUG [c2efa101] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [c2efa101] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi
+ DEBUG [c2efa101] Finished in 0.241 seconds with exit status 0 (successful).
+  INFO [77c76480] Running /usr/bin/env git remote update --prune as root@54.152.56.81
+ DEBUG [77c76480] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git remote update --prune )
+ DEBUG [77c76480] 	Fetching origin
+ DEBUG [77c76480] 	From github.com:XPlatform-Consulting/ubiquity-cantemo-theme
+   cd610fb..22632f6  h3-dev     -> h3-dev
+  INFO [77c76480] Finished in 0.861 seconds with exit status 0 (successful).
+ DEBUG [59071e9d] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [59071e9d] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi
+ DEBUG [59071e9d] Finished in 0.206 seconds with exit status 0 (successful).
+  INFO [5ee3ffdf] Running /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851 as root@54.152.56.81
+ DEBUG [5ee3ffdf] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env mkdir -p /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851 )
+  INFO [5ee3ffdf] Finished in 0.269 seconds with exit status 0 (successful).
+  INFO [91390fe8] Running /usr/bin/env git archive h3-dev | tar -x -f - -C /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851 as root@54.152.56.81
+ DEBUG [91390fe8] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git archive h3-dev | tar -x -f - -C /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851 )
+ DEBUG [91390fe8] 	tar: .gitignore: time stamp 2016-07-29 20:48:41 is 126.956873619 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f/_base.scssc: time stamp 2016-07-29 20:48:41 is 126.95655737 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f/_growel.scssc: time stamp 2016-07-29 20:48:41 is 126.956466461 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f/_jared_main.scssc: time stamp 2016-07-29 20:48:41 is 126.954598352 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f/_mixins.scssc: time stamp 2016-07-29 20:48:41 is 126.954523928 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f/_navigation.scssc: time stamp 2016-07-29 20:48:41 is 126.954390499 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f/_variables.scssc: time stamp 2016-07-29 20:48:41 is 126.950132772 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f/main.scssc: time stamp 2016-07-29 20:48:41 is 126.95005299 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache/23f98ecd2106210fc803a08afe4a434977a2a80f: time stamp 2016-07-29 20:48:41 is 126.95001373 s in the future
+ DEBUG [91390fe8] 	tar: .sass-cache: time stamp 2016-07-29 20:48:41 is 126.949987089 s in the future
+ DEBUG [91390fe8] 	tar: Capfile: time stamp 2016-07-29 20:48:41 is 126.949934474 s in the future
+ DEBUG [91390fe8] 	tar: Gruntfile.js: time stamp 2016-07-29 20:48:41 is 126.949874682 s in the future
+ DEBUG [91390fe8] 	tar: README.md: time stamp 2016-07-29 20:48:41 is 126.94820574 s in the future
+ DEBUG [91390fe8] 	tar: config.rb: time stamp 2016-07-29 20:48:41 is 126.948123096 s in the future
+ DEBUG [91390fe8] 	tar: config/deploy/h3dev.rb: time stamp 2016-07-29 20:48:41 is 126.948009949 s in the future
+ DEBUG [91390fe8] 	tar: config/deploy/h3staging.rb: time stamp 2016-07-29 20:48:41 is 126.947945075 s in the future
+ DEBUG [91390fe8] 	tar: config/deploy: time stamp 2016-07-29 20:48:41 is 126.947907977 s in the future
+ DEBUG [91390fe8] 	tar: config: time stamp 2016-07-29 20:48:41 is 126.947878639 s in the future
+ DEBUG [91390fe8] 	tar: log/capistrano.log: time stamp 2016-07-29 20:48:41 is 126.941577154 s in the future
+ DEBUG [91390fe8] 	tar: log: time stamp 2016-07-29 20:48:41 is 126.941530564 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/common/jquery_plugins.js: time stamp 2016-07-29 20:48:41 is 126.941332103 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/common: time stamp 2016-07-29 20:48:41 is 126.941289476 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/media/collections.js: time stamp 2016-07-29 20:48:41 is 126.941198734 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/media/mediabox.js: time stamp 2016-07-29 20:48:41 is 126.941115099 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/media/models.js: time stamp 2016-07-29 20:48:41 is 126.941050605 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/media/views.js: time stamp 2016-07-29 20:48:41 is 126.940673796 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/media/views_new.js: time stamp 2016-07-29 20:48:41 is 126.940600542 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/media: time stamp 2016-07-29 20:48:41 is 126.940561432 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/mediabin/app.js: time stamp 2016-07-29 20:48:41 is 126.94047884 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/mediabin/collection.js: time stamp 2016-07-29 20:48:41 is 126.940414778 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/mediabin/models.js: time stamp 2016-07-29 20:48:41 is 126.940348137 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/mediabin/views.js: time stamp 2016-07-29 20:48:41 is 126.939740018 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/mediabin: time stamp 2016-07-29 20:48:41 is 126.939695081 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/portal/eyecandy.js: time stamp 2016-07-29 20:48:41 is 126.939604671 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/portal/initialize.js: time stamp 2016-07-29 20:48:41 is 126.93953061 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/portal/panelMgr.js: time stamp 2016-07-29 20:48:41 is 126.939467042 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/portal: time stamp 2016-07-29 20:48:41 is 126.939429008 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/search/collection.js: time stamp 2016-07-29 20:48:41 is 126.939346804 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/search/models.js: time stamp 2016-07-29 20:48:41 is 126.939280801 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/search/views.js: time stamp 2016-07-29 20:48:41 is 126.938560393 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app/search: time stamp 2016-07-29 20:48:41 is 126.938514669 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/app: time stamp 2016-07-29 20:48:41 is 126.938481689 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/libs/jquery-growl/jquery.growl.js: time stamp 2016-07-29 20:48:41 is 126.938368637 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/libs/jquery-growl: time stamp 2016-07-29 20:48:41 is 126.938326803 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/libs/nav-bar/navbar.js: time stamp 2016-07-29 20:48:41 is 126.938243913 s in the future
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_media/mdl/assets/js/libs/nav-bar: time stamp 2016-07-29 20:48:41 is 126.938203825 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/libs: time stamp 2016-07-29 20:48:41 is 126.938163224 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/main.js: time stamp 2016-07-29 20:48:41 is 126.938103823 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js/mod_search_react.js: time stamp 2016-07-29 20:48:41 is 126.938025107 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/js: time stamp 2016-07-29 20:48:41 is 126.937986072 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass/_base.scss: time stamp 2016-07-29 20:48:41 is 126.937905448 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass/_growel.scss: time stamp 2016-07-29 20:48:41 is 126.937841554 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass/_jared_main.scss: time stamp 2016-07-29 20:48:41 is 126.937468914 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass/_mixins.scss: time stamp 2016-07-29 20:48:41 is 126.9366631 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass/_navigation.scss: time stamp 2016-07-29 20:48:41 is 126.936591912 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass/_variables.scss: time stamp 2016-07-29 20:48:41 is 126.93652969 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass/main.scss: time stamp 2016-07-29 20:48:41 is 126.936467032 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets/sass: time stamp 2016-07-29 20:48:41 is 126.936429834 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/assets: time stamp 2016-07-29 20:48:41 is 126.936396705 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/mdl_plugin.min.css: time stamp 2016-07-29 20:48:41 is 126.935621847 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/mdl_plugin.min.css.map: time stamp 2016-07-29 20:48:41 is 126.935088524 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl/mdl_plugin.min.js: time stamp 2016-07-29 20:48:41 is 126.934518867 s in the future
+ DEBUG [91390fe8] 	tar: portal_media/mdl: time stamp 2016-07-29 20:48:41 is 126.934475246 s in the future
+ DEBUG [91390fe8] 	tar: portal_media: time stamp 2016-07-29 20:48:41 is 126.934444053 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/admin/adminindex.html: time stamp 2016-07-29 20:48:41 is 126.934291527 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/admin/base_admin.html: time stamp 2016-07-29 20:48:41 is 126.934213742 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/admin: time stamp 2016-07-29 20:48:41 is 126.934166089 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/authentication/login.html: time stamp 2016-07-29 20:48:41 is 126.933481662 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/authentication: time stamp 2016-07-29 20:48:41 is 126.933437471 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/base-frontpage.html: time stamp 2016-07-29 20:48:41 is 126.933378207 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/base.html: time stamp 2016-07-29 20:48:41 is 126.933304625 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/comments/400-debug.html: time stamp 2016-07-29 20:48:41 is 126.93321332 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/comments/comments_include.html: time stamp 2016-07-29 20:48:41 is 126.933140013 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/comments/form.html: time stamp 2016-07-29 20:48:41 is 126.933072827 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/comments: time stamp 2016-07-29 20:48:41 is 126.933035438 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/base_sidebar_mdl_drawer.html: time stamp 2016-07-29 20:48:41 is 126.932950809 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/header.html: time stamp 2016-07-29 20:48:41 is 126.932875185 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/ingestprofilechooser.html: time stamp 2016-07-29 20:48:41 is 126.932812376 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/navigation.html: time stamp 2016-07-29 20:48:41 is 126.932714378 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/navigation_account.html: time stamp 2016-07-29 20:48:41 is 126.932651157 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/navigation_notifications.html: time stamp 2016-07-29 20:48:41 is 126.932590071 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/paginator.html: time stamp 2016-07-29 20:48:41 is 126.93209091 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes/searchmetadataformchooser.html: time stamp 2016-07-29 20:48:41 is 126.932019841 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/includes: time stamp 2016-07-29 20:48:41 is 126.931981809 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/base_media_view.html: time stamp 2016-07-29 20:48:41 is 126.931898814 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_accessrights_view.html: time stamp 2016-07-29 20:48:41 is 126.931836093 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_item_base.html: time stamp 2016-07-29 20:48:41 is 126.931766721 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview.html: time stamp 2016-07-29 20:48:41 is 126.931696123 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview_audio.html: time stamp 2016-07-29 20:48:41 is 126.93163442 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview_document.html: time stamp 2016-07-29 20:48:41 is 126.931570708 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview_image.html: time stamp 2016-07-29 20:48:41 is 126.931509493 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview_row.html: time stamp 2016-07-29 20:48:41 is 126.931434343 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview_sequence.html: time stamp 2016-07-29 20:48:41 is 126.931370861 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview_unknown.html: time stamp 2016-07-29 20:48:41 is 126.931309252 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_inc_preview_video.html: time stamp 2016-07-29 20:48:41 is 126.931248123 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_podpreview.html: time stamp 2016-07-29 20:48:41 is 126.931169619 s in the future
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/media/media_posters_view.html: time stamp 2016-07-29 20:48:41 is 126.931040542 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_search_prev_next.html: time stamp 2016-07-29 20:48:41 is 126.93066144 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_thumbnails_view.html: time stamp 2016-07-29 20:48:41 is 126.930579145 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_transcode_view.html: time stamp 2016-07-29 20:48:41 is 126.930505951 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_view.html: time stamp 2016-07-29 20:48:41 is 126.930360264 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media/media_view_sidebar.html: time stamp 2016-07-29 20:48:41 is 126.930286391 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/media: time stamp 2016-07-29 20:48:41 is 126.930247379 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/previews/audio.html: time stamp 2016-07-29 20:48:41 is 126.930158111 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/previews/audiofallback.html: time stamp 2016-07-29 20:48:41 is 126.93009364 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/previews/audioogg.html: time stamp 2016-07-29 20:48:41 is 126.929434244 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/previews/data.html: time stamp 2016-07-29 20:48:41 is 126.929363877 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/previews/fallback.html: time stamp 2016-07-29 20:48:41 is 126.929298246 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/previews/image.html: time stamp 2016-07-29 20:48:41 is 126.92923437 s in the future
+ DEBUG [91390fe8] 	tar: portal_themes/mdl/templates/previews/previewflash.html: time stamp 2016-07-29 20:48:41 is 126.929170558 s in the future
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/previews/previewgrowing.html: time stamp 2016-07-29 20:48:41 is 126.929097467 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/previews/previewh264.html: time stamp 2016-07-29 20:48:41 is 126.928940416 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/previews/previewh264_webm.html: time stamp 2016-07-29 20:48:41 is 126.928780846 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/previews/previewsequence.html: time stamp 2016-07-29 20:48:41 is 126.928632852 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/previews/previewwebm.html: time stamp 2016-07-29 20:48:41 is 126.928468562 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/previews/video.html: time stamp 2016-07-29 20:48:41 is 126.928307304 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/previews: time stamp 2016-07-29 20:48:41 is 126.928159584 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/base_search.html: time stamp 2016-07-29 20:48:41 is 126.927994231 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/base_search_results.html: time stamp 2016-07-29 20:48:41 is 126.927844863 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/search.html: time stamp 2016-07-29 20:48:41 is 126.927694815 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/search_component.html: time stamp 2016-07-29 20:48:41 is 126.927532846 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/search_results_footer.html: time stamp 2016-07-29 20:48:41 is 126.927369692 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/search_results_form.html: time stamp 2016-07-29 20:48:41 is 126.927207696 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/search_results_grid.html: time stamp 2016-07-29 20:48:41 is 126.927047699 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/search_results_header.html: time stamp 2016-07-29 20:48:41 is 126.926883529 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search/search_results_sidebar.html: time stamp 2016-07-29 20:48:41 is 126.926717668 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/search: time stamp 2016-07-29 20:48:41 is 126.926596872 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/base_user.html: time stamp 2016-07-29 20:48:41 is 126.926421936 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/user_avatar.html: time stamp 2016-07-29 20:48:41 is 126.926264658 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/user_jobs.html: time stamp 2016-07-29 20:48:41 is 126.926117771 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/user_language.html: time stamp 2016-07-29 20:48:41 is 126.925970353 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/user_password.html: time stamp 2016-07-29 20:48:41 is 126.925822632 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/user_settings.html: time stamp 2016-07-29 20:48:41 is 126.925677254 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_base_users.html: time stamp 2016-07-29 20:48:41 is 126.925532154 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_group_add.html: time stamp 2016-07-29 20:48:41 is 126.925356915 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_group_bulkupdate.html: time stamp 2016-07-29 20:48:41 is 126.925200378 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_group_view.html: time stamp 2016-07-29 20:48:41 is 126.92499891 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_groups_all.html: time stamp 2016-07-29 20:48:41 is 126.924851645 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_profiletemplate_add.html: time stamp 2016-07-29 20:48:41 is 126.924699661 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_profiletemplate_view.html: time stamp 2016-07-29 20:48:41 is 126.92453995 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_profiletemplates.html: time stamp 2016-07-29 20:48:41 is 126.924376737 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_user_add.html: time stamp 2016-07-29 20:48:41 is 126.924210927 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_user_password_change.html: time stamp 2016-07-29 20:48:41 is 126.924063004 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_user_view.html: time stamp 2016-07-29 20:48:41 is 126.923900213 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_users_all.html: time stamp 2016-07-29 20:48:41 is 126.923751459 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users/vs_warn_admin_password_change.html: time stamp 2016-07-29 20:48:41 is 126.923606303 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/users: time stamp 2016-07-29 20:48:41 is 126.923487471 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/website/base_website.html: time stamp 2016-07-29 20:48:41 is 126.923302025 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates/website: time stamp 2016-07-29 20:48:41 is 126.923175331 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl/templates: time stamp 2016-07-29 20:48:41 is 126.923064145 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes/mdl: time stamp 2016-07-29 20:48:41 is 126.922954379 s in the future
+ DEBUG [91390fe8] 	
+ DEBUG [91390fe8] 	tar: 
+ DEBUG [91390fe8] 	portal_themes: time stamp 2016-07-29 20:48:41 is 126.92284678 s in the future
+ DEBUG [91390fe8] 	
+  INFO [91390fe8] Finished in 0.609 seconds with exit status 0 (successful).
+ DEBUG [ad284acc] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [ad284acc] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/repo; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/repo'" 1>&2; false; fi
+ DEBUG [ad284acc] Finished in 0.221 seconds with exit status 0 (successful).
+ DEBUG [545bd0fc] Running /usr/bin/env git rev-list --max-count=1 h3-dev as root@54.152.56.81
+ DEBUG [545bd0fc] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/repo && ( export GIT_ASKPASS="/bin/echo" GIT_SSH="/tmp/md-theme/git-ssh.sh" ; /usr/bin/env git rev-list --max-count=1 h3-dev )
+ DEBUG [545bd0fc] 	22632f677b6744d1d051866239b5b0056073ba71
+ DEBUG [545bd0fc] Finished in 0.228 seconds with exit status 0 (successful).
+ DEBUG [c5eecf35] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [c5eecf35] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851'" 1>&2; false; fi
+ DEBUG [c5eecf35] Finished in 0.212 seconds with exit status 0 (successful).
+  INFO [7b394d4f] Running /usr/bin/env echo "22632f677b6744d1d051866239b5b0056073ba71" >> REVISION as root@54.152.56.81
+ DEBUG [7b394d4f] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851 && /usr/bin/env echo "22632f677b6744d1d051866239b5b0056073ba71" >> REVISION
+  INFO [7b394d4f] Finished in 0.227 seconds with exit status 0 (successful).
+  INFO [09ee972e] Running /usr/bin/env ln -s /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851 /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current as root@54.152.56.81
+ DEBUG [09ee972e] Command: /usr/bin/env ln -s /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729204851 /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current
+  INFO [09ee972e] Finished in 0.233 seconds with exit status 0 (successful).
+  INFO [bb9aa241] Running /usr/bin/env mv /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current /opt/cantemo/portal/ubiquity-cantemo-theme as root@54.152.56.81
+ DEBUG [bb9aa241] Command: /usr/bin/env mv /opt/cantemo/portal/ubiquity-cantemo-theme/releases/current /opt/cantemo/portal/ubiquity-cantemo-theme
+  INFO [bb9aa241] Finished in 0.378 seconds with exit status 0 (successful).
+ DEBUG [ecead516] Running /usr/bin/env ls -xtr /opt/cantemo/portal/ubiquity-cantemo-theme/releases as root@54.152.56.81
+ DEBUG [ecead516] Command: /usr/bin/env ls -xtr /opt/cantemo/portal/ubiquity-cantemo-theme/releases
+ DEBUG [ecead516] 	20160729202141	20160729202542	20160729202807	20160729204111	20160729204706
+20160729204851
+ DEBUG [ecead516] Finished in 0.375 seconds with exit status 0 (successful).
+  INFO Keeping 5 of 6 deployed releases on 54.152.56.81
+  INFO [fa1ee1f3] Running /usr/bin/env rm -rf /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729202141 as root@54.152.56.81
+ DEBUG [fa1ee1f3] Command: /usr/bin/env rm -rf /opt/cantemo/portal/ubiquity-cantemo-theme/releases/20160729202141
+  INFO [fa1ee1f3] Finished in 0.249 seconds with exit status 0 (successful).
+ DEBUG [a4b45d40] Running if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases'" 1>&2; false; fi as root@54.152.56.81
+ DEBUG [a4b45d40] Command: if test ! -d /opt/cantemo/portal/ubiquity-cantemo-theme/releases; then echo "Directory does not exist '/opt/cantemo/portal/ubiquity-cantemo-theme/releases'" 1>&2; false; fi
+ DEBUG [a4b45d40] Finished in 0.338 seconds with exit status 0 (successful).
+  INFO [1035b6fe] Running /usr/bin/env echo "Branch h3-dev (at 22632f677b6744d1d051866239b5b0056073ba71) deployed as release 20160729204851 by garrettc" >> /opt/cantemo/portal/ubiquity-cantemo-theme/revisions.log as root@54.152.56.81
+ DEBUG [1035b6fe] Command: cd /opt/cantemo/portal/ubiquity-cantemo-theme/releases && /usr/bin/env echo "Branch h3-dev (at 22632f677b6744d1d051866239b5b0056073ba71) deployed as release 20160729204851 by garrettc" >> /opt/cantemo/portal/ubiquity-cantemo-theme/revisions.log
+  INFO [1035b6fe] Finished in 0.295 seconds with exit status 0 (successful).
+  INFO [c8fcd152] Running rm -rf -R /opt/cantemo/portal/portal_themes/mdl/ as root@54.152.56.81
+ DEBUG [c8fcd152] Command: rm -rf -R /opt/cantemo/portal/portal_themes/mdl/
+  INFO [c8fcd152] Finished in 0.337 seconds with exit status 0 (successful).
+  INFO [e7ece5f0] Running rm -rf -R /opt/cantemo/portal/portal_media/mdl/ as root@54.152.56.81
+ DEBUG [e7ece5f0] Command: rm -rf -R /opt/cantemo/portal/portal_media/mdl/
+  INFO [e7ece5f0] Finished in 0.337 seconds with exit status 0 (successful).
+  INFO [207a934e] Running cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_themes/mdl /opt/cantemo/portal/portal_themes/ as root@54.152.56.81
+ DEBUG [207a934e] Command: cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_themes/mdl /opt/cantemo/portal/portal_themes/
+  INFO [207a934e] Finished in 0.295 seconds with exit status 0 (successful).
+  INFO [60c0500d] Running cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_media/mdl /opt/cantemo/portal/portal_media/ as root@54.152.56.81
+ DEBUG [60c0500d] Command: cp -R /opt/cantemo/portal/ubiquity-cantemo-theme/current/portal_media/mdl /opt/cantemo/portal/portal_media/
+  INFO [60c0500d] Finished in 0.339 seconds with exit status 0 (successful).
+  INFO [241967b6] Running chown -R www-data:www-data /opt/cantemo/portal/portal_themes/mdl as root@54.152.56.81
+ DEBUG [241967b6] Command: chown -R www-data:www-data /opt/cantemo/portal/portal_themes/mdl
+  INFO [241967b6] Finished in 0.340 seconds with exit status 0 (successful).
+  INFO [8331c223] Running chown -R www-data:www-data /opt/cantemo/portal/portal_media/mdl as root@54.152.56.81
+ DEBUG [8331c223] Command: chown -R www-data:www-data /opt/cantemo/portal/portal_media/mdl
+  INFO [8331c223] Finished in 0.232 seconds with exit status 0 (successful).
+  INFO [8725e9b6] Running cd /opt/cantemo/portal/ as root@54.152.56.81
+ DEBUG [8725e9b6] Command: cd /opt/cantemo/portal/
+  INFO [8725e9b6] Finished in 0.234 seconds with exit status 0 (successful).
+  INFO [cfe2ad22] Running supervisorctl restart portal as root@54.152.56.81
+ DEBUG [cfe2ad22] Command: supervisorctl restart portal
+ DEBUG [cfe2ad22] 	portal: stopped
+portal: started
+  INFO [cfe2ad22] Finished in 11.907 seconds with exit status 0 (successful).
+  INFO ---------------------------------------------------------------------------
+  INFO START 2016-07-29 13:59:41 -0700 cap h3dev deploy
+  INFO ---------------------------------------------------------------------------
