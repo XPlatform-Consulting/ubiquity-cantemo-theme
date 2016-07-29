@@ -1,0 +1,313 @@
+{% themeextends "users/vs_base_users.html" %}
+{% load i18n formatting vidispinetags %}
+{% block title %}{% trans "All Groups" %}{% endblock title %}
+{% block extra_script %}
+<script type="text/javascript" charset="utf-8">
+    var STATIC_URL = '{{ STATIC_URL }}';
+    var video_st_length = {{ group_video_shape_tags|length|default:"0"}};
+    var audio_st_length = {{ group_audio_shape_tags|length|default:"0"}};
+    var image_st_length = {{ group_image_shape_tags|length|default:"0"}};
+    var acls_count = parseInt('{{ acls|length }}',10)-1;
+    var changeEffectedCount = 0;
+    var changeEffectedTable = {};
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/groups/group.js"></script>
+{% endblock %}
+{% block heading %}<a href="{% url vs_groups_all %}">{% trans 'Groups' %}</a>: {{ vsgroupinfo.getName }}{% endblock heading %}
+{% block content %}
+        <form action="{% url vs_group_view vsgroupinfo.getName %}" method="post" accept-charset="utf-8" class="formmain">
+        {% csrf_token %}
+            <input type="hidden" name="groupname" value="{{ vsgroupinfo.getName }}"/>
+            <input type="hidden" name="groupdescription" value="{{ vsgroupinfo.getDescription }}"/>
+            <fieldset>
+		        <h5>{% trans 'Group Information' %}</h5>
+		        {% if vsgroupinfo %}
+		        <ul>
+                    <li><label for="id_groupname">{% trans 'Group Name' %}:</label>
+                    <input id="id_groupname" type="text" name="groupname" maxlength="30" value="{{ vsgroupinfo.getName }}" class="inputText" readonly="readonly" /></li>
+
+                    <li><label for="id_groupdescription">{% trans 'Description' %}:</label>
+                    <input id="id_groupdescription" type="text" name="groupdescription" maxlength="255" value="{{ vsgroupinfo.getDescription }}" class="inputText" /></li>
+                </ul>
+		        {% else %}
+		            <div class="noticemessage">
+		                <p>{% trans 'No results found' %}.</p>
+		            </div>
+		        {% endif %}
+				<ul class="tabs">
+	                <li><a href="#inherit_tab"><em>{% trans "Inherit" %}</em></a></li>
+	                <li><a href="#roles_tab"><em>{% trans "Roles" %}</em></a></li>
+	                <li><a href="#permission_tab"><em>{% trans "Permissions" %}</em></a></li>
+	                <li><a href="#transcode_tab"><em>{% trans "Transcode Profiles" %}</em></a></li>
+	                <li><a href="#export_tab"><em>{% trans "Export Locations" %}</em></a></li>
+	                <li><a href="#metadata_tab"><em>{% trans "Metadata Groups" %}</em></a></li>
+	                <li><a href="#info_tab"><em>{% trans "Group Information" %}</em></a></li>
+	            </ul>
+
+    			<div class="panes">
+    	            <div id="tab1" class="clearfix tab">
+                        <div class="noticemessage"><p>{% trans "This group will inherit roles and group membership from groups selected here." %}</div><br>
+         			    <select multiple="multiple" id="grpmultiselect" class="selectfilter" name="groups">
+    			            {% for g in vsgroups %}
+                                {% if not vsgroupinfo.getName == g.getName %}
+	                                <option value="{{ g.getName }}"
+		    			            {% for parentgroup in vsgroupinfo.getParentGroups %}
+										{% if not parentgroup.isRole %}{% ifequal parentgroup.getName g.getName %}selected="selected"{% endifequal %}{% endif %}
+									{% endfor %} >{{ g.getName }}</option>
+                                {% endif %}
+                            {% endfor %}
+    	     		    </select>
+					</div><!--#tab1 -->
+                    <div id="tab2" class="clearfix tab">
+                        <div class="noticemessage"><p>{% trans "Users in this group will get roles selected here. Roles in the inherited groups will reside." %}</div><br>
+                        <ul>
+                            <li>
+                                <label for="canshare">{% trans "Can Share Out Media" %}</label>
+                                <input type="checkbox" id="id_groupcan_share" {% if cantemo_group_profile.can_share %}checked="checked" {% endif %} name="can_share" />
+                            </li>
+                        </ul>
+         			    <select multiple="multiple" id="rolesmultiselect" class="selectfilter" name="roles">
+    			            {% for g in vsroles %}{% ifnotequal g.getName "_run_as" %}<option value="{{ g.getName }}"
+    			            {% for parentgroup in vsgroupinfo.getParentGroups %}
+								{% if parentgroup.isRole %}{% ifequal parentgroup.getName g.getName %}selected="selected"{% endifequal %}{% endif %}
+							{% endfor %} >{{ ""|getUserRoleName:g.getName }}</option>{% endifnotequal %}{% endfor %}
+    	     		    </select>
+				    </div><!--#tab2 -->
+                    <div id="tab3" class="clearfix tab">
+                    <div class="noticemessage"><p>{% trans "Media ingested by users in this group will obtain permissions selected here." %}</div><br>
+					<table class="rolechange" id="tablegrouppermission">
+						<tbody>
+	                	<tr class="heading">
+	                		<th></th>
+							<th>{% trans 'Recipient' %}</th>
+							<th>{% trans 'Permission' %}</th>
+							<th>{% trans 'Operation' %}</th>
+							<th></th>
+						</tr>
+						{% for acl in acls %}
+							<tr rel={{ forloop.counter0 }}>
+								<td>
+									{% if acl.isForUser %}
+										<img src="{{ STATIC_URL }}img/icon-user.png" class="user">
+									{% else %}
+										<img src="{{ STATIC_URL }}img/icon-groups.png" class="group">
+									{% endif %}
+									<input type="hidden" value="{{acl.getId}}" name="aclentry_id">
+								</td>
+								<td><input type="hidden" value="{{acl.recipienttype}}_{{ acl.recipient }}" name="recipient_{{ forloop.counter0 }}">{{ acl.recipient }}</td>
+								<td><input type="hidden" value="{{ acl.permission }}" name="permission_{{ forloop.counter0 }}">{{ acl.permission }}</td>
+								<td><input type="hidden" value="{{ acl.operation }}" name="operation_{{ forloop.counter0 }}">{{ acl.operation }}</td>
+								{% ifequal acl.getPermission "OWNER" %}
+								<td></td>
+								{% else %}
+								<td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" class="deletegprow"></td>
+								{% endifequal %}
+							</tr>
+						{% endfor %}
+
+						</tbody>
+					</table>
+
+	            	<ul>
+	        			{{ gpform.as_ul }}
+	        			<li class="mono"><button id="addpermbut" class="button">{% trans "Add Permission" %}</button></li>
+	        		</ul>
+                </div><!--#tab3 -->
+                <div id="tab4" class="clearfix tab">
+                    <div class="noticemessage"><p>{% trans "Media ingested by users in this group will be transcoded to profiles selected here." %}</div><br>
+			        <table class="rolechange" id="tablevidshapetag">
+			            <tbody>
+			                <tr class="heading">
+			                    <th>{% trans 'Video format' %}</th>
+			                    <th></th>
+			                </tr>
+			                {% if not group_video_shape_tags %}
+			                <tr></tr>
+			                {% endif %}
+			                {% for st in group_video_shape_tags %}
+			                    <tr>
+			                    <td><input type="hidden" name="video_shapetag_{{forloop.counter0}}" value="{{st}}" />{{st}}</td>
+			                    <td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" rel="{{st}}" class="deletevidstrow"></td>
+			                    </tr>
+			                {% endfor %}
+			                <tr class="rolechange-form">
+			                    <td>{{ video_st_form.video_format }}</td>
+			                    <td class="rc_input"><button id="addvidshapetagbut" class="button">{% trans "Add" %}</button></td>
+			                </tr>
+			            </tbody>
+			        </table>
+			        <table class="rolechange" id="tableaudshapetag">
+			            <tbody>
+			                <tr class="heading">
+			                    <th>{% trans 'Audio format' %}</th>
+			                    <th></th>
+			                </tr>
+			                {% if not group_audio_shape_tags %}
+			                <tr></tr>
+			                {% endif %}
+
+			                {% for st in group_audio_shape_tags %}
+			                    <tr>
+			                    <td><input type="hidden" name="audio_shapetag_{{forloop.counter0}}" value="{{st}}" />{{st}}</td>
+			                    <td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" rel="{{st}}" class="deleteaudstrow"></td>
+			                    </tr>
+			                {% endfor %}
+			                <tr class="rolechange-form">
+			                    <td>{{ audio_st_form.audio_format }}</td>
+			                    <td class="rc_input"><button id="addaudshapetagbut" class="button">{% trans "Add" %}</button></td>
+			                </tr>
+			            </tbody>
+			        </table>
+			        <table class="rolechange" id="tableimgshapetag">
+			            <tbody>
+			                <tr class="heading">
+			                    <th>{% trans 'Image format' %}</th>
+			                    <th></th>
+			                </tr>
+			                {% if not group_image_shape_tags %}
+			                <tr></tr>
+			                {% endif %}
+
+			                {% for st in group_image_shape_tags %}
+			                    <tr>
+			                    <td><input type="hidden" name="image_shapetag_{{forloop.counter0}}" value="{{st}}" />{{st}}</td>
+			                    <td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" rel="{{st}}" class="deleteimgstrow"></td>
+			                    </tr>
+			                {% endfor %}
+			                <tr class="rolechange-form">
+			                    <td>{{ image_st_form.image_format }}</td>
+			                    <td class="rc_input"><button id="addimgshapetagbut" class="button">{% trans "Add" %}</button></td>
+			                </tr>
+			            </tbody>
+			        </table>
+
+                </div><!--#tab4 -->
+		        <div id="tab5" class="clearfix tab">
+                    <div class="noticemessage"><p>{% trans "Please select export locations that should be available for this group." %}</div><br>
+
+                    <select multiple="multiple" id="elmultiselect" class="selectfilter" name="exportlocations">
+                        {% for el in all_export_locations %}
+                            <option value="{{ el }}" {% if el in group_export_locations %}selected="selected"{% endif %}>{{ el }}</option>
+                        {% endfor %}
+                    </select>
+		        </div><!--#tab5 -->
+                <div id="tab6" class="clearfix tab">
+                    <div class="noticemessage"><p>{% trans "Please select Metadata Group(s) relevant for this group." %}</p>
+                    	<p><span id="warnuserofmdgchangecount"></span> <span id="warnuserofmdgchangemsg" style="display:none;">{% trans "user(s) will be affected by removing this metadata group. You will be given the option to fix this after saving." %}</span></p></div><br>
+                    <select multiple="multiple" id="metmultiselect" class="selectfilter" name="metadataschemas">
+                        {% for mg in vsmetadatagroups %}
+                            <option value="{{ mg }}" {% if mg in group_metadatagroups %}selected="selected"{% endif %}>{{ mg }}</option>
+                        {% endfor %}
+                    </select>
+                </div><!--#tab6 -->
+
+		        <div id="tab7" class="clearfix tab">
+			        {% if vsgroupinfo %}
+			        	{% if vsgroupinfo.getUsers.user %}
+		                	<table class="generictbl">
+		                    	<caption>{% trans 'Users in Group' %}</caption>
+		                    	<thead>
+			                    <tr>
+			                        <th>{% trans 'Username' %}</th>
+			                        <th>{% trans 'Realname' %}</th>
+			                    </tr>
+		                        </thead>
+		                        <tbody>
+				                {% for users in vsgroupinfo.getUsers.user %}
+				                    <tr{% if forloop.counter|divisibleby:"2"  %} class="even"{% endif %}>
+				                        <td><a href="{% url vs_user_view users.userName %}">{{ users.userName }}</a></td>
+				                        <td>{{ users.realName }}</td>
+				                    </tr>
+				                {% endfor %}
+				                </tbody>
+			                </table>
+			            {% else %}
+			            	{% trans 'There are currently no users in this group' %}.
+			            {% endif %}
+			        {% else %}
+			            <div class="noticemessage">
+			                <p>{% trans 'No results found' %}.</p>
+			            </div>
+			        {% endif %}
+
+			        {% if users %}
+			        <br><br>
+			        <table class="storages" id="collectiontable" >
+			        	<caption>{% trans 'Permissions in Group' %}</caption>
+			            <thead>
+			                <tr>
+			                    <th><a href="#">{% trans 'Permission' %}</a></th>
+			                    <th><a href="#">{% trans 'User/group' %}</a></th>
+			                    <th><a href="#">{% trans 'Operation' %}</a></th>
+			                    <th></th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			            {% for acl in acls  %}
+			                <tr{% if forloop.counter|divisibleby:"2"  %} class="even"{% endif %} id="{{ c.getId }}">
+			                    <td><a href="">{{ acl.getPermission }}</a></td>
+			                    <td class="alignleft"><a href="">{{ acl.getUserGroup }}</a></td>
+			                    <td class="alignleft"><a href="">{{ acl.getOperation }}</a></td>
+			                    <td><a href="delete/{{ acl.getOperation }}">Remove</a></td>
+			                </tr>
+			            {% endfor %}
+			            </tbody>
+			            </table>
+			        {% endif %}
+		        </div><!--#tab7 -->
+				<ul style="margin-top:24px;">
+		            <li class="mono">
+		            	<input type="submit" value="{% trans 'Save &amp; continue' %}" id="submit" class="button" />
+		            </li>
+		        </ul>
+            </fieldset>
+        </form>
+
+    <div id="jsonerrormessage"></div>
+{% endblock content %}
+{% block inlinejs %}
+<script>
+$(document).ready(function() {
+
+    SelectFilter.init('grpmultiselect', "{% trans "Groups" %}", 0, "{{ STATIC_URL }}");
+    SelectFilter.init('rolesmultiselect', "{% trans "Roles" %}", 0, "{{ STATIC_URL }}");
+    SelectFilter.init('metmultiselect', "{% trans "Metadata Groups" %}", 0, "{{ STATIC_URL }}");
+    SelectFilter.init('elmultiselect', "{% trans "Export Locations" %}", 0, "{{ STATIC_URL }}");
+
+    // vs_group_change_check
+    $("ul.tabs").tabs("div.panes > div");
+
+    // Keep track of how many users that altering the metadata group for will effect.
+    $(document).bind('SelectFilter2.move', function(e, from_box, to_box, option_moved, from, to) {
+    	if (from == 'metmultiselect_to') {
+    		$.get('group_change_check/' + option_moved, function(data) {
+    			changeEffectedCount += data.count;
+    			$('#warnuserofmdgchangecount').html(changeEffectedCount);
+    			changeEffectedTable[option_moved] = data.count;
+		    	if (changeEffectedCount > 0 ) {
+		    		$('#warnuserofmdgchangemsg').show();
+		    	} else {
+		    		$('#warnuserofmdgchangecount').html('');
+		    		$('#warnuserofmdgchangemsg').hide();
+		    	}
+    		});
+    	} else {
+    		if (changeEffectedTable.hasOwnProperty(option_moved)) {
+    			changeEffectedCount -= changeEffectedTable[option_moved];
+    			delete changeEffectedTable[option_moved];
+    			$('#warnuserofmdgchangecount').html(changeEffectedCount);
+		    	if (changeEffectedCount > 0 ) {
+		    		$('#warnuserofmdgchangemsg').show();
+		    	} else {
+		    		$('#warnuserofmdgchangecount').html('');
+		    		$('#warnuserofmdgchangemsg').hide();
+		    	}
+    		}
+    	}
+    });
+
+});
+
+</script>
+
+{% endblock inlinejs %}

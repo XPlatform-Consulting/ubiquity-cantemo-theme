@@ -1,0 +1,26 @@
+{% themeextends "users/base_user.html" %}
+{% load i18n %}
+{% block title %}{% trans 'Settings' %}{% endblock %}
+{% block heading %}{% trans 'Settings' %}{% endblock heading %}
+{% block content %}
+<div class="itemcontent">
+    {% if SITE_I18N and LANGUAGES|length > 1 %}
+    <form action="/i18n/setlang/" method="post" class="formmain">{% csrf_token %}
+        <fieldset>
+            <ul>
+                <li><label for="changelanguage">{% trans "Choose language" %}</label>
+                    <select name="language" id="changelanguage">
+                    {% for lang in LANGUAGES %}
+                        <option value="{{ lang.0 }}" {% ifequal LANGUAGE_CODE lang.0 %}selected="selected"{% endifequal %}>{{ lang.1 }}</option>
+                    {% endfor %}
+                    </select>
+                </li>
+                <li class="mono"><input type="submit" value="{% trans "Change" %}" class="button changelanguage" /></li>
+            </ul>
+        </fieldset>
+    </form>
+    {% else %}
+        {% trans "You don't have language support installed or enabled" %}
+    {% endif %}
+</div><!-- .itemcontent -->
+{% endblock content %}

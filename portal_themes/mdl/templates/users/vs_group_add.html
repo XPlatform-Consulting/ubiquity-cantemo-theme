@@ -1,0 +1,217 @@
+{% themeextends "users/vs_base_users.html" %}
+{% load i18n formatting vidispinetags %}
+{% block title %}{% trans "Add New Group" %}{% endblock title %}
+{% block extra_script %}
+<script type="text/javascript" charset="utf-8">
+    var STATIC_URL = '{{ STATIC_URL }}';
+    var video_st_length = '0';
+    var audio_st_length = '0';
+    var image_st_length = '0';
+    var acls_count = parseInt('{{ acls|length }}',10)-1;
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/groups/group.js"></script>
+{% endblock %}
+{% block heading %}<a href="{% url vs_groups_all %}">{% trans 'Groups' %}</a>: {%trans 'New'%} {{shapetype}}{% endblock heading %}
+
+{% block content %}
+
+    <form action="{% url vs_group_add %}" method="post" accept-charset="utf-8" class="formmain">
+      {% if error %}
+        <div class="errormessage"><p>{{ error }}</div><br>
+      {% endif %}
+        {% csrf_token %}
+        <fieldset>
+            <h5>{% trans 'Please fill in all the fields' %}</h5>
+            <ul>
+                <li><label for="id_groupname">{% trans 'Group Name' %}:</label>
+                <input id="id_groupname" type="text" name="groupname"
+                maxlength="30"  class="required inputText" /></li>
+
+                <li><label for="id_groupdescription">{% trans 'Description' %}:</label>
+                <input id="id_groupdescription" type="text" name="groupdescription" maxlength="255"  class="inputText" /></li>
+
+                <li> <label for="profiletemplates">{% trans 'Profile templates' %}</label>
+	            <select multiple="multiple" name="profiletemplates" id="profiletemplates">
+	                {% for pt in profiletemplates %}
+	                    <option value="{{ pt.pk }}">{{ pt.name }}</option>
+	                {% endfor %}
+	            </select>
+	            </li>
+            </ul>
+		<ul class="tabs">
+            <li><a href="#inherit_tab"><em>{% trans "Inherit" %}</em></a></li>
+            <li><a href="#roles_tab"><em>{% trans "Roles" %}</em></a></li>
+            <li><a href="#permission_tab"><em>{% trans "Permissions" %}</em></a></li>
+            <li><a href="#transcode_tab"><em>{% trans "Transcode Profiles" %}</em></a></li>
+            <li><a href="#export_tab"><em>{% trans "Export Locations" %}</em></a></li>
+            <li><a href="#metadata_tab"><em>{% trans "Metadata Groups" %}</em></a></li>
+        </ul>
+		<div class="panes">
+            <div id="tab1" class="clearfix tab">
+                <div class="noticemessage"><p>{% trans "This group will inherit roles and group membership from groups selected here." %}</div><br>
+ 			    <select multiple="multiple" id="grpmultiselect" class="selectfilter" name="groups">
+		            {% for g in vsgroups %}<option value="{{ g.getName }}">{{ g.getName }}</option>{% endfor %}
+     		    </select>
+        	</div><!--#tab1 -->
+            <div id="tab2" class="clearfix tab">
+                <div class="noticemessage"><p>{% trans "Users in this group will get roles selected here. Roles in the inherited groups will reside." %}</div><br>
+                <ul>
+                    <li>
+                        <label for="canshare">{% trans "Can Share Out Media" %}</label>
+                        <input type="checkbox" id="id_groupcan_share" checked="checked"  name="can_share" />
+                    </li>
+                </ul>
+
+                <select multiple="multiple" id="rolesmultiselect" class="selectfilter" name="groups">
+		            {% for g in vsroles %}{% ifnotequal g.getName "_run_as" %}<option value="{{ g.getName }}">{{ ""|getUserRoleName:g.getName }}</option>{% endifnotequal %}{% endfor %}
+     		    </select>
+            </div><!--#tab2 -->
+            <div id="tab3" class="clearfix tab">
+                <div class="noticemessage"><p>{% trans "Media ingested by users in this group will obtain permissions selected here." %}</div><br>
+				<table class="rolechange" id="tablegrouppermission">
+					<tbody>
+                	<tr class="heading">
+                		<th></th>
+						<th>{% trans 'Recipient' %}</th>
+						<th>{% trans 'Permission' %}</th>
+						<th>{% trans 'Operation' %}</th>
+						<th></th>
+					</tr>
+					{% for acl in acls %}
+					<tr>
+						<td>
+							{% if acl.isForUser %}
+								<img src="{{ STATIC_URL }}img/icon-user.png" class="user">
+							{% else %}
+								<img src="{{ STATIC_URL }}img/icon-groups.png" class="group">
+							{% endif %}
+							<input type="hidden" value="{{acl.getId}}" name="aclentry_id">
+						</td>
+						<td><input type="hidden" value="{{ acl.recipient_val }}" name="recipient_0">{{ acl.recipient }}</td>
+						<td><input type="hidden" value="{{ acl.permission_val }}" name="permission_0">{{ acl.permission }}</td>
+						<td><input type="hidden" value="{{ acl.operation_val }}" name="operation_0">{{ acl.operation }}</td>
+						{% ifequal acl.getPermission "OWNER" %}
+						<td></td>
+						{% else %}
+						<td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" class="deletegprow"></td>
+						{% endifequal %}
+					</tr>
+					{% endfor %}
+
+					</tbody>
+				</table>
+            	<ul>
+        			{{ gpform.as_ul }}
+        			<li class="mono"><button id="addpermbut" class="button">{% trans "Add Permission" %}</button></li>
+        		</ul>
+
+            </div><!--#tab3 -->
+            <div id="tab4" class="clearfix tab">
+            <div class="noticemessage"><p>{% trans "Media ingested by users in this group will be transcoded to profiles selected here." %}</div><br>
+	        <table class="rolechange" id="tablevidshapetag">
+	            <tbody>
+	                <tr class="heading">
+	                    <th>{% trans 'Video format' %}</th>
+	                    <th></th>
+	                </tr>
+	                {% for t in defaultvideotranscodes %}
+	                <tr>
+	                    <td>{{ t }}<input type="hidden" name="video_shapetag_{{forloop.counter0}}" value="{{ t }}" /></td>
+	                    <td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" class="deletevidstrow"></td>
+	                </tr>
+	                {% endfor %}
+	                <tr class="rolechange-form">
+                        Values:{{ group_video_shape_tags }}
+	                    <td>{{ video_st_form.video_format }}</td>
+	                    <td class="rc_input"><button id="addvidshapetagbut" class="button">{% trans "Add" %}</button></td>
+	                </tr>
+	            </tbody>
+	        </table>
+
+	        <table class="rolechange" id="tableaudshapetag">
+	            <tbody>
+	                <tr class="heading">
+	                    <th>{% trans 'Audio format' %}</th>
+	                    <th></th>
+	                </tr>
+	                {% for t in defaultaudiotranscodes %}
+	                    <tr>
+	                        <td>{{ t }}<input type="hidden" name="audio_shapetag_{{forloop.counter0}}" value="{{ t }}" /></td>
+	                        <td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" class="deleteaudstrow"></td>
+	                    </tr>
+	                {% endfor %}
+	                <tr class="rolechange-form">
+	                    <td>{{ audio_st_form.audio_format }}</td>
+	                    <td class="rc_input"><button id="addaudshapetagbut" class="button">{% trans "Add" %}</button></td>
+	                </tr>
+	            </tbody>
+	        </table>
+
+            <table class="rolechange" id="tableimgshapetag">
+            <tbody>
+                <tr class="heading">
+                    <th>{% trans 'Image format' %}</th>
+                    <th></th>
+                </tr>
+                {% for t in defaultimagetranscodes %}
+                <tr>
+                    <td>{{ t }}<input type="hidden" name="image_shapetag_{{forloop.counter0}}" value="{{ t }}" /></td>
+                    <td class="rc_input"><img src="{{ STATIC_URL }}img/icon-delete.png" class="deleteimgstrow"></td>
+                </tr>
+                {% endfor %}
+                <tr class="rolechange-form">
+                    <td>{{ image_st_form.image_format }}</td>
+                    <td class="rc_input"><button id="addimgshapetagbut" class="button">{% trans "Add" %}</button></td>
+                </tr>
+            </tbody>
+        </table>
+
+            </div><!--#tab4 -->
+	        <div id="tab5" class="clearfix tab">
+		            <div class="noticemessage"><p>{% trans "Please select export locations that should be available for this group." %}</div><br>
+
+                <select multiple="multiple" id="elmultiselect" class="selectfilter" name="exportlocations">
+                  {% for el in all_export_locations %}
+                    <option value="{{ el }}" {% if el in group_export_locations %}selected="selected"{% endif %}>{{ el }}</option>
+                  {% endfor %}
+                </select>
+
+	        </div><!--#tab5 -->
+            <div id="tab6" class="clearfix tab">
+                <div class="noticemessage"><p>{% trans "Please select Metadata Groups relevant for this group." %}</div><br>
+                <select multiple="multiple" id="metmultiselect" class="selectfilter" name="metadataschemas">
+                    {% for mg in vsmetadatagroups %}<option value="{{ mg }}">{{ mg }}</option>{% endfor %}
+                </select>
+            </div><!--#tab6 -->
+
+		</div>
+		<ul style="margin-top:24px;">
+            <li class="mono">
+            	<input type="submit" value="{% trans 'Save' %}" id="submit" class="button"/>
+                <input type="submit" value="{% trans 'Save and add another' %}" name="submitaddanother" class="button buttonAddAnother" onClick="this.value='{% trans "Please wait" %}...';">
+            </li>
+        </ul>
+        </fieldset>
+    </form>
+
+{% endblock content %}
+{% block inlinejs %}
+<script type="text/javascript" charset="utf-8">
+jQuery.exists = function(selector) {return ($(selector).length > 0);}
+$(document).ready(function() {
+    SelectFilter.init('grpmultiselect', "{% trans "Groups" %}", 0, "{{ STATIC_URL }}");
+    SelectFilter.init('rolesmultiselect', "{% trans "Roles" %}", 0, "{{ STATIC_URL }}");
+    SelectFilter.init('metmultiselect', "{% trans "Metadata Groups" %}", 0, "{{ STATIC_URL }}");
+    SelectFilter.init('elmultiselect', "{% trans "Export Locations" %}", 0, "{{ STATIC_URL }}");
+
+	$("ul.tabs").tabs("div.panes > div");
+
+});
+</script>
+{% endblock inlinejs %}
+{% docstring %}
+	This template is for adding a Groups to the system.
+
+    template core
+
+{% enddocstring %}

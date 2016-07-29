@@ -1,0 +1,97 @@
+{% themeextends "users/vs_base_users.html" %}
+{% load i18n  %}
+{% block title %}{% trans "Viewing User" %}: {{ userinfo.userName }}{% endblock title %}
+{% block extra_script %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/users/users.js"></script>
+{% endblock extra_script %}
+{% block heading %}<a href="{% url vs_users_all %}">{% trans 'Users' %}:</a> {{ userinfo.userName }}{% endblock heading %}
+{% block content %}
+    {% if userinfo %}
+    <div class="formmain-header">
+        <div class="admin-buttons-holder">
+            {% if userviewed %}            
+            <a href="{% url vs_user_password_change userviewed.username %}"><button type="button" class="button button-disabled" onclick="window.location=this.parentNode.href;">{% trans "Change Password" %}</button></a>
+                {% endif %}
+            {% if userinfo.userName != 'admin' %}            
+                {% if userviewed.is_active %}
+                <a href="{% url vs_user_delete  %}?selected_objects={{ userviewed }}">
+                  <button type="button" class="button
+                        button-delete"
+                        onclick="window.location=this.parentNode.href;">{% trans "Deactivate" %}</button></a></p>
+                {% else %}
+                <a href="{% url vs_user_enable  %}?selected_objects={{ userviewed }}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Enable" %}</button></a></p>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <form action="." method="post" accept-charset="utf-8" class="formmain">{% csrf_token %}
+        <fieldset>
+            <dl>
+                <dt>{% trans "Last login" %}</dt><dd>{{ userviewed.last_login|date:"DATETIME_FORMAT" }}</dd>
+                <dt>{% trans "Date joined" %}</dt><dd>{{ userviewed.date_joined|date:"DATETIME_FORMAT" }}</dd>
+            </dl>                
+            <ul>
+                <li class="{% if userform.first_name.errors %}error {% endif %}{% if userform.first_name.field.required %}required{% endif %}">
+                    {{ userform.first_name.label_tag }}
+                    {{ userform.first_name }}
+                    {% if userform.first_name.errors %}<p>{% for error in userform.first_name.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                </li>
+                <li class="{% if userform.last_name.errors %}error {% endif %}{% if userform.last_name.field.required %}required{% endif %}">
+                    {{ userform.last_name.label_tag }}
+                    {{ userform.last_name }}    
+                    {% if userform.last_name.errors %}<p>{% for error in userform.last_name.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                </li>
+                <li class="{% if userform.email.errors %}error {% endif %}{% if userform.email.field.required %}required{% endif %}">
+                    {{ userform.email.label_tag }}
+                    {{ userform.email }}
+                    {% if userform.email.errors %}<p>{% for error in userform.email.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                </li>
+                <li class="{% if userform.is_staff.errors %}error {% endif %}{% if userform.is_staff.field.required %}required{% endif %}">
+                    {{ userform.is_staff.label_tag }}
+                    {{ userform.is_staff }}    
+                    {% if userform.is_staff.errors %}<p>{% for error in userform.is_staff.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                </li>
+                <li class="{% if userform.is_superuser.errors %}error {% endif %}{% if userform.is_superuser.field.required %}required{% endif %}">
+                    {{ userform.is_superuser.label_tag }}
+                    {{ userform.is_superuser }}    
+                    {% if userform.is_superuser.errors %}<p>{% for error in userform.is_superuser.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                </li>
+            </ul>
+            <div class="selectmultipleholder">
+                <select name="groups" multiple="multiple" id="grpmultiselect" class="required">
+                    {% for g in vsgroups  %}{% if g.getName != '_special_all' %}<option value="{{ g.getName }}" {% for group in userinfo.groupList.items %}{% for groupitem in group.1 %}{% ifequal groupitem.groupName g.getName %} selected="selected"{% endifequal %}{% endfor %}{% endfor %}>{{ g.getName }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>     
+            </div>
+            <ul>
+                {% if form %}
+                     {% for field in form %}
+                      <li>{{ field.label_tag }}{{ field }}</li>
+                     {% endfor %}
+                {% endif %}
+            </ul>
+            <ul>
+	            <li class="mono">
+                	<input type="submit" value="{% trans "Save and Continue" %}" id="submit" class="button" />
+                </li>
+            </ul>                
+	    </fieldset>
+    </form>
+    {% else %}
+        <div class="itemcontent">
+            <div class="noticemessage">
+                <p>{% trans 'No user found' %}.</p>
+            </div>
+        </div>
+    {% endif %}
+    	
+{% endblock content %}
+{% block inlinejs %}
+<script type="text/javascript" charset="utf-8">
+jQuery.each($("select[multiple]"), function () {
+ SelectFilter.init(this.id, String("{% trans 'Groups' %}"), 0, "{{ STATIC_URL }}");
+});
+group_metadataURL = String('{% url vs_groups_info %}');
+</script>
+{% endblock inlinejs %}

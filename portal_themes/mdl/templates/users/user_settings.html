@@ -1,0 +1,48 @@
+{% themeextends "users/base_user.html" %}
+{% load i18n %}
+{% block title %}{% trans 'Settings' %}{% endblock %}
+{% block heading %}{% trans 'Settings' %}{% endblock heading %}
+{% block content %}
+    <form action="." method="post" accept-charset="utf-8" class="formmain" enctype="multipart/form-data">{% csrf_token %}
+        <fieldset>
+            <ul>
+                {% for field in form %}
+                    {% if field.is_hidden %}
+                        {{ field }}
+                    {% else %}
+                        <li {% if field.errors %}class="error"{% endif %}>
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}<p>{% for error in field.errors %}{{ error }}{% endfor %}</p>{% endif %}
+                            {% if field.help_text %}
+                                <p class="help" style="display:inline;"><em>{{ field.field.help_text|safe }}</em></p>
+                            {% endif %}
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {{ form_user.as_ul }}
+                {% if user.get_profile.organisation %}
+                    <li><label for="id_organisation">{% trans "Organisation" %}:</label>{{ user.get_profile.organisation }}</li>
+                {% endif %}
+                <li><label for="id_groups">{% trans "Groups" %}:</label><span id="id_groups">{% for g in user.groups.all  %}{% if not g|stringformat:"s" == '_special_all' %}{{ g }}{% endif %} {% endfor %}</span></li>
+                <li class="mono">
+                    <input type="submit" value="{% trans "Save" %}" class="button">
+                </li>
+            </ul>
+        </fieldset>
+    </form>
+</div><!-- .itemcontent -->
+{% endblock content %}
+{% docstring %}
+This is for the user's settings.
+
+Context
+-------
+form = the main form for the settings.
+form_user = form related to the users
+user = this user
+
+Plugins
+-------
+
+{% enddocstring %}

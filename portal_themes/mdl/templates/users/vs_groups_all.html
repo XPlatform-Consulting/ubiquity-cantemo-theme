@@ -1,0 +1,81 @@
+{% themeextends "users/vs_base_users.html" %}
+{% load i18n %}
+{% block title %}{% trans "All Groups" %}{% endblock title %}
+{% block heading %}{% trans 'Groups' %}{% endblock heading %}
+{% block content %}
+    <div class="itemcontent">
+        {% if vsgroups %}
+        <form action="{% url vs_group_delete %}">
+            <div class="table-menu">
+                <a href="{% url vs_group_add %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
+                <a href="#" onclick="$(this).closest('form').submit();"><button type="button" class="button button-delete" onclick="window.location=this.parentNode.href;">{% trans "Delete" %}</button></a>
+            </div>
+        
+            <table class="generictbl" id="groupstable">
+                <thead>
+                <tr>
+                    <th>{% trans 'Group Name' %}</th>
+                    <th>{% trans 'Description' %}</th>
+                    <th>{% trans 'Child group' %}</th>
+                    <th></th>
+                </tr> 
+                </thead>
+                <tbody>  
+            {% for group in vsgroups  %}
+                {% if group.getName != '_special_all' %}
+                <tr{% if forloop.counter|divisibleby:"2"  %} class="even"{% endif %}>
+                    {% url vs_group_view group.getName as groupName %}
+                    <td><a href="{% if groupName %}{{ groupName }}{% else %}/groups/{{ group.getName }}/{% endif %}">{{ group.getName }}</a></td>
+                        
+                    
+                    <td>{{ group.getDescription }} </td>
+                    <td>
+                        {% for childgroup in group.getChildGroups  %}
+                            {{ childgroup.getName }}
+                        {% endfor %}
+                    </td>
+                    {% if not childgroup.getName  %}
+                        
+                    {% endif %}
+                    <td class="select checkbox">{% ifnotequal group.getName "_special_all"  %}<input type="checkbox" value="{{ group.getName }}" name="selected_objects" />{% endifnotequal %}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+                </tbody>
+            </table>
+            <div class="table-menu">
+                <a href="{% url vs_group_add %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
+                <a href="#" onclick="$(this).closest('form').submit();"><button type="button" class="button button-delete" onclick="window.location=this.parentNode.href;">{% trans "Delete" %}</button></a>
+            </div>
+    	</form>
+        {% else %}
+            <div class="noticemessage">
+                <p>{% trans 'No results found' %}.</p>
+            </div>
+        {% endif %}
+        
+    </div>
+    
+    
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+		$('#groupstable').tablerowcheckbox().dataTable({
+		    "bLengthChange": false,
+		    "aaSorting": [[ 0, "asc" ]],
+		    "aoColumns": [ null,null,null,{ "bSortable": false }],
+            "iDisplayLength": parseInt('{{ user.get_profile.paginate_by|default:"50" }}',10),
+            "oLanguage": {"sSearch": ""},
+            "sDom": '<"top"ifpl>rt<"bottom"><"clear">',
+            "oLanguage": {
+                "sSearch": "",
+                "sInfo": '{% trans "Showing" %} _START_ {% trans "to" %} _END_ {% trans "of" %} _TOTAL_ {% trans "groups" %}'}
+			});
+});
+</script>    
+{% endblock content %}
+{% docstring %}
+This template is for displaying all the User Groups that are in the system.
+   
+    template core
+      
+{% enddocstring %}

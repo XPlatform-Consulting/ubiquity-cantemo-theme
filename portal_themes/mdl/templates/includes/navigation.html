@@ -93,6 +93,7 @@
         </div>
         <div id="account" class="">
             <button class="cantemo-settings-button mdl-button mdl-button--icon">
+               {% get_avatar_image user %}
                 {% if avatarurl %}
                     <img src="{{ avatarurl }}" alt="{{ avataruser }}" class="cantemo-nav-avatar user-avatar-image user-avatar-set">
                 {% else %}
@@ -104,6 +105,7 @@
             <div class="cantemo-settings-card-popup triangle"></div>
             <div class="cantemo-settings-card-popup mdl-card mdl-shadow--2dp">
                 <div class="cantemo-card-top">
+                    {% load avatarurl}
                     {% if avatarurl %}
                         <img src="{{ avatarurl }}" alt="{{ avataruser }}" width="{{ avatarwidth }}" height="{{ avatarheight }}"  class="cantemo-nav-avatar-lg user-avatar-image user-avatar-set">
                     {% else %}

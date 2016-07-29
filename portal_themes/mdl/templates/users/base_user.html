@@ -1,0 +1,62 @@
+{% themeextends "base.html" %}
+{% load i18n messages users %}
+{% block body %}
+{% url user_settings as user_settings %}
+{% url user_view_all_jobs as user_view_all_jobs %}
+{% url user_language as user_language %}
+{% url user_passwordchange as user_passwordchange %}
+<div class="headerwrapper">
+    {% get_avatar_image user %}
+    <div id="header" class="header">
+         <h1><a href="">{% trans "Your" %}</a>: {% block heading %}{% endblock heading %}</h1>
+    </div>
+</div>
+<div id="content" class="content">
+    <div class="leftcontent" id="mv_menu">
+        <ol>
+            <li><a href="{{ user_settings }}"
+                {% ifequal request.path  user_settings %}
+                    class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-4px -334px"></span>{% trans 'Settings' %}</a>
+            </li>
+            <li><a href="{{ user_view_all_jobs }}"
+                    {% ifequal request.path user_view_all_jobs %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position:-197px -334px"></span>{% trans 'Jobs' %}</a>
+            </li>
+{% if not user|has_role:"_administrator"  %}
+            <li><a href="{{ user_passwordchange }}"
+                    {% ifequal request.path user_passwordchange %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon" style="background-position: 0 -450px;background-repeat:no-repeat;"></span>{% trans 'Password' %}</a>
+            </li>
+{% endif %}
+            {% if SITE_I18N and LANGUAGES|length > 1 %}
+            <li><a href="{{ user_language }}" 
+                    {% ifequal request.path user_language %}
+                        class="selected"
+                    {% endifequal %}><span class="iicon"
+                        style="background-position:-197px -315px"></span>{% trans 'Language' %}</a>
+                </li>
+            {% endif %}
+        </ol>
+        {% pluginblock "user_settings_menu" core %}
+    </div><!-- .leftcontent -->
+    <div class="itemcontentholder">
+    {% block content %}
+
+    {% endblock content %}
+    </div><!-- .itemcontentholder -->
+</div><!-- #content -->
+{% endblock body %}
+{% docstring %}
+This is for the user's own menu.
+
+Context
+-------
+
+
+Plugins
+-------
+
+{% enddocstring %}

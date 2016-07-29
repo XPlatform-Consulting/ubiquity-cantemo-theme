@@ -1,0 +1,106 @@
+{% themeextends "users/vs_base_users.html" %}
+{% load i18n labjs %}
+{% block title %}{% trans "Users in Group" %}{% endblock title %}
+{% block heading %}<a href="{% url vs_groups_all %}">{% trans 'Groups' %}</a>: <a href="{% url vs_group_view vidispine_group.getName %}">{{ vidispine_group.getName }}</a>: {% trans 'Users' %}{% endblock heading %}
+{% block extra_script %}
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/groups/models.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/users/models.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/users/collection.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/app/users/views.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="itemcontent">
+        {% if warning %}
+            <div class="noticemessage">
+                    <p>{{ warning }}</p>
+            </div>
+        {% endif %}
+        {% if users %}
+        <form action="{% url vs_user_delete %}">
+
+            <table class="generictbl" id="usertable">
+                <thead>
+                <tr>
+                    <th>{% trans 'UserName' %}</th>
+                    <th>{% trans 'FirstName' %}</th>
+                    <th>{% trans 'LastName' %}</th>
+                    <th>{% trans 'Email' %}</th>
+                    <th>{% trans 'Default Group' %}</th>
+                    <th>{% trans 'Default IngestGroup' %}</th>
+                    <th>{% trans 'Default Metadata Group' %}</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody id="usertablebody">
+
+                </tbody>
+            </table>
+    	</form>
+        {% else %}
+            <div class="noticemessage">
+                <p>{% trans 'No users found in this group' %}.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+{% block inlinejs %}
+
+<script type="text/template" id="cntmo_prtl_user_rw_tmpl">
+<td data-name="username"> </td>
+<td data-name="first_name"> </td>
+<td data-name="last_name"> </td>
+<td data-name="email"> </td>
+<td data-name="default_group"> </td>
+<td data-name="default_ingest_group"> </td>
+<td>
+<select name="default_metadata_group">
+        <% _.each(default_md_choices, function (modelChoice) { %>
+            <option value="<%= modelChoice.value %>"
+                <% if (modelChoice.value === default_metadata_group){ %> selected="selected"<% } %> ><%= modelChoice.description %></option>
+        <% }); %>
+        <% if (!_.any(test, function(el){return el.value==default_metadata_group;})) {  %>
+            <option value="<%= default_metadata_group %>"><%= default_metadata_group %> - {% trans "Not in this group" %}</option>
+        <% } %>
+</select></td>
+</script>
+
+<script type="text/javascript" charset="utf-8">
+users = JSON.parse('{{ rough_json|safe }}');
+
+cntmo.prtl.group = new cntmo.prtl.Groups.Group({
+    name: '{{ vidispine_group.getName }}',
+    description: '{{ vidispine_group.getDescription }}',
+    metadatagroups: [{% for g in cantemo_group_profile.metadatagroups %}'{{g}}'{% if not forloop.last %},{% endif %}{% endfor %}]
+});
+
+cntmo.prtl.groupUsers = new cntmo.prtl.Users.UserCollectionView({
+    el: $('#usertable'),
+    childViewTemplate: $('#cntmo_prtl_user_rw_tmpl'),
+    users: users,
+    parent_group: cntmo.prtl.group
+});
+</script>
+{% labjs %}
+{% endlabjs %}
+{% runlabjs %}
+{% endblock inlinejs %}
+{% docstring %}
+vs_group_bulkupdate.html - Display all users in group for bulk update.
+
+Context:
+This template is for displaying all the Users in a group so that they can be edited.
+It uses backbone.js for displaying and the live editing of the users.
+
+    template core
+
+Context:
+ * vidispine_group - Vidispine group object.
+ * cantemo_group - Cantemo group object.
+ * vidispine_users - List of users in this group in the Vidispine system.
+ * users - List of users in this group saved in the Portal database.
+ * cantemo_group_profile - Extended group profile for the group.
+ * rough_json - JSON formatted list of users and attributes.
+ * warning - a warning if the amount of users don't match.
+
+{% enddocstring %}
