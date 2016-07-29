@@ -84,6 +84,7 @@
         </div>
         <div id="account" class="">
             <button class="cantemo-nav-avatar cantemo-settings-button mdl-button mdl-button--icon">
+                <div style="display:none">{% get_avatar_image user %}</div>
                 {% if avatarurl %}
                     <img src="{{ avatarurl }}" alt="{{ avataruser }}" class="cantemo-nav-avatar user-avatar-image user-avatar-set">
                 {% else %}
@@ -109,11 +110,11 @@
 
     <div id="nav-row" class="mdl-layout__header-row">
         <nav id="main-nav" class="mdl-navigation mdl-layout--large-screen-only">
-            <a class="mdl-navigation__link" href="{% url homepage %}" {% current_nav search %} title="{% trans "Home" %}"> {% trans "Home" %}</a>
+            <a class="mdl-navigation__link" href="{% url homepage %}" {% current_nav search %} title="{% trans 'Home' %}"> {% trans "Home" %}</a>
 
-            <a class="mdl-navigation__link" href="{% url dashboard:dashboard %}" {% current_nav dashboard %} title="{% trans "Dashboard" %}"> {% trans "Dashboard" %}</a>
+            <a class="mdl-navigation__link" href="{% url dashboard:dashboard %}" {% current_nav dashboard %} title="{% trans 'Dashboard' %}"> {% trans "Dashboard" %}</a>
 
-            <a id="{% trans "Find" %}" class="mdl-navigation__link" href="#" {% current_nav search %} title="{% trans "Find" %}"> {% trans "Find" %}</a>
+            <a id="{% trans "Find" %}" class="mdl-navigation__link" href="#" {% current_nav search %} title="{% trans 'Find' %}"> {% trans "Find" %}</a>
             <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Find" %}">
                 {% permissionrequired _item_search %}
                 <li class="mdl-menu__item">
