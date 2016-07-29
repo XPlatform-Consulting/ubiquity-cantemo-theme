@@ -5,7 +5,6 @@
     {% compress js inline %}
         <script type="text/javascript" src="{{ STATIC_URL }}mdl/assets/js/app/media/mediabox.js"></script>
         <script type="text/javascript" src="{{ STATIC_URL }}js/libs/select2/select2.js"></script>
-
         <script type="text/javascript" charset="utf-8">
             var theme = '{{ theme }}';
             var url_delete_items = '{% url vs_items_delete %}';
@@ -17,28 +16,30 @@
 <!-- base_search.html theme start -->
 <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     {% block navigation %}
-        <header class="mdl-layout__header">
-            {% themeinclude 'includes/navigation.html' %}
+        {% themeinclude 'includes/navigation.html' %}
 
-            {% block heading %}
-                {% themeinclude "search/search_results_form.html" %}
-            {% endblock heading %}
-        </header>
+        {% block heading %}
+            {% themeinclude "search/search_results_form.html" %}
+        {% endblock heading %}
+
     {% endblock navigation %}
 
-    {% block drawer %}{% endblock %}
+    {% block drawer %}
+    {% endblock drawer%}
 
     {% block body %}
     <!-- base_search.html body start -->
         <main class="mdl-layout__content">
             <div id="content" class="content searchcontent">
-                {% block content %}{% endblock %}
+                {% block content %}
+                {% endblock content%}
             </div>
         </main>
     <!-- base_search.html body end -->
     {% endblock body %}
 
-    {% block footer %}{% endblock %}
+    {% block footer %}
+    {% endblock footer %}
 
 </div>
 <!-- base_search.html theme end -->
