@@ -12,14 +12,19 @@
     <!--<ol class="mi_contextmenu" id="mi_contextmenu">-->
     <nav id="mi_contextmenu" class="mdl-navigation">
         <li>
-            <a href="#" class="selected mdl-navigation__link" id="mv_preview_a" shortcut="preview"  rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "norender":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","large"]}}'>
+            <a href="#" class="selected mdl-navigation__link" id="mv_preview_a" shortcut="preview"  
+                rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"],
+                    "norender":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], 
+                    "args":["itemPlayer","large"]}}'>
                 <i class="material-icons">visibility</i>
                 {% trans "Preview" %}
             </a>
         </li>
         
         <li>
-            <a href="#" id="mv_thumbnails_a" class="mdl-navigation__link" shortcut="thumbnails" rel='{"viewopen":["MediaItemThumbnailPanel", "MediaItemMetadataPanel"]}'>
+            <a href="#" id
+                "mv_thumbnails_a" class="mdl-navigation__link" shortcut="thumbnails" 
+                rel='{"viewopen":["MediaItemThumbnailPanel", "MediaItemMetadataPanel"]}'>
                 <i class="material-icons">collections</i>
                 {% trans "Thumbnails" %}
             </a>
@@ -28,7 +33,9 @@
         {% if systemmetadata.mediaType == "video" %}
             {% permissionrequired _thumbnail_read %}
                 <li>
-                    <a href="#" id="mv_posters_a" class="mdl-navigation__link" shortcut="posters" rel='{"viewopen":["MediaItemPosterPanel", ""]}'>
+                    <a href="#" id="mv_posters_a" class="mdl-navigation__link" shortcut="posters" 
+                        rel='{"viewopen":["MediaItemPosterPanel", ""]}'
+
                         <i class="material-icons">photo_album</i>
                         {% trans "Posters" %}
                     </a>
@@ -39,7 +46,10 @@
         {% if item.getShapes %}
             {% if aclcurrentuser.hasURIReadPermission %}
                 <li>
-                    <a href="#" id="mv_formats_a" class="mdl-navigation__link" shortcut="formats" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemFormatsPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
+                    <a href="#" id="mv_formats_a" class="mdl-navigation__link" shortcut="formats" 
+                        rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemFormatsPanel"],
+                            "norender":["MediaItemPreviewPanel"], 
+                            "args":["itemPlayer","small"]}}'>
                         <i class="material-icons">description</i>
                         {% trans "Formats" %}
                     </a>
@@ -49,7 +59,10 @@
 
         {% permissionrequired _job_read %}
             <li>
-                <a href="#" id="mv_history_a" class="mdl-navigation__link" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemHistoryPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
+                <a href="#" id="mv_history_a" class="mdl-navigation__link" 
+                    rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemHistoryPanel"],
+                        "norender":["MediaItemPreviewPanel"], 
+                        "args":["itemPlayer","small"]}}'>
                     <i class="material-icons">history</i>
                     {% trans "History" %}
                 </a>
@@ -58,7 +71,10 @@
 
         {% permissionrequired _accesscontrol_read %}
             <li>
-                <a href="#" id="mv_accesscontrol_a" class="mdl-navigation__link" shortcut="accesscontrol" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemACLPanel"], "norender":["MediaItemPreviewPanel"], "callfunc":{"func":"itemPlayer.playerResize", "args":["itemPlayer","small"]}}'>
+                <a href="#" id="mv_accesscontrol_a" class="mdl-navigation__link" shortcut="accesscontrol" 
+                    rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemACLPanel"],
+                        "norender":["MediaItemPreviewPanel"], 
+                        "args":["itemPlayer","small"]}}'>
                     <i class="material-icons">lock_outline</i>
                     {% trans "Access Right" %}
                 </a>
@@ -67,7 +83,10 @@
 
         {% if version_support %}
             <li>
-                <a href="#" id="mv_versions_a" class="mdl-navigation__link" shortcut="versions" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], "norender":["MediaItemPreviewPanel", "MediaItemVersionsPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemVersionsPanel.render", "args":["itemPlayer","small"]}}'>
+                <a href="#" id="mv_versions_a" class="mdl-navigation__link" shortcut="versions" 
+                    rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"],
+                        "norender":["MediaItemPreviewPanel", "MediaItemVersionsPanel"],
+                        "args":["itemPlayer","small"]}}'>
                     <i class="material-icons">timeline</i>
                     {% trans "Versions" %}
                 </a>
@@ -76,7 +95,10 @@
 
         {% if COMMENTS_ENABLED %}
             <li>
-                <a href="#" id="mv_comments_a" class="mdl-navigation__link" shortcut="comments" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemCommentsPanel"], "norender":["MediaItemPreviewPanel", "MediaItemCommentsPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemCommentsPanel.render", "args":["itemPlayer","large"]}}'>                
+                <a href="#" id="mv_comments_a" class="mdl-navigation__link" shortcut="comments" 
+                    rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemCommentsPanel"],
+                        "norender":["MediaItemPreviewPanel", "MediaItemCommentsPanel"],
+                        "args":["itemPlayer","large"]}}'>
                     <i class="material-icons">comment</i>
                     {% trans "Comments" %}
                     <span class="commentsCommentCount">{% if commentcount > 0  %}({{ commentcount }}){% endif %}</span>
@@ -85,7 +107,10 @@
         {% endif %}
 
             <li>
-                <a href="#" id="mv_related_a" class="mdl-navigation__link" shortcut="related" rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemRelatedPanel"], "norender":["MediaItemPreviewPanel", "MediaItemRelatedPanel"], "callfunc":{"func":"cntmo.prtl.panelviews.MediaItemRelatedPanel.render", "args":["itemPlayer","small"]}}'>
+                <a href="#" id="mv_related_a" class="mdl-navigation__link" shortcut="related" 
+                    rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemRelatedPanel"],
+                        "norender":["MediaItemPreviewPanel", "MediaItemRelatedPanel"],
+                        "args":["itemPlayer","small"]}}'>
                     <i class="material-icons">group_work</i>
                     {% trans "Related" %}
                 </a>

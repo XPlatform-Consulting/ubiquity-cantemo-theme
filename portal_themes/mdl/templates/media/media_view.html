@@ -602,14 +602,6 @@ mdlHeader.appendChild(mediaHeader);
                         ,'transcodeurl':'{% url vs_item_transcode_ajax item.getId originalshape.getId %}?mediaType={{systemmetadata.mediaType}}'
                     {% endif %}
                 },
-                onPanelChange: function(options) {
-                    options.itemPlayer;
-                    if (window.itemPlayer) {
-                        console.log('toggle');
-                         window.itemPlayer.playerResize(options.itemPlayer); 
-                    }
-                   
-                }, 
                 panels: {
                     'MediaItemPreviewPanel': new cntmo.prtl.Item.MediaItemPreviewPanel({
                         el:$('#panel_preview')
