@@ -15,9 +15,7 @@
             <a href="#" class="selected mdl-navigation__link" id="mv_preview_a" shortcut="preview"  
                 rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"],
                     "norender":["MediaItemPreviewPanel", "MediaItemMetadataPanel"], 
-                    "callfunc":{
-                        "args":["itemPlayer","large"]
-                    }}'>
+                    }'>
                 <i class="material-icons">visibility</i>
                 {% trans "Preview" %}
             </a>
@@ -51,9 +49,7 @@
                     <a href="#" id="mv_formats_a" class="mdl-navigation__link" shortcut="formats" 
                         rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemFormatsPanel"],
                             "norender":["MediaItemPreviewPanel"], 
-                            "callfunc":{
-                                "args":["itemPlayer","small"]
-                            }}'>
+                            }'>
                         <i class="material-icons">description</i>
                         {% trans "Formats" %}
                     </a>
@@ -66,9 +62,7 @@
                 <a href="#" id="mv_history_a" class="mdl-navigation__link" 
                     rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemHistoryPanel"],
                         "norender":["MediaItemPreviewPanel"], 
-                        "callfunc":{
-                            "args":["itemPlayer","small"]
-                        }}'>
+                        }'>
                     <i class="material-icons">history</i>
                     {% trans "History" %}
                 </a>
@@ -80,9 +74,7 @@
                 <a href="#" id="mv_accesscontrol_a" class="mdl-navigation__link" shortcut="accesscontrol" 
                     rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemACLPanel"],
                         "norender":["MediaItemPreviewPanel"], 
-                        "callfunc":{
-                            "args":["itemPlayer","small"]
-                        }}'>
+                        }'>
                     <i class="material-icons">lock_outline</i>
                     {% trans "Access Right" %}
                 </a>
@@ -94,9 +86,7 @@
                 <a href="#" id="mv_versions_a" class="mdl-navigation__link" shortcut="versions" 
                     rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemMetadataPanel"],
                         "norender":["MediaItemPreviewPanel", "MediaItemVersionsPanel"],
-                        "callfunc":{
-                            "args":["itemPlayer","small"]
-                        }}'>
+                        }'>
                     <i class="material-icons">timeline</i>
                     {% trans "Versions" %}
                 </a>
@@ -108,9 +98,7 @@
                 <a href="#" id="mv_comments_a" class="mdl-navigation__link" shortcut="comments" 
                     rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemCommentsPanel"],
                         "norender":["MediaItemPreviewPanel", "MediaItemCommentsPanel"],
-                        "callfunc":{
-                            "args":["itemPlayer","large"]
-                        }}'>
+                        }'>
                     <i class="material-icons">comment</i>
                     {% trans "Comments" %}
                     <span class="commentsCommentCount">{% if commentcount > 0  %}({{ commentcount }}){% endif %}</span>
@@ -122,9 +110,7 @@
                 <a href="#" id="mv_related_a" class="mdl-navigation__link" shortcut="related" 
                     rel='{"viewopen":["MediaItemPreviewPanel", "MediaItemRelatedPanel"],
                         "norender":["MediaItemPreviewPanel", "MediaItemRelatedPanel"],
-                        "callfunc":{
-                            "args":["itemPlayer","small"]
-                        }}'>
+                        }'>
                     <i class="material-icons">group_work</i>
                     {% trans "Related" %}
                 </a>
