@@ -39,206 +39,23 @@
 {% url archive_framework:jobs as archive_jobs %}
 
 <!-- mdl includes/navigation.html start -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // A quick hack (not really) for the mdl layout to have a drawer
+        // be integrated to the nav bar without complicating the templates
+        var mdlLayout = document.querySelector('div.mdl-layout');
+        mdlLayout.classList.add('mdl-layout--fixed-drawer');
+    });
+</script>
+
 <header class="mdl-layout__header">
+    <div aria-expanded="true" role="button" tabindex="0" class="mdl-layout__drawer-button"><i class="material-icons"></i></div>    
+
     <div id="main-row" class="mdl-layout__header-row">
+        
         <span class="mdl-layout-title" title="{% trans "Home" %}">Cantemo</span>
 
-        <nav id="main-nav" class="mdl-navigation mdl-layout--large-screen-only">
-            <a class="mdl-navigation__link" href="{% url homepage %}" {% current_nav search %} title="{% trans 'Home' %}"> {% trans "Home" %}</a>
 
-            <a class="mdl-navigation__link" href="{% url dashboard:dashboard %}" {% current_nav dashboard %} title="{% trans 'Dashboard' %}"> {% trans "Dashboard" %}</a>
-
-            <a id="{% trans "Find" %}" class="mdl-navigation__link" href="#" {% current_nav search %} title="{% trans 'Find' %}"> {% trans "Find" %}</a>
-            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Find" %}">
-                {% permissionrequired _item_search %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_search_last 10 %}" title="{% trans "Last 10 Items" %}">{% trans "Last 10 Items" %}</a>
-                </li>
-
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url search:index %}" title="{% trans "Search All" %}">{% trans "Search All" %}</a>
-                </li>
-
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url search:advanced %}"  title="{% trans "Advanced Search" %}">{% trans "Advanced Search" %}</a>
-                </li>
-                {% endpermissionrequired %}
-
-                {% permissionrequired _collection_read %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_saved_searches %}"  title="{% trans "Saved Searches" %}">{% trans "Saved Searches" %}</a>
-                </li>
-                {% endpermissionrequired %}
-
-                {% pluginblock "NavigationFindPlugin" core %}
-            </ul>
-
-            <a id="{% trans "Ingest" %}" class="mdl-navigation__link" href="#" {% current_nav vs_upload %} title="{% trans "Upload" %}">{% trans "Ingest" %}</a>
-            {% permissionrequired _import %}
-            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Ingest" %}">
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_upload %}" {% current_nav vs_upload %} title="{% trans "Upload" %}">{% trans "Upload" %}</a>
-                </li>
-
-                {% permissionrequired _storage_read %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url files:import %}" {% current_nav vs_storage_item_simple %} title="{% trans "Import From Storage" %}">{% trans "Import From Storage" %}</a>
-                </li>
-                {% endpermissionrequired %}
-
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_item_new %}" {% current_nav vs_item_new %} title="{% trans "Create Placeholder" %}">{% trans "Create Placeholder" %}</a>
-                </li>
-                {% pluginblock "NavigationIngestPlugin" core %}
-            </ul>
-            {% endpermissionrequired %}
-
-            <a id="{% trans "Manage" %}" class="mdl-navigation__link" href="#" title="{% trans "Manage" %}">{% trans "Manage" %}</a>
-            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Manage" %}">
-                {% permissionrequired _collection_read %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url collections:index %}" {% current_nav vs_collections %} title="{% trans "Collections" %}">{% trans "Collections" %}</a>
-                </li>
-                {% endpermissionrequired %}
-
-                {% if user|has_role:"_metadata_schema_write" and user|has_role:"_metadata_field_group_write" and user|has_role:"_metadata_field_write" %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_metadata_management %}" {% current_nav vs_metadata_management %} title="{% trans "Metadata Groups" %}" target="_blank">{% trans "Metadata Groups" %}</a>
-                </li>
-                {% endif %}
-
-                {% permissionrequired _metadata_global_read %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url metadata_element_groups %}" {% current_nav metadata_element_groups %} title="{% trans "Metadata Elements" %}">{% trans 'Metadata Elements' %}</a>
-                </li>
-                {% endpermissionrequired %}
-
-                {% permissionrequired _administrator %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url recyclebin %}" {% current_nav recyclebin  %} title="{% trans "items marked for deletion" %}">{% trans "Recycle Bin" %}</a>
-                </li>
-                {% endpermissionrequired %}
-
-                {% permissionrequired _administrator %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url sharing:admin %}" {% current_nav sharingadmin  %} title="{% trans "Sharing" %}">{% trans "Sharing" %}</a>
-                </li>
-                {% endpermissionrequired %}
-                {% pluginblock "NavigationManagePlugin" core %}
-            </ul>
-
-            {% if user|has_role:"_administrator" or user.is_staff %}
-            <a id="{% trans "Admin" %}" class="mdl-navigation__link" href="#" title="{% trans "Admin" %}">{% trans "Admin" %}</a>
-            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Admin" %}">
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url admin_index %}" {% current_nav admin_index %} title="{% trans "System Overview" %}">{% trans "System Overview" %}</a>
-                </li>
-
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url system_index %}" {% current_nav system_index %} title="{% trans "System Settings" %}">{% trans "System Settings" %}</a>
-                </li>
-
-                {% comment %}
-                TODO: firgure out another drop down level
-                {% if user|has_role:"_group_write" %}
-                <li class="mdl-menu__item">
-                    <a href="{% url vs_users_all %}" {% current_nav vs_users_all %} title="{% trans "User and Groups Settings" %}">{% trans "Users and Groups" %}</a>
-                    <ul class='level-three'>
-                        <li><a href="{% url vs_user_add %}" {% current_nav vs_user_add %} title="{% trans "Add User" %}">{% trans "Add User" %}</a></li>
-                        <li><a href="{% url vs_users_all %}" {% current_nav vs_users_all %} title="">{% trans "All Users" %}</a></li>
-                        <li><a href="{% url vs_group_add %}" {% current_nav vs_group_add %} title="">{% trans "Add Group" %}</a></li>
-                        <li><a href="{% url vs_groups_all %}" {% current_nav vs_groups_all %} title="">{% trans "All Groups" %}</a></li>
-                    </ul>
-                </li>
-                {% endif %}
-                {% endcomment %}
-
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url themes %}" {% current_nav themes %} title="{% trans "Themes" %}">{% trans "Themes" %}</a>
-                </li>
-
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_export_locations %}" {% current_nav vs_export_locations %} title="{% trans "Export Locations" %}">{% trans "Export Locations" %}</a>
-                </li>
-
-                {% if user|has_role:"_shape_tag_write" %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_shape_tags %}" {% current_nav vs_shape_tags %} title="{% trans "Transcode Profiles" %}">{% trans "Transcode Profiles" %}</a>
-                </li>
-                {% endif %}
-
-                {% if user|has_role:"_storage_write" and user|has_role:"_storage_group_write" %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_storages %}" {% current_nav vs_storages %} title="{% trans "Storages" %}">{% trans "Storages" %}</a>
-                </li>
-                {% endif %}
-
-                {% if user|has_role:"_job_read" %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_jobs %}" {% current_nav vs_jobs %} title="{% trans "Jobs" %}">{% trans "Jobs" %}</a>
-                </li>
-                {% endif %}
-
-                {% if user|has_role:"_administrator" %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url vs_indexes %}" {% current_nav vs_indexes %} title="{% trans "Indexes" %}">{% trans "Indexes" %}</a>
-                </li>
-                {% endif %}
-
-                {% if user|has_role:"_administrator" %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url admin_logreport %}" {% current_nav admin_logreport %} title="{% trans "Report Error" %}">{% trans "Report Error" %}</a>
-                </li>
-                {% endif %}
-
-                {% if user|has_role:"_administrator" %}
-                <li class="mdl-menu__item">
-                   <a class="mdl-menu__item" href="{% url admin:comments_comment_changelist %}" title="{% trans "Comments" %}"
-                    {% if '/admin/comments/' in request.path %}
-                        class="selected"
-                    {% endif %}>{% trans 'Comments' %}</a>
-                </li>
-                {% endif %}
-
-                {% if can_archive %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href='{{ archive_jobs }}' {% current_nav archive_jobs %} title="{% trans "Archive Jobs" %}">{% trans "Archive Jobs" %}</a>
-                </li>
-                {% endif %}
-                <!-- Not sure where to edit the template for NavigationAdminPlugin -->
-                {% pluginblock "NavigationAdminPlugin" core %}
-            </ul>
-            {% endif %}
-
-            <a id="{% trans "Help" %}" class="mdl-navigation__link" href="#" {% current_nav cntmo_projects %} title="{% trans "Help" %}">{% trans "Help" %}</a>
-            <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect" for="{% trans "Help" %}">
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url docs:view 'UserDocumentation' %}" title="{% trans "User Documentation" %}">{% trans "User Documentation" %}</a>
-                </li>
-
-                {% comment %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url agent_download %}" title="{% trans "Download Agent" %}">{% trans "Download Agent" %}</a>
-                </li>
-                {% endcomment %}
-
-                {% if user|has_role:"_administrator" %}
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url docs:view 'InstallDocumentation' %}" title="{% trans "Installation Guide" %}">{% trans "Installation Guide" %}</a>
-                </li>
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url docs:view 'AdministrationGuide' %}" title="{% trans "Administration Guide" %}">{% trans "Administration Guide" %}</a>
-                </li>
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url docs:view 'DevelopmentGuide' %}" title="{% trans "Development Guide" %}">{% trans "Development Guide" %}</a>
-                </li>
-                <li class="mdl-menu__item">
-                    <a class="mdl-menu__item" href="{% url django.swagger.base.view %}" title="{% trans "REST API Reference" %}">{% trans "REST API Reference" %}</a>
-                </li>
-                {% endif %}
-            </ul>
-            {% pluginblock "NavigationSectionPlugin" core %}
-        </nav>
 
         <div class="cantemo-head-spacer"></div>
 
@@ -350,6 +167,14 @@
             </div>
         </div>
     </div>
+
+    <div class="mdl-layout__drawer" aria-hidden="true">    
+        <div class="leftcontent" id="mv_menu">
+            {% includetheme 'navigation_drawer.html' %}
+        </div>
+    </div>
+
 </header>
+<div class="mdl-layout__obfuscator"></div>
 <!-- mdl includes/navigation.html end -->
 {% endif %}
