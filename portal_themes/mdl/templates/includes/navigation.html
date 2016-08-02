@@ -38,15 +38,7 @@
 {% url dashboard:dashboard as dashboard %}
 {% url archive_framework:jobs as archive_jobs %}
 
-<!-- mdl includes/navigation.html start -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // A quick hack (not really) for the mdl layout to have a drawer
-        // be integrated to the nav bar without complicating the templates
-        var mdlLayout = document.querySelector('div.mdl-layout');
-        mdlLayout.classList.add('mdl-layout--fixed-drawer');
-    });
-</script>
+
 
 <header class="mdl-layout__header">
     <div aria-expanded="true" role="button" tabindex="0" class="mdl-layout__drawer-button"><i class="material-icons"></i></div>    
@@ -176,4 +168,6 @@
 </div>
 <div class="mdl-layout__obfuscator"></div>
 <!-- mdl includes/navigation.html end -->
+<!-- mdl includes/navigation.html start -->
+
 {% endif %}
