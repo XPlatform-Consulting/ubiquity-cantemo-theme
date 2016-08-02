@@ -602,7 +602,14 @@ mdlHeader.appendChild(mediaHeader);
                         ,'transcodeurl':'{% url vs_item_transcode_ajax item.getId originalshape.getId %}?mediaType={{systemmetadata.mediaType}}'
                     {% endif %}
                 },
-
+                onPanelChange: function(options) {
+                    options.itemPlayer;
+                    if (window.itemPlayer) {
+                        console.log('toggle');
+                         window.itemPlayer.playerResize(options.itemPlayer); 
+                    }
+                   
+                }, 
                 panels: {
                     'MediaItemPreviewPanel': new cntmo.prtl.Item.MediaItemPreviewPanel({
                         el:$('#panel_preview')
@@ -668,22 +675,24 @@ mdlHeader.appendChild(mediaHeader);
 
             // Add relationship functionality to the media bin.
             $('#mediabin').bind('cntmo.prtl.MediaBinView.Event.addAll', function(event){
-                  $('#mediabin .smallmediapod').trigger('cntmo.prtl.MediaBinVSItemView.addContextPlugin', ['AddItemRelationship', 'cntmo.prtl.AddItemRelationShip', 'Relate to item']);
-                  });
-              $(window).bind('cntmo.prtl.AddItemRelationShip', function(event, model){
-                  /*  Add item relationship
-                      call add to element.
-                      On Success raise an event which will tell the collection to go fetch...
-                  */
-                   $.ajax({
-                       url:'{% url vs_create_relationship %}',
-                       data: { source: '{{ item.getId }}', target: model.get('resource_id') },
-                       type: 'GET',
-                       success: function(data, textStatus, XMLHttpRequest){
-                           $.growl(data, 'success');
-                       },
-                   });
-              });
+                $('#mediabin .smallmediapod').trigger('cntmo.prtl.MediaBinVSItemView.addContextPlugin', ['AddItemRelationship', 'cntmo.prtl.AddItemRelationShip', 'Relate to item']);
+            });
+        
+            $(window).bind('cntmo.prtl.AddItemRelationShip', function(event, model){
+              /*  Add item relationship
+                  call add to element.
+                  On Success raise an event which will tell the collection to go fetch...
+              */
+               $.ajax({
+                   url:'{% url vs_create_relationship %}',
+                   data: { source: '{{ item.getId }}', target: model.get('resource_id') },
+                   type: 'GET',
+                   success: function(data, textStatus, XMLHttpRequest){
+                       $.growl(data, 'success');
+                   },
+               });
+            });
+        
             {% endcomment %}
 
 
